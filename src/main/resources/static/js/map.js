@@ -1,4 +1,6 @@
 $( function() {
+	var mode = "stateHover";
+	
     stateAjax("full", false);
 
 	var map = L.map('map').setView([37.8, -96], 4);
@@ -182,7 +184,7 @@ $( function() {
 			$.ajax({
 				type: "POST",
 				contentType: "application/json",
-				url: "map/stateHover/" + feature.id,
+				url: "map/" + mode + "/" + feature.id,
 				data: JSON.stringify(data),
 				dataType: 'json',
 				timeout: 600000,
@@ -231,22 +233,25 @@ $( function() {
 				else {
 					$("#phase-inputs").hide();
 				}
-				if (state =="penn") {
-					var response = results["response"];
-					var view = response["view"];
-					var level = response["level"];
-					var statesData = JSON.stringify(response["map"]).replace(/\\/g, '');
-					
-					var layer = L.geoJson();
-					layer.clearLayers();
-					layer.addData(jQuery.parseJSON(statesData));
-					
-					//geojson = L.geoJson(statesData, {
-					//	style: style,
-					//	onEachFeature: onEachFeature
-					//}).addTo(map);
-					
+				if (state =="penn" or state == "callifornia") {
+					mode = "selectPrecinct";
 				}
+				else {
+					mode = "selectState";
+				}
+				
+				mode = "precinctHover";
+				var response = results["response"];
+				var view = response["view"];
+				var level = response["level"];
+				var statesData = response["map"];
+			
+				alert(JSON.stringify(statesData));
+				map.removeLayer(geojson);
+				geojson = L.geoJson(statesData, {
+					style: style,
+					onEachFeature: onEachFeature
+				}).addTo(map);
 			},
 			error: function(e) {
 				alert("Failed To Load Requested Map");
