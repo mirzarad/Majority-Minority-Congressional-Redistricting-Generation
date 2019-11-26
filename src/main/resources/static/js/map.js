@@ -124,13 +124,10 @@ $( function() {
 		});
 		
 		layer.on("mouseover", function(e) {
-			data = {};
-			data["id"] = feature.id;
 			$.ajax({
 				type: "POST",
 				contentType: "application/json",
 				url: "map/" + mode + "/" + feature.id,
-				data: JSON.stringify(data),
 				dataType: 'json',
 				timeout: 600000,
 				success: function(results) {

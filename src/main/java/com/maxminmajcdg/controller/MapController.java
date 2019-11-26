@@ -1,10 +1,8 @@
 package com.maxminmajcdg.controller;
 
-import java.util.Map;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,8 +16,8 @@ public class MapController{
 
 	@RequestMapping(value="/stateHover/{id}", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<Response<StateDataResponse>> onHoverState(@RequestBody Map<String, Integer> state) {
-		System.err.println("State ID: " + state.get("id"));
+	public ResponseEntity<Response<StateDataResponse>> onHoverState(@PathVariable(value="id") int stateId) {
+		System.err.println("State ID: " + stateId);
 		
 		Response<StateDataResponse> result = new Response<StateDataResponse>();
 		result.setMessage("Success");
@@ -29,8 +27,8 @@ public class MapController{
 	
 	@RequestMapping(value="/precinctHover/{id}", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<Response<StateDataResponse>> onHoverPrecinct(@RequestBody Map<String, Integer> precinct) {
-		System.err.println("State ID: " + precinct.get("id"));
+	public ResponseEntity<Response<StateDataResponse>> onHoverPrecinct(@PathVariable(value="id") int precinctId) {
+		System.err.println("Precinct ID: " + precinctId);
 		
 		Response<StateDataResponse> result = new Response<StateDataResponse>();
 		result.setMessage("Success");

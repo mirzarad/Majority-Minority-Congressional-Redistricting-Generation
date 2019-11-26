@@ -47,9 +47,9 @@ public class StateSelectMenuController{
 		leaflet.setView(CALI_VIEW);
 		leaflet.setLevel(CALI_LEVEL);
 		
-		MapEntity<CaliEntity> penn = new MapEntity<CaliEntity>();
-		penn.setFeatures(caliService.list());
-		leaflet.setMap(penn);
+		MapEntity<CaliEntity> cali = new MapEntity<CaliEntity>();
+		cali.setFeatures(caliService.list());
+		leaflet.setMap(cali);
 		
 		Response<LeafletEntity<CaliEntity>> result = new Response<LeafletEntity<CaliEntity>>();
 		result.setMessage("Success");
