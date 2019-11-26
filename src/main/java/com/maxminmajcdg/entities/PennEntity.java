@@ -1,11 +1,7 @@
 package com.maxminmajcdg.entities;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,12 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.geotools.geojson.geom.GeometryJSON;
 import org.hibernate.annotations.Type;
-import org.javatuples.Pair;
 import org.locationtech.jts.geom.Geometry;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.maxminmajcdg.GeoJSONParser;
 
 @Entity
 @Table(name="pa_precincts_geom")
@@ -109,17 +104,8 @@ public class PennEntity {
 		return properties;
 	}
 	
-	public String  getGeometry() {
-		GeometryJSON geoJSON = new GeometryJSON();
-		OutputStream result = new ByteArrayOutputStream();
-		try {
-			geoJSON.write(shapeFile, result);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "";
-		}
-		
-		return result.toString();
+	public GeometryEntity getGeometry() {
+		return GeoJSONParser.getGeometryEntity(shapeFile);
 	}
 	
 	@Override
