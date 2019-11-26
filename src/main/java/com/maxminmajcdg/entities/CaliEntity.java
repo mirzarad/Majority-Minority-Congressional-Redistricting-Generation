@@ -16,8 +16,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.maxminmajcdg.GeoJSONParser;
 
 @Entity
-@Table(name="ca_precincts_geom")
+@Table(name="cali_geometry")
 public class CaliEntity {
+	
 	@Id
 	@GeneratedValue
 	@Column(name="id")
@@ -27,29 +28,21 @@ public class CaliEntity {
 	@JsonIgnore
 	private int fid;
 	
-	@Column(name="objectid_1")
+	@Column(name="prec_key")
 	@JsonIgnore
-	private int objectId;
+	private String precinctKey;
 	
-	@Column(name="namelsad")
+	@Column(name="precinct")
 	@JsonIgnore
-	private String nameLSad;
+	private String precinct;
 	
-	@Column(name="correctstf")
+	@Column(name="election")
 	@JsonIgnore
-	private String correctSTF;
+	private String election;
 	
-	@Column(name="countyname")
+	@Column(name="area")
 	@JsonIgnore
-	private String countyName;
-	
-	@Column(name="mcd_name")
-	@JsonIgnore
-	private String mcdName;
-	
-	@Column(name="vtd_name")
-	@JsonIgnore
-	private String vtdName;
+	private double area;
 	
 	@Column(name="shape")
 	@Type(type="org.locationtech.jts.geom.Geometry")
@@ -64,30 +57,18 @@ public class CaliEntity {
 		return fid;
 	}
 	
-	public int getObjectId() {
-		return objectId;
+	public String getPrecinctKey() {
+		return precinctKey;
 	}
 	
-	public String getNameLSad() {
-		return nameLSad;
+	public String getPrecinct() {
+		return precinct;
 	}
 	
-	public String getCorrectSTF() {
-		return correctSTF;
+	public String getElection() {
+		return election;
 	}
-	
-	public String getCountyName() {
-		return countyName;
-	}
-	
-	public String getMcdName() {
-		return mcdName;
-	}
-	
-	public String getVtdName() {
-		return vtdName;
-	}
-	
+
 	public Geometry getShapeFile() {
 		return shapeFile;
 	}
@@ -96,10 +77,15 @@ public class CaliEntity {
 		return "Feature";
 	}
 	
+	public double getArea() {
+		return area;
+	}
+	
 	public Map<String, String> getProperties() {
 		Map<String, String> properties = new HashMap<String, String>();
-		properties.put("Name", mcdName);
-		properties.put("County Name", countyName);
+		properties.put("Name", precinct);
+		properties.put("Precinct Key", precinctKey);
+		properties.put("Election", election);
 		return properties;
 	}
 	
@@ -111,12 +97,10 @@ public class CaliEntity {
 	public String toString() {
 		return "StateEntity [id=" + id +
 				", fid=" + fid + 
-				", objectId=" + objectId + 
-				", namelsad=" + nameLSad + 
-				", correctstf=" + correctSTF +
-				", countyname=" + countyName +
-				", mcdName=" + mcdName +
-				", vtdName=" + vtdName +
+				", precinct=" + precinct + 
+				", precinct key=" + precinctKey + 
+				", area=" + area +
+				", election=" + election +
 				", shape=" + shapeFile;
  	}
 }
