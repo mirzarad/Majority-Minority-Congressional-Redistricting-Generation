@@ -1,6 +1,8 @@
-package com.maxminmajcdg.entities;
+package com.maxminmajcdg.dto;
 
-public class LeafletEntity<T> {
+import com.maxminmajcdg.entities.MapEntity;
+
+public class LeafletResponse<T> {
 	
 	private float[] view;
 	private int level;

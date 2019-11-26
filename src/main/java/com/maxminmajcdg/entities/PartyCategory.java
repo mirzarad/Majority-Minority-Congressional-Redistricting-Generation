@@ -4,7 +4,8 @@ public enum PartyCategory {
 	 DEMOCRATIC("DEMOCRATIC"), 
 	 REPUBLICAN("REPUBLICAN"), 
 	 GREEN("GREEN"), 
-	 INDEPENDENT("INDEPENDENT");
+	 INDEPENDENT("INDEPENDENT"),
+	 OTHER("OTHER");
 	 
 	 private String val;
 	

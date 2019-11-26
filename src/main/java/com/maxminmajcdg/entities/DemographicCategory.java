@@ -22,4 +22,9 @@ public enum DemographicCategory {
 		}
 		throw new IllegalArgumentException("Unkown enum type " + val);
 	}
+	
+	@Override
+	public String toString() {
+		return val;
+	}
 }

@@ -1,65 +1,28 @@
 package com.maxminmajcdg.dto;
 
-import java.util.Map;
+import java.util.Optional;
 
-import com.maxminmajcdg.entities.PartyCategory;
+import com.maxminmajcdg.entities.DemographicsEntity;
+import com.maxminmajcdg.entities.VotesEntity;
 
-public class StateDataResponse {
-	private long stateID;
-	private Map<PartyCategory, Integer> votes;
-	private String majorityParty;
-	private float representativePercentage;
-	private float polsbyPopperRatio;
-	private float schwartzbergRatio;
-	private float convexHullRatio;
-	private float reockRatio;
+public class StateDataResponse<P extends VotesEntity, Q extends DemographicsEntity> {
+
+	private Optional<P> votes;
+	private Optional<Q> demographics;
+	//private Optional<MeausrmentsEntity> measurements;
 	
-	public Map<PartyCategory, Integer> getVotes() {
+	public Optional<P> getVotes() {
 		return votes;
 	}
-	public void setVotes(Map<PartyCategory, Integer> votes) {
+	public void setVotes(Optional<P> votes) {
 		this.votes = votes;
 	}
-	public String getMajorityParty() {
-		return majorityParty;
+	
+	public Optional<Q> getDemographics() {
+		return demographics;
 	}
-	public void setMajorityParty(String majorityParty) {
-		this.majorityParty = majorityParty;
+	public void setDemographics(Optional<Q> demographics) {
+		this.demographics = demographics;
 	}
-	public float getRepresentativePercentage() {
-		return representativePercentage;
-	}
-	public void setRepresentativePercentage(float representativePercentage) {
-		this.representativePercentage = representativePercentage;
-	}
-	public float getPolsbyPopperRatio() {
-		return polsbyPopperRatio;
-	}
-	public void setPolsbyPopperRatio(float polsbyPopperRatio) {
-		this.polsbyPopperRatio = polsbyPopperRatio;
-	}
-	public float getSchwartzbergRatio() {
-		return schwartzbergRatio;
-	}
-	public void setSchwartzbergRatio(float schwartzbergRatio) {
-		this.schwartzbergRatio = schwartzbergRatio;
-	}
-	public float getConvexHullRatio() {
-		return convexHullRatio;
-	}
-	public void setConvexHullRatio(float convexHullRatio) {
-		this.convexHullRatio = convexHullRatio;
-	}
-	public float getReockRatio() {
-		return reockRatio;
-	}
-	public void setReockRatio(float reockRatio) {
-		this.reockRatio = reockRatio;
-	}
-	public long getStateID() {
-		return stateID;
-	}
-	public void setStateID(long stateID) {
-		this.stateID = stateID;
-	}
+	
 }

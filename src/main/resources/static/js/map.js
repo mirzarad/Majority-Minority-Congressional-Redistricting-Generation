@@ -1,5 +1,6 @@
 $( function() {
 	var mode = "stateHover";
+	var currentState = "full";
 	var isInit = true;
 	
 	var map = L.map('map');
@@ -125,13 +126,12 @@ $( function() {
 		
 		layer.on("mouseover", function(e) {
 			$.ajax({
-				type: "POST",
+				type: "GET",
 				contentType: "application/json",
-				url: "map/" + mode + "/" + feature.id,
+				url: "map/" + mode + "/" + currentState + "/" + feature.id,
 				dataType: 'json',
 				timeout: 600000,
 				success: function(results) {
-
 				},
 				error: function(e) {
 					alert("Failed To Retrieve State Data." + feature.id);
@@ -169,6 +169,8 @@ $( function() {
 			dataType: 'json',
 			timeout: 600000,
 			success: function(results) {
+				currentState = state;
+				
 				if (showInputs) {
 					$("#phase-inputs").show();
 				}

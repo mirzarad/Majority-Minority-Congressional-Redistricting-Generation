@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.maxminmajcdg.dto.LeafletResponse;
 import com.maxminmajcdg.dto.Response;
 import com.maxminmajcdg.entities.CaliEntity;
-import com.maxminmajcdg.entities.LeafletEntity;
 import com.maxminmajcdg.entities.MapEntity;
 import com.maxminmajcdg.entities.PennEntity;
 import com.maxminmajcdg.entities.USAEntity;
@@ -41,17 +41,17 @@ public class StateSelectMenuController{
 	
 	@RequestMapping(value="/california", method = RequestMethod.GET)
 	@ResponseBody
-	public Response<LeafletEntity<CaliEntity>> selectNewYork() {
+	public Response<LeafletResponse<CaliEntity>> selectNewYork() {
 		System.err.println("GOT California");
-		LeafletEntity<CaliEntity> leaflet = new LeafletEntity<CaliEntity>();
+		LeafletResponse<CaliEntity> leaflet = new LeafletResponse<CaliEntity>();
 		leaflet.setView(CALI_VIEW);
 		leaflet.setLevel(CALI_LEVEL);
 		
 		MapEntity<CaliEntity> cali = new MapEntity<CaliEntity>();
-		cali.setFeatures(caliService.list());
+		cali.setFeatures(caliService.getAllPrecincts());
 		leaflet.setMap(cali);
 		
-		Response<LeafletEntity<CaliEntity>> result = new Response<LeafletEntity<CaliEntity>>();
+		Response<LeafletResponse<CaliEntity>> result = new Response<LeafletResponse<CaliEntity>>();
 		result.setMessage("Success");
 		result.setResponse(leaflet);
 		return result;
@@ -59,17 +59,17 @@ public class StateSelectMenuController{
 	
 	@GetMapping(value="/penn")
 	@ResponseBody
-	public Response<LeafletEntity<PennEntity>> selectPennsylvania() {
+	public Response<LeafletResponse<PennEntity>> selectPennsylvania() {
 		System.err.println("GOT PENNSYLVANIA");
-		LeafletEntity<PennEntity> leaflet = new LeafletEntity<PennEntity>();
+		LeafletResponse<PennEntity> leaflet = new LeafletResponse<PennEntity>();
 		leaflet.setView(PENN_VIEW);
 		leaflet.setLevel(PENN_LEVEL);
 		
 		MapEntity<PennEntity> penn = new MapEntity<PennEntity>();
-		penn.setFeatures(pennService.list());
+		penn.setFeatures(pennService.getAllPrecincts());
 		leaflet.setMap(penn);
 		
-		Response<LeafletEntity<PennEntity>> result = new Response<LeafletEntity<PennEntity>>();
+		Response<LeafletResponse<PennEntity>> result = new Response<LeafletResponse<PennEntity>>();
 		result.setMessage("Success");
 		result.setResponse(leaflet);
 		return result;
@@ -77,9 +77,9 @@ public class StateSelectMenuController{
 	
 	@RequestMapping(value="/full", method = RequestMethod.GET)
 	@ResponseBody
-	public Response<LeafletEntity<USAEntity>> selectFull() {
+	public Response<LeafletResponse<USAEntity>> selectFull() {
 		System.err.println("GOT FULL MAP REQUEST");
-		LeafletEntity<USAEntity> leaflet = new LeafletEntity<USAEntity>();
+		LeafletResponse<USAEntity> leaflet = new LeafletResponse<USAEntity>();
 		leaflet.setView(USA_VIEW);
 		leaflet.setLevel(USA_LEVEL);
 		
@@ -87,7 +87,7 @@ public class StateSelectMenuController{
 		usa.setFeatures(usaService.list());
 		leaflet.setMap(usa);
 		
-		Response<LeafletEntity<USAEntity>> result = new Response<LeafletEntity<USAEntity>>();
+		Response<LeafletResponse<USAEntity>> result = new Response<LeafletResponse<USAEntity>>();
 		result.setMessage("Success");
 		result.setResponse(leaflet);
 		return result;
