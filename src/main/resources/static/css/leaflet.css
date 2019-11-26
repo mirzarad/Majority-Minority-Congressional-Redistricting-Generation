@@ -1,0 +1,94 @@
+p{ margin:0 }
+
+html, body {
+            background-color: white;
+		  	height: 100%;
+		}
+		.bg {
+		  /* The image used */
+		  /*background-image: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img(20).jpg");*/
+		
+		  /* Full height */
+		  height: 100%;
+		
+		  /* Center and scale the image nicely */
+		  background-position: center;
+		  background-repeat: no-repeat;
+		  background-size: cover;
+		}
+
+		#map {
+           
+			width: 1000px;
+			height: 600px;
+		}
+
+        /* Style the header */
+      .header {
+              background-color: white;
+              padding: 30px;
+              text-align: center;
+              font-size: 35px;}
+
+      /* Left and right column */
+      .column.side {
+      -webkit-flex: 1;
+      -ms-flex: 1;
+       flex: 1;
+}
+ /* Middle column */
+.column.middle {
+  -webkit-flex: 2;
+  -ms-flex: 2;
+  flex: 2;
+}
+
+/* Style for navbar */
+.primary-color, ul.stepper li.active a .circle, ul.stepper li.completed a .circle {
+    background-color: #dc3545!important;
+    box-shadow: 0 0 black;
+}
+
+/* Style for leaflet map */
+column middle {
+	background-color:lightgray;
+}
+
+
+/* Style of slider */
+.range-field input[type=range] {
+    cursor: pointer;
+    position: relative;
+    background-color: transparent;
+    border: none;
+    outline: 0;
+    width: 100%;
+    margin: 15px 0;
+    padding: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 1px solid #fff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

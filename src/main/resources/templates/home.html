@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Maximum Majority Minority Congressional District Generation</title>	    
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	
+	<!--  favicon -->
+	<link href="[YOUR_FAVICON_PATH]/favicon.ico" rel="icon" type="image/x-icon" />
+	
+   <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+   
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+   
+   <!-- Import jQuery -->
+   <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+   
+   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="anonymous"/>
+   
+	<!--  Import Leaflet -->
+	<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin="anonymous"></script>
+   
+	<link rel="stylesheet" href="/css/leaflet.css"/>	
+
+</head>
+<body>
+
+    <div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="page-header">
+						<br/>
+						<h2>
+							<strong>Maximum Majority-Minority Congressional Redistricting Generation</strong>
+						</h2>
+						<br/>
+					</div>
+					<h3 class="text-muted">
+						Background
+					</h3>
+					<br/>
+					<p>
+						A Gerrymander is a voting district that is designed to serve some political purpose. The name refers to both a salamander and Eldridge Gerry, whose newly created voting district about 200 years ago was said to resemble a salamander. Within the past 10 years, databases for voter characterization as well as tools for precise map generation have made it possible to create congressional districts that favor the party responsible for the creation of the districts. Redistricting is done in states where census data requires a change in the number of delegates in the state, and the 2010 census triggered redistricting in a number of states. Many of these redistricting efforts resulted in a shift in the political representation in the states. As the realization of the impact of these changes has grown, various technical approaches to the issue have been proposed, some as quantitative measures of the presence of Gerrymandering, others as legal challenges to redistricting, and yet others as draft bills in Congress to minimize the effect of future redistricting. Many of the redistricting changes following the 2010 census used provisions of the Voting Rights Act (VRA) in way not intended by the people responsible for the VRA. For example, the VRA provided for majority-minority districts, which were intended as a means to ensure representation of minority groups in Congress. However, the VRA was used to "pack" districts, which promoted Gerrymandered districts, and also fewer majority-minority district than might otherwise have been possible.
+					</p>
+				</div>
+					<br/>
+			</div>
+			
+			
+		   <div class="row">
+						<div class="col-md-12"></div>
+		   </div>
+	
+			<h3>
+				Map View Selection:
+			</h3>
+			<div class="btn-group btn-group-lg" role="group">
+				 
+				<button id="full" class="btn btn-secondary" type="button">
+					Full Map
+				</button> 
+				<button id="california" class="btn btn-secondary" type="button">
+					California
+				</button> 
+				<button id="penn" class="btn btn-secondary" type="button">
+					Pennsylvania
+				</button> 
+			</div>
+			<div class="row">
+				<div class="col-md-8">
+<!----------------------------------------------  LEAFLET ------------------------------------------------->
+	<!-- container -->
+	<div class="container">
+	
+		 <div class="header">
+		     <h2><b>Congressional District Compactness, Gerrymandering By State</b></h2>
+		 </div>
+		 
+		 <div class="row">
+			<div id="leaflet-map">
+				<!-- <iframe th:src="@{leaflet}" width=800px height=600px scrolling="no"></iframe> -->	
+			</div>
+			<script type="text/javascript">
+				$(function() {
+					$("#leaflet-map").load("leaflet", function() {
+						$(this).trigger("pagecreate");
+					});
+				});
+			</script>
+		</div>
+	</div>
+<!-----------------------------	/LEAFLET  ---------------------------------------->
+				</div>
+				<div class="col-md-2">
+					<h3>State Data</h3>
+					<p>Republican Votes: </p>
+					<p>Democrat Votes: </p>
+					<p>Independent Votes: </p>
+					<p>Other Votes: </p>
+					<p>Percentage of Representatives: </p>
+					<p>Majority Party: </p>
+<!--
+					<h3>District Data</h3>
+					<p>Population: </p>
+					<p>White: </p>
+					<p>Black: </p>
+					<p>Hispanic: </p>
+					<p>Native American: </p>
+					<p>Asian: </p>
+					<p>Native Hawaiian: </p>
+					<p>Native Alaskan: </p>
+					
+					<h3>Precinct Data</h3>
+					<h5>Demographic Data</h5>
+					<p>Population: </p>
+					<p>White: </p>
+					<p>Black: </p>
+					<p>Hispanic: </p>
+					<p>Native American: </p>
+					<p>Asian: </p>
+					<p>Native Hawaiian: </p>
+					<p>Native Alaskan: </p>
+					<h5>Voting Data</h5>
+					<p>Republican Votes: </p>
+					<p>Democrat Votes: </p>
+					<p>Independent Votes: </p>
+					<p>Other Votes: </p>
+					<p>Id: </p>
+					<p>District </p>
+					<p>County: </p>
+  -->
+					
+			</div>
+				<div class="col-md-2">
+					<h2>
+						Data Analysis<br>
+					</h2>
+				</div>
+			</div>
+			
+
+    <div id="phase-inputs" class="container-fluid">
+    <h3 class="text-center">
+		System Controls
+	</h3> 
+	<div class="row">
+		<div class="col-md-12">
+			<div class="tabbable" id="tabs-99982">
+				<ul class="nav nav-tabs">
+					<li class="nav-item">
+						<a class="nav-link active show" href="#tab1" data-toggle="tab" id="phase0-tab">Demographic Bloc Analysis</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#tab2" data-toggle="tab" id="phase1-tab">Graph Partitioning</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#tab3" data-toggle="tab" id="phase2-tab">Simmulated Annealing</a>
+					</li>
+				</ul>
+	<!-- Phase 0 -->
+				<div class="tab-content">
+					<div class="tab-pane active" id="phase0-content">
+						<div class="row">
+							<div class="col-md-8">
+							<p><span class="badge badge-primary">Demographic Bloc Percentage</span></p>
+									<div class="d-flex justify-content-center my-4">
+									  <span class="font-weight-bold indigo-text mr-2 mt-1">0</span>
+									  <form class="range-field w-25">
+									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase0-demographic-bloc-measure"/>
+									  </form>
+									  <span class="font-weight-bold indigo-text ml-2 mt-1">100</span>
+							</div>
+							
+							<p><span class="badge badge-primary">Vote Bloc Population </span></p>
+									<div class="d-flex justify-content-center my-4">
+									  <span class="font-weight-bold indigo-text mr-2 mt-1">0</span>
+									  <form class="range-field w-25">
+									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase0-vote-bloc-measure"/>
+									  </form>
+									  <span class="font-weight-bold indigo-text ml-2 mt-1">100</span>
+							</div>
+				
+							</div>
+							<div class="col-md-4">
+								<input type="hidden" value="0" id="phase0-is-running"/>
+								<br/>
+								<button type="button" class="btn btn-success btn-block" id="phase0-run">
+									Run
+								</button> 
+								<button type="button" class="btn btn-block active disabled btn-danger" id="phase0-stop">
+									Stop
+								</button>
+							</div>
+						</div>
+					</div>
+	<!-- /Phase 0 -->
+	
+	<!-- Phase 1 -->
+					<div class="tab-pane" id="phase1-content">
+						<div class="row">
+							<div class="col-md-5">
+							<p><span class="badge badge-primary">Demographic Bloc Percentage</span></p>
+									<div class="d-flex justify-content-center my-4">
+									  <span class="font-weight-bold indigo-text mr-2 mt-1">0</span>
+									  <form class="range-field w-25">
+									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase1-demographic-bloc-measure"/>
+									  </form>
+									  <span class="font-weight-bold indigo-text ml-2 mt-1">100</span>
+									</div>
+							
+							<p><span class="badge badge-primary">Vote Bloc Percentage</span></p>
+									<div class="d-flex justify-content-center my-4">
+									  <span class="font-weight-bold indigo-text mr-2 mt-1">0</span>
+									  <form class="range-field w-25">
+									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase1-vote-bloc-measure"/>
+									  </form>
+									  <span class="font-weight-bold indigo-text ml-2 mt-1">100</span>
+									</div>
+							</div>
+							<div class="col-md-3">
+							<p><span class="badge badge-primary">Demographic Grouping</span></p>
+								 <div class="checkbox">
+								  <label><input type="checkbox" value="0" id="phase1-asian">Asian</label>
+								</div>
+								<div class="checkbox">
+								  <label><input type="checkbox" value="0" id="phase1-african">African American</label>
+								</div>
+								<div class="checkbox">
+								  <label><input type="checkbox" value="0" id="phase1-hispanic">Hispanic</label>
+								</div>
+								<div class="checkbox">
+								  <label><input type="checkbox" value="0" id="phase1-white">White</label>
+								</div> 
+								<div class="checkbox">
+								  <label><input type="checkbox" value="0" id="phase1-native">Native American</label>
+								</div> 
+								<div class="checkbox">
+								  <label><input type="checkbox" value="0" id="phase1-hawiian">Native Hawiian</label>
+								</div> 
+							</div>
+							<div class="col-md-4">
+									<input type="hidden" value="0" id="phase1-is-running"/>
+									<br/>
+									<button type="button" class="btn btn-success btn-block" id="phase1-run">
+										Run
+									</button> 
+									<button type="button" class="btn btn-block active disabled btn-danger" id="phase1-stop">
+										Stop
+									</button>
+							</div>
+						</div>
+					</div>
+	<!-- /Phase 1 -->
+	
+	<!-- Phase 2 -->
+					<div class="tab-pane" id="phase2-content">
+						<div class="row">
+								<div class="col-md-3">
+									<h3>
+										Political Fairness Measures
+									</h3>
+									<p><span class="badge badge-primary">Efficiency Gap</span></p>
+									<div class="d-flex justify-content-center my-4">
+									  <span class="font-weight-bold indigo-text mr-2 mt-1">0</span>
+									  <form class="range-field w-25">
+									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase2-efficiency-gap-measure"/>
+									  </form>
+									  <span class="font-weight-bold indigo-text ml-2 mt-1">100</span>
+									</div>
+									<p><span class="badge badge-primary">Lopsided Margins</span></p>
+									<div class="d-flex justify-content-center my-4">
+									  <span class="font-weight-bold indigo-text mr-2 mt-1">0</span>
+									  <form class="range-field w-25">
+									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase2-lopsided-margins-measure"/>
+									  </form>
+									  <span class="font-weight-bold indigo-text ml-2 mt-1">100</span>
+									</div>
+									<p><span class="badge badge-primary">Mean Median Difference</span></p>
+									<div class="d-flex justify-content-center my-4">
+									  <span class="font-weight-bold indigo-text mr-2 mt-1">0</span>
+									  <form class="range-field w-25">
+									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase2-mean-median-difference-measure"/>
+									  </form>
+									  <span class="font-weight-bold indigo-text ml-2 mt-1">100</span>
+									</div>		
+								</div>
+																
+								<div class="col-md-3">
+									<h3>
+										Compactness Measures
+									</h3>
+									<p><span class="badge badge-primary">Graph Compactness</span></p>
+									<div class="d-flex justify-content-center my-4">
+									  <span class="font-weight-bold indigo-text mr-2 mt-1">0</span>
+									  <form class="range-field w-25">
+									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase2-compactness-measure"/>
+									  </form>
+									  <span class="font-weight-bold indigo-text ml-2 mt-1">100</span>
+									</div>
+									<p><span class="badge badge-primary">Polsby-Popper</span></p>
+									<div class="d-flex justify-content-center my-4">
+									  <span class="font-weight-bold indigo-text mr-2 mt-1">0</span>
+									  <form class="range-field w-25">
+									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase2-polsby-popper-measure"/>
+									  </form>
+									  <span class="font-weight-bold indigo-text ml-2 mt-1">100</span>
+									</div>
+									<p><span class="badge badge-primary">Schwartzberg</span></p>
+									<div class="d-flex justify-content-center my-4">
+									  <span class="font-weight-bold indigo-text mr-2 mt-1">0</span>
+									  <form class="range-field w-25">
+									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase2-schwartzberg-measure"/>
+									  </form>
+									  <span class="font-weight-bold indigo-text ml-2 mt-1">100</span>
+									</div>		
+								</div>
+								
+								<div class="col-md-3">
+									<h3>Population Equality Measure</h3>
+									<p><span class="badge badge-primary">Population Percent Difference Measure</span></p>
+									<div class="d-flex justify-content-center my-4">
+									  <span class="font-weight-bold indigo-text mr-2 mt-1">0</span>
+									  <form class="range-field w-25">
+									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase2-pop-measure"/>
+									  </form>
+									  <span class="font-weight-bold indigo-text ml-2 mt-1">100</span>
+									</div>	
+								</div>
+								
+								<div class="col-md-3">
+									<input type="hidden" value="0" id="phase2-is-running"/>
+									<br/>
+									<button type="button" class="btn btn-success btn-block" id="phase2-run">
+										Run
+									</button> 
+									<button type="button" class="btn btn-block active disabled btn-danger" id="phase2-stop">
+										Stop
+									</button>
+									<br/>
+								</div>
+							</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+	
+</div>
+<p id="error"></p>
+ <!-- Optional JavaScript -->
+ <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="/js/phasecontrollers.js"></script>
+  </body>
+</html>
