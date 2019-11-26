@@ -233,25 +233,27 @@ $( function() {
 				else {
 					$("#phase-inputs").hide();
 				}
-				if (state =="penn" or state == "callifornia") {
+				if (state =="penn" || state == "callifornia") {
 					mode = "selectPrecinct";
 				}
 				else {
 					mode = "selectState";
 				}
+				//REMOVE THIS ONCE FULL MAP WORKS
+				if (state =="penn" || state == "callifornia") {	
+					mode = "precinctHover";
+					var response = results["response"];
+					var view = response["view"];
+					var level = response["level"];
+					var statesData = response["map"];
 				
-				mode = "precinctHover";
-				var response = results["response"];
-				var view = response["view"];
-				var level = response["level"];
-				var statesData = response["map"];
-			
-				alert(JSON.stringify(statesData));
-				map.removeLayer(geojson);
-				geojson = L.geoJson(statesData, {
-					style: style,
-					onEachFeature: onEachFeature
-				}).addTo(map);
+					alert(JSON.stringify(statesData));
+					map.removeLayer(geojson);
+					geojson = L.geoJson(statesData, {
+						style: style,
+						onEachFeature: onEachFeature
+					}).addTo(map);
+				}
 			},
 			error: function(e) {
 				alert("Failed To Load Requested Map");
