@@ -26,5 +26,16 @@ public class MapController{
 		result.setResponse(new StateDataResponse());
 		return ResponseEntity.ok(result);
 	}
+	
+	@RequestMapping(value="/precinctHover/{id}", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<Response<StateDataResponse>> onHoverPrecinct(@RequestBody Map<String, Integer> precinct) {
+		System.err.println("State ID: " + precinct.get("id"));
+		
+		Response<StateDataResponse> result = new Response<StateDataResponse>();
+		result.setMessage("Success");
+		result.setResponse(new StateDataResponse());
+		return ResponseEntity.ok(result);
+	}
 
 }
