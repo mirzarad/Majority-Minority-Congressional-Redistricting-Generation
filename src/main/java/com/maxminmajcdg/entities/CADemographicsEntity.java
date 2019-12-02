@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-//@Table(name="ca_demographics_2016")
+@Table(name="ca_demographics_2016")
 public class CADemographicsEntity extends DemographicsEntity{
 	@Id
 	@GeneratedValue

@@ -67,7 +67,7 @@ $( function() {
 	
 	legend.addTo(map);
 
-    stateAjax("full", false);
+    usaAjax();
 
 	//get color depending on population density value
 	function getColor(d) {
@@ -87,7 +87,7 @@ $( function() {
 			color: 'black',
 			dashArray: '1',
 			fillOpacity: 0.7,
-			fillColor: getColor(feature.properties.score)
+			//fillColor: getColor(feature.properties.score)
 		};
 	}
 	
@@ -141,27 +141,54 @@ $( function() {
 		
 		layer.on("click", function(e) {
 			if (feature.id == "42" || feature.id == "06") {
-				stateAjax(clickStates[feature.id], true);
+				districtAjax(feature.id);
 			}
 		});
 	}
 	
 	$("#california").on("click",function(e) {
 		e.preventDefault();
-		stateAjax("california", true);
+		districtAjax("6");
 	});
    
 	$("#penn").on("click",function(e) {
 		e.preventDefault();
-		stateAjax("penn", true);
+		districtAjax("42");
 	});
    
 	$("#full").on("click",function(e) {
 		e.preventDefault();
-		stateAjax("full", false);
+		usaAjax();
 	});
 	
-	function stateAjax(state, showInputs) {
+	function usaAjax() {
+		$.ajax({
+			type: "GET",
+			contentType: "application/json",
+			url: "selectState/full",
+			dataType: 'json',
+			timeout: 600000,
+			success: function(results) {
+				currentState = "full";
+				$("#phase-inputs").hide();
+	
+				mode = "stateHover";
+
+				var response = results["response"];
+				var view = response["view"];
+				var level = response["level"];
+				var statesData = response["map"];
+	
+				map.setView(view, level)
+				reloadMap(statesData);
+			},
+			error: function(e) {
+				alert("Failed To Load Requested Map");
+			}
+		});
+	}
+	
+	function precinctAjax(state) {
 		$.ajax({
 			type: "GET",
 			contentType: "application/json",
@@ -170,38 +197,12 @@ $( function() {
 			timeout: 600000,
 			success: function(results) {
 				currentState = state;
-				
-				if (showInputs) {
-					$("#phase-inputs").show();
-				}
-				else {
-					$("#phase-inputs").hide();
-				}
-				if (state =="penn" || state == "california") {
-					mode = "precinctHover";
-				}
-				else {
-					mode = "stateHover";
-				}
+				mode = "precinctHover";
 
 				var response = results["response"];
-				var view = response["view"];
-				var level = response["level"];
 				var statesData = response["map"];
 			
-				map.setView(view, level)
-				
-				//alert(JSON.stringify(statesData));
-				if (isInit) {
-					map.removeLayer(geojson);
-				}
-				else {
-					isInit = false;
-				}
-				geojson = L.geoJson(statesData, {
-					style: style,
-					onEachFeature: onEachFeature
-				}).addTo(map);
+				reloadMap(statesData);
 				
 			},
 			error: function(e) {
@@ -210,5 +211,45 @@ $( function() {
 		});
 	}
 	
+	function districtAjax(state) {
+		$.ajax({
+			type: "GET",
+			contentType: "application/json",
+			url: "selectState/districts/" + state,
+			dataType: 'json',
+			timeout: 600000,
+			success: function(results) {
+				currentState = clickStates[state];
+				
+				$("#phase-inputs").show();
+				mode = "districtHover";
+
+				var response = results["response"];
+				var view = response["view"];
+				var level = response["level"];
+				var statesData = response["map"];
+			
+				map.setView(view, level)
+				reloadMap(statesData);
+				
+			},
+			error: function(e) {
+				alert("Failed To Load Requested Map");
+			}
+		});
+	}
+	
+	function reloadMap(statesData) {
+		if (isInit) {
+			map.removeLayer(geojson);
+		}
+		else {
+			isInit = false;
+		}
+		geojson = L.geoJson(statesData, {
+			style: style,
+			onEachFeature: onEachFeature
+		}).addTo(map);
+	}
 });
 

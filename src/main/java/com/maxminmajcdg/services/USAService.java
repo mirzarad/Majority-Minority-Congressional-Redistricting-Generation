@@ -19,8 +19,8 @@ public class USAService {
 		return usaRepository.findAll();
 	}
 	
-	public Map<String, String> getState(Long id) {
-		USAEntity usa = usaRepository.getOne(id);
-		return usa.getProperties();
+	public Map<String, String> getState(String id) {
+		USAEntity usa = usaRepository.findByStateId(id);
+		return (usa == null)? null : usa.getProperties();
 	}
 }

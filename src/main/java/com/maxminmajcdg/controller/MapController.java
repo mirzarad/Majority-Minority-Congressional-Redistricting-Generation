@@ -38,12 +38,12 @@ public class MapController{
 	
 	@RequestMapping(value="/stateHover/full/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<Response<Map<?, ?>>> onHoverState(@PathVariable(value="id") int stateId) {
+	public ResponseEntity<Response<Map<?, ?>>> onHoverState(@PathVariable(value="id") String stateId) {
 		System.err.println("State ID: " + stateId);
 		
 		Response<Map<?, ?>> result = new Response<Map<?, ?>>();
 		result.setMessage("Success");
-		result.setResponse(usaService.getState(new Long(stateId)));
+		result.setResponse(usaService.getState(stateId));
 		return ResponseEntity.ok(result);
 	}
 	
@@ -63,6 +63,29 @@ public class MapController{
 			StateDataResponse<CAVotesEntity, CADemographicsEntity> data = new StateDataResponse<CAVotesEntity, CADemographicsEntity>();
 			data.setVotes(caliService.getPrecinctVoteData(new Long(precinctId)));
 			data.setDemographics(caliService.getPrecinctDemographicData(new Long(precinctId)));
+			result.setResponse(data);
+		}
+		
+		result.setMessage("Success");
+		return result;
+	}
+	
+	@RequestMapping(value="/districtHover/{state}/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public Response<StateDataResponse<?, ?>> onHoverDistrict(@PathVariable(value="id") int districtId, @PathVariable(value="state") String state) {
+		System.err.println("Precinct ID: " + districtId);
+		
+		Response<StateDataResponse<?, ?>> result = new Response<StateDataResponse<?, ?>>(); 
+		if (state.equals("penn")) {
+			StateDataResponse<PAVotesEntity, PADemographicsEntity> data = new StateDataResponse<PAVotesEntity, PADemographicsEntity>();
+			data.setVotes(pennService.getPrecinctVoteData(new Long(districtId)));
+			data.setDemographics(pennService.getPrecinctDemographicData(new Long(districtId)));
+			result.setResponse(data);
+		} 
+		else if (state.equals("california")) {
+			StateDataResponse<CAVotesEntity, CADemographicsEntity> data = new StateDataResponse<CAVotesEntity, CADemographicsEntity>();
+			data.setVotes(caliService.getPrecinctVoteData(new Long(districtId)));
+			data.setDemographics(caliService.getPrecinctDemographicData(new Long(districtId)));
 			result.setResponse(data);
 		}
 		
