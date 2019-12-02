@@ -11,6 +11,11 @@ public class ViewController {
 			return "home";
 		}
 		
+		@GetMapping("/about")
+		public String about() {
+			return "about";
+		}
+		
 		@GetMapping("/leaflet")
 		public String leaflet() {
 			return "leaflet";

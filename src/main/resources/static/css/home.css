@@ -1,0 +1,126 @@
+@charset "ISO-8859-1";
+
+/* Reduce space in between text for all p tags */
+p{
+	margin:0;
+	color: white;
+}
+
+body {
+ 	  height: 100%;
+ 	  background-color:#2A1B80;
+	  background-repeat: no-repeat;
+	  font-family: sans-serif;
+	  color: #0f222d;
+	  background-size: auto;	  	
+}
+
+#map-view-text{
+	color: white;
+	text-align: center;
+    margin-top: 8px;
+}
+
+#main-menu-text{
+	color: white;
+	text-align: center;
+}
+
+#sys-controls-text{
+     color: white;
+     margin-top: 8px;
+}
+
+#state-select-menu{
+  background-color: #3902cc;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  -webkit-transition: .5s ease;
+  transition: .5s ease;
+}
+
+#map-container{
+	display: flex;
+    flex-flow: column wrap;
+    flex: 1 1;
+    order: 2;
+}
+
+#main-menu-col{
+	background-color:#2A1B80;
+	margin-top: 8px;
+}
+
+#slider-text{
+	color:white;
+}
+
+#sys-controls-text{
+	color:white;	
+}
+
+#measures-text{
+	color:white;
+}
+
+/* Map View Styles */
+.blue-gradient {
+    background: linear-gradient(40deg, #45cafc,#303f9f) !important;
+}
+
+/* Button Styles */
+.btn.blue-gradient {
+    color: #fff;
+    -webkit-transition: .5s ease;
+    transition: .5s ease;
+}
+
+.btn-rounded {
+    border-radius: 10em;
+}
+
+.btn {
+    margin: .375rem;
+    color: inherit;
+    text-transform: uppercase;
+    word-wrap: break-word;
+    white-space: normal;
+    cursor: pointer;
+    border: 0;
+    border-radius: .125rem;
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    -webkit-transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,-webkit-box-shadow 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,-webkit-box-shadow 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out,-webkit-box-shadow 0.15s ease-in-out;
+    padding: .84rem 2.14rem;
+    font-size: .81rem;
+}
+
+#sys-controls-col{
+	background-image: radial-gradient(farthest-corner at 40px 40px, #255CB3 0%, #4F92FF 100%);
+}
+
+#mmmcdg-navbar{
+	background-image: radial-gradient(farthest-corner at 40px 40px, #255CB3 0%, #4F92FF 100%);
+}
+
+/* Style of slider */
+.range-field input[type=range] {
+    cursor: pointer;
+    position: relative;
+    background-color: transparent;
+    border: none;
+    outline: 0;
+    width: 100%;
+    margin: 15px 0;
+    padding: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 1px solid #fff;
+}

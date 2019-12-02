@@ -24,11 +24,11 @@ public class StateSelectMenuController{
 	private final float[] USA_VIEW = new float[]{37.8f, -96f};
 	private final int USA_LEVEL = 4;
 	
-	private final float[] CALI_VIEW = new float[]{37.8f, -96f};
-	private final int CALI_LEVEL = 4;
+	private final float[] CALI_VIEW = new float[]{36.77f, -119.41f};
+	private final int CALI_LEVEL = 7;
 	
-	private final float[] PENN_VIEW = new float[]{37.8f, -96f};
-	private final int PENN_LEVEL = 4;
+	private final float[] PENN_VIEW = new float[]{40.54f, -77.49f};
+	private final int PENN_LEVEL = 7;
 	
 	@Autowired 
 	PennService pennService;

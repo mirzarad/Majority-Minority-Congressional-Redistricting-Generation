@@ -84,7 +84,7 @@ $( function() {
 		return {
 			weight: 2,
 			opacity: 1,
-			color: 'white',
+			color: 'black',
 			dashArray: '1',
 			fillOpacity: 0.7,
 			fillColor: getColor(feature.properties.score)
