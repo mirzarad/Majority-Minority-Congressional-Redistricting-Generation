@@ -1,6 +1,7 @@
 package com.maxminmajcdg.services;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,5 +17,10 @@ public class USAService {
 	
 	public List<USAEntity> list() {
 		return usaRepository.findAll();
+	}
+	
+	public Map<String, String> getState(Long id) {
+		USAEntity usa = usaRepository.getOne(id);
+		return usa.getProperties();
 	}
 }

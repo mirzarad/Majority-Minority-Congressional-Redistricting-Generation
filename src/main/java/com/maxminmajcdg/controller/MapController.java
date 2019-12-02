@@ -1,5 +1,7 @@
 package com.maxminmajcdg.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,11 +18,15 @@ import com.maxminmajcdg.entities.PADemographicsEntity;
 import com.maxminmajcdg.entities.PAVotesEntity;
 import com.maxminmajcdg.services.CaliService;
 import com.maxminmajcdg.services.PennService;
+import com.maxminmajcdg.services.USAService;
 
 @Controller
 @RequestMapping("/map")
 public class MapController{
 
+	@Autowired
+	USAService usaService;
+	
 	@Autowired
 	PennService pennService;
 	
@@ -32,12 +38,12 @@ public class MapController{
 	
 	@RequestMapping(value="/stateHover/full/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<Response<StateDataResponse<?, ?>>> onHoverState(@PathVariable(value="id") int stateId) {
+	public ResponseEntity<Response<Map<?, ?>>> onHoverState(@PathVariable(value="id") int stateId) {
 		System.err.println("State ID: " + stateId);
 		
-		Response<StateDataResponse<?, ?>> result = new Response<StateDataResponse<?, ?>>();
+		Response<Map<?, ?>> result = new Response<Map<?, ?>>();
 		result.setMessage("Success");
-		//result.setResponse(new StateDataResponse());
+		result.setResponse(usaService.getState(new Long(stateId)));
 		return ResponseEntity.ok(result);
 	}
 	

@@ -1,6 +1,9 @@
 package com.maxminmajcdg.controller;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,7 +44,8 @@ public class StateSelectMenuController{
 	
 	@RequestMapping(value="/california", method = RequestMethod.GET)
 	@ResponseBody
-	public Response<LeafletResponse<CaliEntity>> selectNewYork() {
+	@Async(value="asyncExecutor")
+	public CompletableFuture<Response<LeafletResponse<CaliEntity>>> selectNewYork() throws InterruptedException{
 		System.err.println("GOT California");
 		LeafletResponse<CaliEntity> leaflet = new LeafletResponse<CaliEntity>();
 		leaflet.setView(CALI_VIEW);
@@ -54,12 +58,13 @@ public class StateSelectMenuController{
 		Response<LeafletResponse<CaliEntity>> result = new Response<LeafletResponse<CaliEntity>>();
 		result.setMessage("Success");
 		result.setResponse(leaflet);
-		return result;
+		return CompletableFuture.completedFuture(result);
 	}
 	
 	@GetMapping(value="/penn")
 	@ResponseBody
-	public Response<LeafletResponse<PennEntity>> selectPennsylvania() {
+	@Async(value="asyncExecutor")
+	public CompletableFuture<Response<LeafletResponse<PennEntity>>> selectPennsylvania() {
 		System.err.println("GOT PENNSYLVANIA");
 		LeafletResponse<PennEntity> leaflet = new LeafletResponse<PennEntity>();
 		leaflet.setView(PENN_VIEW);
@@ -72,7 +77,7 @@ public class StateSelectMenuController{
 		Response<LeafletResponse<PennEntity>> result = new Response<LeafletResponse<PennEntity>>();
 		result.setMessage("Success");
 		result.setResponse(leaflet);
-		return result;
+		return CompletableFuture.completedFuture(result);
 	}
 	
 	@RequestMapping(value="/full", method = RequestMethod.GET)
