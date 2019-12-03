@@ -36,7 +36,7 @@ public class MapController{
 	//@Autowired
 	//CAVotesService caVotes;
 	
-	@RequestMapping(value="/stateHover/full/{id}", method = RequestMethod.GET)
+	@RequestMapping(value="/stateHover/full/{id}/{election}", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<Response<Map<?, ?>>> onHoverState(@PathVariable(value="id") String stateId) {
 		System.err.println("State ID: " + stateId);
@@ -86,14 +86,14 @@ public class MapController{
 		
 		switch(state) {
 		case PENN:
-			data.setVotes(pennService.getPrecinctVoteData(electionEnum, new Long(districtId)));
-			data.setDemographics(pennService.getPrecinctDemographicData(electionEnum, new Long(districtId)));
-			result.setResponse(data);
+			//data.setVotes(pennService.getPrecinctVoteData(electionEnum, new Long(districtId)));
+			//data.setDemographics(pennService.getPrecinctDemographicData(electionEnum, new Long(districtId)));
+			//result.setResponse(data);
 			break;
 		case CA:
-			data.setVotes(caliService.getPrecinctVoteData(electionEnum, new Long(districtId)));
-			data.setDemographics(caliService.getPrecinctDemographicData(electionEnum, new Long(districtId)));
-			result.setResponse(data);
+			//data.setVotes(caliService.getPrecinctVoteData(electionEnum, new Long(districtId)));
+			//data.setDemographics(caliService.getPrecinctDemographicData(electionEnum, new Long(districtId)));
+			//result.setResponse(data);
 			break;
 		}
 		

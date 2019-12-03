@@ -31,10 +31,10 @@ public class StateSelectMenuController{
 	private final int USA_LEVEL = 4;
 	
 	private final float[] CALI_VIEW = new float[]{36.77f, -119.41f};
-	private final int CALI_LEVEL = 7;
+	private final int CALI_LEVEL = 5;
 	
 	private final float[] PENN_VIEW = new float[]{40.54f, -77.49f};
-	private final int PENN_LEVEL = 7;
+	private final int PENN_LEVEL = 5;
 	
 	private final String PENN_ID = "42";
 	private final String CALI_ID = "6";

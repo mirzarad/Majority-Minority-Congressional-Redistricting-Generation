@@ -2,6 +2,10 @@ $( function() {
 	var mode = "stateHover";
 	var currentState = "full";
 	var isInit = true;
+	var election = "PRESIDENTIAL2016";
+	
+	var districtResponse = null;
+	var precinctResponse = null;
 	
 	var map = L.map('map');
 	var clickStates = {};
@@ -128,7 +132,7 @@ $( function() {
 			$.ajax({
 				type: "GET",
 				contentType: "application/json",
-				url: "map/" + mode + "/" + currentState + "/" + feature.id,
+				url: "map/" + mode + "/" + currentState + "/" + feature.id + "/" + election,
 				dataType: 'json',
 				timeout: 600000,
 				success: function(results) {
@@ -141,24 +145,29 @@ $( function() {
 		
 		layer.on("click", function(e) {
 			if (feature.id == "42" || feature.id == "06") {
-				districtAjax(feature.id);
+				districtResponse = districtAjax(feature.id);
+				precinctResponse = precinctAjax(feature.id);
 			}
 		});
 	}
 	
 	$("#california").on("click",function(e) {
 		e.preventDefault();
-		districtAjax("6");
+		districtResponse = districtAjax("6");
+		precinctResponse = precinctAjax(6);
 	});
    
 	$("#penn").on("click",function(e) {
 		e.preventDefault();
-		districtAjax("42");
+		districtResponse = districtAjax("42");
+		precinctResponse = precinctAjax(42);
 	});
    
 	$("#full").on("click",function(e) {
 		e.preventDefault();
 		usaAjax();
+		districtResponse = null;
+		precinctResponse = null;
 	});
 	
 	function usaAjax() {
@@ -192,7 +201,7 @@ $( function() {
 		$.ajax({
 			type: "GET",
 			contentType: "application/json",
-			url: "selectState/" + state,
+			url: "selectState/" + clickStates[state],
 			dataType: 'json',
 			timeout: 600000,
 			success: function(results) {
@@ -202,8 +211,8 @@ $( function() {
 				var response = results["response"];
 				var statesData = response["map"];
 			
-				reloadMap(statesData);
-				
+				//reloadMap(statesData);
+				return response;
 			},
 			error: function(e) {
 				alert("Failed To Load Requested Map");
@@ -231,7 +240,7 @@ $( function() {
 			
 				map.setView(view, level)
 				reloadMap(statesData);
-				
+				return response;
 			},
 			error: function(e) {
 				alert("Failed To Load Requested Map");
