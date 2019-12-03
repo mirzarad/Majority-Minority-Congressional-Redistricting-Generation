@@ -2,9 +2,6 @@ package com.maxminmajcdg.dto;
 
 import java.util.Optional;
 
-import com.maxminmajcdg.entities.DemographicsEntity;
-import com.maxminmajcdg.entities.VotesPresEntity;
-
 public class StateDataResponse {
 
 	private Optional<?> votes;
