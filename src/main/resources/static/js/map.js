@@ -3,11 +3,13 @@ $( function() {
 	var currentState = "full";
 	var isInit = true;
 	var election = "PRESIDENTIAL2016";
-	
+	var isPrecinctZoomed = false;
 	var districtResponse = null;
 	var precinctResponse = null;
 	
-	var map = L.map('map');
+	var map = L.map('map', {
+		zoomSnap: .05
+	});
 	var clickStates = {};
 	clickStates["42"] = "penn";
 	clickStates["6"] = "california";
@@ -22,7 +24,7 @@ $( function() {
 	
 	// control that shows state info on hover
 	var info = L.control();
-	/*
+
 	info.onAdd = function (map) {
 		this._div = L.DomUtil.create('div', 'info');
 		this.update();
@@ -36,7 +38,6 @@ $( function() {
 	};
 	
 	info.addTo(map);
-	*/
 
 	var geojson;
 	
@@ -154,22 +155,43 @@ $( function() {
 	
 	$("#california").on("click",function(e) {
 		e.preventDefault();
-		districtResponse = districtAjax("6");
-		precinctResponse = precinctAjax(6);
+		districtAjax("6");
+		precinctAjax(6);
+		alert(JSON.stringify(precinctResponse));
+		alert(JSON.stringify(districtResponse));
 	});
    
 	$("#penn").on("click",function(e) {
+
 		e.preventDefault();
-		districtResponse = districtAjax("42");
-		precinctResponse = precinctAjax(42);
+		districtAjax("42");
+		precinctAjax(42);
 	});
    
 	$("#full").on("click",function(e) {
 		e.preventDefault();
 		usaAjax();
-		districtResponse = null;
-		precinctResponse = null;
 	});
+	
+	map.on('zoomend', function() {
+
+		if(mode == "stateHover"){
+			return;
+		}
+		var zoomlevel = map.getZoom();
+		    if (zoomlevel < 8 && isPrecinctZoomed == true){
+		    	// display district mode
+		    	isPrecinctZoomed = false;
+		    	reloadMap(districtResponse["map"]);
+		    }
+		    if (zoomlevel >= 8 && isPrecinctZoomed == false){
+		    	// display precinct mode
+		    	isPrecinctZoomed = true;
+		    	reloadMap(precinctResponse["map"]);
+		    }
+		console.log("Current Zoom Level =" + zoomlevel)
+		});
+	
 	
 	function usaAjax() {
 		$.ajax({
@@ -191,6 +213,9 @@ $( function() {
 	
 				map.setView(view, level)
 				reloadMap(statesData);
+				
+				precinctResponse = null;
+				districtResponse = null;
 			},
 			error: function(e) {
 				alert("Failed To Load Requested Map");
@@ -213,7 +238,7 @@ $( function() {
 				var statesData = response["map"];
 			
 				//reloadMap(statesData);
-				return response;
+				precinctResponse = response;
 			},
 			error: function(e) {
 				alert("Failed To Load Requested Map");
@@ -241,13 +266,14 @@ $( function() {
 			
 				map.setView(view, level)
 				reloadMap(statesData);
-				return response;
+				districtResponse = response;
 			},
 			error: function(e) {
 				alert("Failed To Load Requested Map");
 			}
 		});
 	}
+	
 	
 	function reloadMap(statesData) {
 		if (isInit) {
@@ -256,7 +282,8 @@ $( function() {
 		else {
 			isInit = false;
 		}
-		geojson = L.geoJson(statesData, {
+		geojson = L.vectorGrid.slicer(statesData, {
+			interactive: true,
 			style: style,
 			onEachFeature: onEachFeature
 		}).addTo(map);
