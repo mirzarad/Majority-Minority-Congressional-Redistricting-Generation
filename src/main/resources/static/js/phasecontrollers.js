@@ -22,6 +22,30 @@ $(function () {
     });
 });
 
+$(function () {
+	var $sys = $("#system-controls-tab");
+	var $map = $("#map-data-tab");
+	var $data = $("#data-analysis-tab");
+    
+	$("#phase0-tab").click(function () {
+		$sys.show();
+		$map.hide();
+		$data.hide();
+    });
+
+    $("#phase1-tab").click(function () {
+    	$sys.hide();
+    	$map.show();
+    	$data.hide();
+    });
+
+    $("#phase2-tab").click(function () {
+    	$sys.hide();
+    	$map.hide();
+    	$data.show();
+    });
+});
+
 $(function (){
 	$('#phase0-is-running').val("0");
 	$('#phase1-is-running').val("0");

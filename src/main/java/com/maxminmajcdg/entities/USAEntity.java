@@ -1,6 +1,6 @@
 package com.maxminmajcdg.entities;
 
-import java.util.HashMap;
+import java.util.HashMap; 
 import java.util.Map;
 
 import javax.persistence.Column;
