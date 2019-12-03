@@ -66,7 +66,7 @@ public abstract class DemographicsEntity {
 	@JsonIgnore
 	private double votingBlackPopulation;
 	
-	@Column(name="VAAMINDALN")
+	@Column(name="VAAIANALN")
 	@JsonIgnore
 	private double votingNativePopulation;
 	
@@ -106,6 +106,32 @@ public abstract class DemographicsEntity {
 		demographics.put(DemographicCategory.TOTAL, votingPopulation);
 		demographics.put(DemographicCategory.OTHER, votingOtherPopulation);
 		return demographics;
+	}
+	
+	@JsonIgnore
+	public DemographicCategory getMaxVotingDemographic() {
+		Map<DemographicCategory, Double> demographics = getTotalDemographics();
+		Map.Entry<DemographicCategory, Double> maxDemographic = null;
+		
+		for (Map.Entry<DemographicCategory, Double> demographic : demographics.entrySet()) {
+			if (demographic.getKey() == DemographicCategory.TOTAL) {
+				continue;
+			}
+			if (maxDemographic == null || demographic.getValue().compareTo(maxDemographic.getValue()) > 0) {
+				maxDemographic = demographic;
+			}
+		}
+		return maxDemographic.getKey();
+	}
+	
+	@JsonIgnore
+	public double getVotingDemographicPercentage(DemographicCategory demographic) {
+		return getTotalDemographics().get(demographic)/totalPopulation * 100;
+	}
+	
+	@JsonIgnore
+	public boolean doesVotingDemographicExceedThreshold(DemographicCategory demographic, float threshold) {
+		return getVotingDemographicPercentage(demographic) >= threshold;
 	}
 	
 	public Long getGeomID() {

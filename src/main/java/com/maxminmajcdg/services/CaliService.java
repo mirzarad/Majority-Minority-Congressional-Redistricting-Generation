@@ -16,7 +16,7 @@ import com.maxminmajcdg.repo.CAVotesPres2016Repository;
 import com.maxminmajcdg.repo.CaliRepository;
 
 @Service
-public class CaliService {
+public class CaliService extends StateService{
 	
 	@Autowired
 	private CaliRepository caliRepository;
@@ -36,10 +36,12 @@ public class CaliService {
 	@Autowired
 	private CADemographics2018Repository caDemographics2018Repository;
 	
+	@Override
 	public List<CaliEntity> getAllPrecincts() {
 		return caliRepository.findAll();
 	}
 
+	@Override
 	public Optional<?> getPrecinctVoteData(ElectionCategory election, Long geomID) {
 		switch(election) {
 		case CONGRESSIONAL2016:
@@ -54,6 +56,7 @@ public class CaliService {
 		
 	}
 	
+	@Override
 	public Optional<?> getPrecinctDemographicData(ElectionCategory election, Long geomID) {
 		switch(election) {
 		case CONGRESSIONAL2016:
@@ -61,6 +64,34 @@ public class CaliService {
 			return caDemographics2016Repository.findById(geomID);
 		case CONGRESSIONAL2018:
 			return caDemographics2018Repository.findById(geomID);
+			default:
+				return null;
+		}
+	}
+
+	@Override
+	public List<?> getDemographics(ElectionCategory election) {
+		switch(election) {
+		case CONGRESSIONAL2016:
+		case PRESIDENTIAL2016:
+			System.out.println(caDemographics2016Repository.findAll().get(0));
+			return caDemographics2016Repository.findAll();
+		case CONGRESSIONAL2018:
+			return caDemographics2018Repository.findAll();
+			default:
+				return null;
+		}
+	}
+
+	@Override
+	public List<?> getVotes(ElectionCategory election) {
+		switch(election) {
+		case CONGRESSIONAL2016:
+			return caVotesCong2016Repository.findAll();
+		case PRESIDENTIAL2016:
+			return caVotesPres2016Repository.findAll();
+		case CONGRESSIONAL2018:
+			return caVotesCong2018Repository.findAll();
 			default:
 				return null;
 		}

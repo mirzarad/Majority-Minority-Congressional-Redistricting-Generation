@@ -39,6 +39,8 @@ $(function (){
 			var data = {};
 			data["demographicBlocPercentage"] = $("#phase0-demographic-bloc-measure").val();
 			data["voteBlocPercentage"] = $("#phase0-vote-bloc-measure").val();
+			data["election"] = "PRESIDENTIAL2016";
+			data["state"] = "penn";
 
 			phasePost("runPhase0", data, "1", "Couldn't Start Demographic Bloc Analysis.", phase0);
 		}
@@ -103,6 +105,7 @@ $(function (){
 });
 
 function phasePost(path, data, setVal, err, phase) {
+	phase.val(setVal);
 	$.ajax({
 		type: "POST",
 		contentType: "application/json",
@@ -112,9 +115,10 @@ function phasePost(path, data, setVal, err, phase) {
 		timeout: 600000,
 		success: function(results) {
 			//Set BTN To PAUSE
-			phase.val(setVal);
+			phase.val(0);
 		},
 		error: function(e) {
+			phase.val(0);
 			alert(err);
 		}
 	});

@@ -16,7 +16,7 @@ import com.maxminmajcdg.repo.PAVotesPres2016Repository;
 import com.maxminmajcdg.repo.PennRepository;
 
 @Service
-public class PennService {
+public class PennService extends StateService{
 	
 	@Autowired
 	private PennRepository pennRepository;
@@ -36,10 +36,12 @@ public class PennService {
 	@Autowired
 	private PADemographics2018Repository paDemographics2018Repository;
 	
+	@Override
 	public List<PennEntity> getAllPrecincts() {
 		return pennRepository.findAll();
 	}
 
+	@Override
 	public Optional<?> getPrecinctVoteData(ElectionCategory election, Long geomID) {
 		switch(election) {
 		case CONGRESSIONAL2016:
@@ -54,6 +56,7 @@ public class PennService {
 		
 	}
 	
+	@Override
 	public Optional<?> getPrecinctDemographicData(ElectionCategory election, Long geomID) {
 		switch(election) {
 		case CONGRESSIONAL2016:
@@ -65,4 +68,32 @@ public class PennService {
 				return null;
 		}
 	}
+	
+	@Override
+	public List<?> getDemographics(ElectionCategory election) {
+		switch(election) {
+		case CONGRESSIONAL2016:
+		case PRESIDENTIAL2016:
+			return paDemographics2016Repository.findAll();
+		case CONGRESSIONAL2018:
+			return paDemographics2018Repository.findAll();
+			default:
+				return null;
+		}
+	}
+	
+	@Override
+	public List<?> getVotes(ElectionCategory election) {
+		switch(election) {
+		case CONGRESSIONAL2016:
+			return paVotesCong2016Repository.findAll();
+		case PRESIDENTIAL2016:
+			return paVotesPres2016Repository.findAll();
+		case CONGRESSIONAL2018:
+			return paVotesCong2018Repository.findAll();
+			default:
+				return null;
+		}
+	}
+	
 }

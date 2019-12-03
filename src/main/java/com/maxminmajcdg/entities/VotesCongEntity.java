@@ -11,7 +11,7 @@ import javax.persistence.MappedSuperclass;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @MappedSuperclass
-public abstract class VotesCongEntity implements VoteEntity {
+public abstract class VotesCongEntity extends VoteEntity {
 	
 	@Id
 	@GeneratedValue
@@ -39,6 +39,7 @@ public abstract class VotesCongEntity implements VoteEntity {
 	private int congressionalIndependent;
 	
 	@JsonIgnore
+	@Override
 	public Map<PartyCategory, Integer> getVotes() {
 		Map<PartyCategory, Integer> votes = new HashMap<PartyCategory, Integer>();
 		
@@ -49,9 +50,5 @@ public abstract class VotesCongEntity implements VoteEntity {
 
 		return votes;
 	}
-	
-	@Override
-	public String toString() {
-		return getVotes().toString();
-	}
+
 }
