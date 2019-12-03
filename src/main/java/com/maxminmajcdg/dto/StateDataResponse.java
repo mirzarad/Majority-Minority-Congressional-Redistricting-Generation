@@ -3,25 +3,25 @@ package com.maxminmajcdg.dto;
 import java.util.Optional;
 
 import com.maxminmajcdg.entities.DemographicsEntity;
-import com.maxminmajcdg.entities.VotesEntity;
+import com.maxminmajcdg.entities.VotesPresEntity;
 
-public class StateDataResponse<P extends VotesEntity, Q extends DemographicsEntity> {
+public class StateDataResponse {
 
-	private Optional<P> votes;
-	private Optional<Q> demographics;
+	private Optional<?> votes;
+	private Optional<?> demographics;
 	//private Optional<MeausrmentsEntity> measurements;
 	
-	public Optional<P> getVotes() {
+	public Optional<?> getVotes() {
 		return votes;
 	}
-	public void setVotes(Optional<P> votes) {
+	public void setVotes(Optional<?> votes) {
 		this.votes = votes;
 	}
 	
-	public Optional<Q> getDemographics() {
+	public Optional<?> getDemographics() {
 		return demographics;
 	}
-	public void setDemographics(Optional<Q> demographics) {
+	public void setDemographics(Optional<?> demographics) {
 		this.demographics = demographics;
 	}
 	

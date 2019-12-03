@@ -6,11 +6,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.maxminmajcdg.entities.CADemographicsEntity;
-import com.maxminmajcdg.entities.CAVotesEntity;
+import com.maxminmajcdg.entities.CADemographics2016Entity;
 import com.maxminmajcdg.entities.CaliEntity;
+import com.maxminmajcdg.entities.ElectionCategory;
 import com.maxminmajcdg.repo.CADemographicsRepository;
-import com.maxminmajcdg.repo.CAVotesRepository;
+import com.maxminmajcdg.repo.CAVotesCong2016Repository;
+import com.maxminmajcdg.repo.CAVotesCong2018Repository;
+import com.maxminmajcdg.repo.CAVotesPres2016Repository;
 import com.maxminmajcdg.repo.CaliRepository;
 
 @Service
@@ -20,7 +22,13 @@ public class CaliService {
 	private CaliRepository caliRepository;
 	
 	@Autowired
-	private CAVotesRepository caVotesRepository;
+	private CAVotesCong2016Repository caVotesCong2016Repository;
+	
+	@Autowired
+	private CAVotesPres2016Repository caVotesPres2016Repository;
+	
+	@Autowired
+	private CAVotesCong2018Repository caVotesCong2018Repository;
 	
 	@Autowired
 	private CADemographicsRepository caDemographicsRepository;
@@ -29,11 +37,29 @@ public class CaliService {
 		return caliRepository.findAll();
 	}
 
-	public Optional<CAVotesEntity> getPrecinctVoteData(Long geomID) {
-		return caVotesRepository.findById(geomID);
+	public Optional<?> getPrecinctVoteData(ElectionCategory election, Long geomID) {
+		switch(election) {
+		case CONGRESSIONAL2016:
+			return caVotesCong2016Repository.findById(geomID);
+		case PRESIDENTIAL2016:
+			return caVotesPres2016Repository.findById(geomID);
+		case CONGRESSIONAL2018:
+			return caVotesCong2018Repository.findById(geomID);
+			default:
+				return null;
+		}
+		
 	}
 	
-	public Optional<CADemographicsEntity> getPrecinctDemographicData(Long geomID) {
-		return caDemographicsRepository.findById(geomID);
+	public Optional<?> getPrecinctDemographicData(ElectionCategory election, Long geomID) {
+		switch(election) {
+		case CONGRESSIONAL2016:
+		case PRESIDENTIAL2016:
+			return caDemographicsRepository.findById(geomID);
+		case CONGRESSIONAL2018:
+			return caDemographicsRepository.findById(geomID);
+			default:
+				return null;
+		}
 	}
 }

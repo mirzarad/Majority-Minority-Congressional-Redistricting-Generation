@@ -3,9 +3,9 @@ package com.maxminmajcdg.repo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.maxminmajcdg.entities.CADemographics2016Entity;
+import com.maxminmajcdg.entities.CAVotesCong2018Entity;
 
 @Repository
-public interface CADemographicsRepository extends JpaRepository<CADemographics2016Entity, Long> {
+public interface PAVotesCong2018Repository extends JpaRepository<CAVotesCong2018Entity, Long> {
 	
 }

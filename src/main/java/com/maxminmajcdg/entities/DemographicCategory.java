@@ -6,7 +6,9 @@ public enum DemographicCategory {
 	 ASIAN("ASIAN"), 
 	 NATIVE_HAWAIIAN("NATIVE_HAWAIIAN"), 
 	 HISPANIC("HISPANIC"), 
-	 WHITE("WHITE");
+	 WHITE("WHITE"),
+	 TOTAL("TOTAL"),
+	 OTHER("OTHER");
 	 
 	 private String val;
 	
