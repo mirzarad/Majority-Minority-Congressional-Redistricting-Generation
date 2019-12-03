@@ -6,10 +6,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.maxminmajcdg.entities.CADemographics2016Entity;
 import com.maxminmajcdg.entities.CaliEntity;
 import com.maxminmajcdg.entities.ElectionCategory;
-import com.maxminmajcdg.repo.CADemographicsRepository;
+import com.maxminmajcdg.repo.CADemographics2016Repository;
+import com.maxminmajcdg.repo.CADemographics2018Repository;
 import com.maxminmajcdg.repo.CAVotesCong2016Repository;
 import com.maxminmajcdg.repo.CAVotesCong2018Repository;
 import com.maxminmajcdg.repo.CAVotesPres2016Repository;
@@ -31,7 +31,10 @@ public class CaliService {
 	private CAVotesCong2018Repository caVotesCong2018Repository;
 	
 	@Autowired
-	private CADemographicsRepository caDemographicsRepository;
+	private CADemographics2016Repository caDemographics2016Repository;
+	
+	@Autowired
+	private CADemographics2018Repository caDemographics2018Repository;
 	
 	public List<CaliEntity> getAllPrecincts() {
 		return caliRepository.findAll();
@@ -55,9 +58,9 @@ public class CaliService {
 		switch(election) {
 		case CONGRESSIONAL2016:
 		case PRESIDENTIAL2016:
-			return caDemographicsRepository.findById(geomID);
+			return caDemographics2016Repository.findById(geomID);
 		case CONGRESSIONAL2018:
-			return caDemographicsRepository.findById(geomID);
+			return caDemographics2018Repository.findById(geomID);
 			default:
 				return null;
 		}

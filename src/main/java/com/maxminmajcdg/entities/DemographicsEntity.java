@@ -15,7 +15,7 @@ public abstract class DemographicsEntity {
 	
 	@Id
 	@GeneratedValue
-	@Column(name="id")
+	@Column(name="geom_ID")
 	private Long geomID;
 	
 	@Column(name="TAPERSONS")
