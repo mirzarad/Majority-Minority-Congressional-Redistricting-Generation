@@ -11,7 +11,7 @@ import javax.persistence.MappedSuperclass;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @MappedSuperclass
-public abstract class VotesPresEntity implements VoteEntity {
+public abstract class VotesPresEntity extends VoteEntity {
 	@Id
 	@GeneratedValue
 	@Column(name="geom_ID")
@@ -49,8 +49,4 @@ public abstract class VotesPresEntity implements VoteEntity {
 		return votes;
 	}
 	
-	@Override
-	public String toString() {
-		return getVotes().toString();
-	}
 }

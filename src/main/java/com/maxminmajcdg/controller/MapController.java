@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.maxminmajcdg.dto.Response;
 import com.maxminmajcdg.dto.StateDataResponse;
 import com.maxminmajcdg.entities.ElectionCategory;
+import com.maxminmajcdg.entities.States;
 import com.maxminmajcdg.services.CaliService;
 import com.maxminmajcdg.services.PennService;
 import com.maxminmajcdg.services.USAService;
@@ -20,9 +21,6 @@ import com.maxminmajcdg.services.USAService;
 @Controller
 @RequestMapping("/map")
 public class MapController{
-	
-	private final String PENN = "penn";
-	private final String CA = "california";
 	
 	@Autowired
 	USAService usaService;
@@ -51,19 +49,19 @@ public class MapController{
 	@ResponseBody
 	public Response<StateDataResponse> onHoverPrecinct(@PathVariable(value="id") int precinctId, @PathVariable(value="state") String state, @PathVariable(value="election") String election) {
 		System.err.println("Precinct ID: " + precinctId);
-		
-		ElectionCategory electionEnum = ElectionCategory.fromValue(election);
-		
+				
 		Response<StateDataResponse> result = new Response<StateDataResponse>(); 
 		StateDataResponse data = new StateDataResponse();
+		ElectionCategory electionEnum = ElectionCategory.fromValue(election);
+		States stateEnum = States.fromValue(state);
 		
-		switch(state) {
+		switch(stateEnum) {
 		case PENN:
 			data.setVotes(pennService.getPrecinctVoteData(electionEnum, new Long(precinctId)));
 			data.setDemographics(pennService.getPrecinctDemographicData(electionEnum, new Long(precinctId)));
 			result.setResponse(data);
 			break;
-		case CA:
+		case CALI:
 			data.setVotes(caliService.getPrecinctVoteData(electionEnum, new Long(precinctId)));
 			data.setDemographics(caliService.getPrecinctDemographicData(electionEnum, new Long(precinctId)));
 			result.setResponse(data);
@@ -78,19 +76,19 @@ public class MapController{
 	@ResponseBody
 	public Response<StateDataResponse> onHoverDistrict(@PathVariable(value="id") int districtId, @PathVariable(value="state") String state, @PathVariable(value="election") String election) {
 		System.err.println("Precinct ID: " + districtId);
-		
-		ElectionCategory electionEnum = ElectionCategory.fromValue(election);
-		
+				
 		Response<StateDataResponse> result = new Response<StateDataResponse>(); 
 		StateDataResponse data = new StateDataResponse();
+		ElectionCategory electionEnum = ElectionCategory.fromValue(election);
+		States stateEnum = States.fromValue(state);
 		
-		switch(state) {
+		switch(stateEnum) {
 		case PENN:
 			//data.setVotes(pennService.getPrecinctVoteData(electionEnum, new Long(districtId)));
 			//data.setDemographics(pennService.getPrecinctDemographicData(electionEnum, new Long(districtId)));
 			//result.setResponse(data);
 			break;
-		case CA:
+		case CALI:
 			//data.setVotes(caliService.getPrecinctVoteData(electionEnum, new Long(districtId)));
 			//data.setDemographics(caliService.getPrecinctDemographicData(electionEnum, new Long(districtId)));
 			//result.setResponse(data);

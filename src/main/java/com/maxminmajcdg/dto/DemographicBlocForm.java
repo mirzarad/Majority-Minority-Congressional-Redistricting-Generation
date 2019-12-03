@@ -1,5 +1,8 @@
 package com.maxminmajcdg.dto;
 
+import com.maxminmajcdg.entities.ElectionCategory;
+import com.maxminmajcdg.entities.States;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +15,8 @@ import lombok.ToString;
 public class DemographicBlocForm {
 	private float demographicBlocPercentage;
 	private float voteBlocPercentage;
+	private String election;
+	private String state;
 	
 	public float getDemographicBlocPercentage() {
 		return demographicBlocPercentage;
@@ -24,5 +29,17 @@ public class DemographicBlocForm {
 	}
 	public void setVoteBlocPercentage(float voteBlocPercentage) {
 		this.voteBlocPercentage = voteBlocPercentage;
+	}
+	public ElectionCategory getElection() {
+		return ElectionCategory.fromValue(election);
+	}
+	public void setElection(String election) {
+		this.election = election;
+	}
+	public States getState() {
+		return States.fromValue(state);
+	}
+	public void setState(String state) {
+		this.state = state;
 	}
 }
