@@ -112,7 +112,7 @@
 		<!-- System Controls Container -->
 		<div id="sys-controls-col" class="col-md-5">
 <div id="phase-inputs" class="container-fluid">
-    <h3 id="sys-controls-text" class="text-center">System Controls</h3> 
+    <h3 id="controls-text" class="text-center">System Controls</h3> 
 	<div class="row">
 		<div class="col-md-12">
 			<div class="tabbable" id="tabs-99982">
@@ -128,7 +128,7 @@
 					</li>
 				</ul>
 			</div>
-			<div class="tabbable" id="tabs-99982">
+			<div class="tabbable" id="phase-tabs">
 				<ul class="nav nav-tabs">
 					<li class="nav-item">
 						<a class="nav-link active show" href="#tab1" data-toggle="tab" id="phase0-tab">Demographic Bloc Analysis</a>
@@ -235,6 +235,7 @@
 	<!----------------------------------------------------------------------------------------------------------------------->
 					<div class="tab-pane" id="phase2-content">
 						<br/>
+
 						<div class="row">
 								<div class="col-md-6">
 									<h5 id="measures-text">Political Fairness Measures</h5>
@@ -312,28 +313,50 @@
 					</div> <!--  End of phase controls inner tab content -->
 			</div> <!-- end of sys-controls-content -->
 			<div class="tab-pane" id="map-data-content">
-				<div class="col-md-2">
-					<h3>State Data</h3>
-					<p>Republican Votes: </p>
-					<p>Democrat Votes: </p>
-					<p>Independent Votes: </p>
-					<p>Other Votes: </p>
-					<p>Percentage of Representatives: </p>
-					<p>Majority Party: </p>
+			<div class="container-fluid">
+				<div id="row">
+					<div class="col-4">
+						<h5>State Data</h5>
+						
+						<p>Republican Votes: </p>
+						<p>Democrat Votes: </p>
+						<p>Independent Votes: </p>
+						<p>Other Votes: </p>
+						<p>Percentage of Representatives: </p>
+						<p>Majority Party: </p>
+					</div>
+					
+					<div class="col-4">
+						<h5>District Data</h5>
+						
+						<p>Population: </p>
+						<p>White: </p>
+						<p>Black: </p>
+						<p>Hispanic: </p>
+						<p>Native American: </p>
+						<p>Asian: </p>
+						<p>Native Hawaiian: </p>
+						<p>Native Alaskan: </p>
+					</div>
+					
+					<div class="col-4">
+						<h5>Precinct Data</h5>
+						
+						<p>Population: </p>
+						<p>White: </p>
+						<p>Black: </p>
+						<p>Hispanic: </p>
+						<p>Native American: </p>
+						<p>Asian: </p>
+						<p>Native Hawaiian: </p>
+						<p>Native Alaskan: </p>
+					</div>
 				</div>
-			</div>
-			<div class="tab-pane" id="data-analysis-content">
-					<h3>District Data</h3>
-					<p>Population: </p>
-					<p>White: </p>
-					<p>Black: </p>
-					<p>Hispanic: </p>
-					<p>Native American: </p>
-					<p>Asian: </p>
-					<p>Native Hawaiian: </p>
-					<p>Native Alaskan: </p>
-			</div>
-	</div>
+				<div class="tab-pane" id="data-analysis-content">
+	
+				</div>
+
+				</div>
 	</div>
 	</div>
 	

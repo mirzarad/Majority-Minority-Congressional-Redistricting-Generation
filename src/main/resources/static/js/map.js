@@ -157,8 +157,6 @@ $( function() {
 		e.preventDefault();
 		districtAjax("6");
 		precinctAjax(6);
-		alert(JSON.stringify(precinctResponse));
-		alert(JSON.stringify(districtResponse));
 	});
    
 	$("#penn").on("click",function(e) {
@@ -174,7 +172,6 @@ $( function() {
 	});
 	
 	map.on('zoomend', function() {
-
 		if(mode == "stateHover"){
 			return;
 		}
@@ -190,7 +187,16 @@ $( function() {
 		    	reloadMap(precinctResponse["map"]);
 		    }
 		console.log("Current Zoom Level =" + zoomlevel)
-		});
+	});
+	
+    function colorizeFeatures(data) {
+        var counter = 0;
+        for (var i = 0; i < data.features.length; i++) {
+            data.features[i].properties.color = 'hsl(' + 360 * Math.random() + ', 50%, 50%)';
+            counter += data.features[i].geometry.coordinates[0].length;
+        }
+        return counter;
+    }
 	
 	
 	function usaAjax() {
@@ -266,6 +272,7 @@ $( function() {
 			
 				map.setView(view, level)
 				reloadMap(statesData);
+				colorizeFeatures(statesData);
 				districtResponse = response;
 			},
 			error: function(e) {
@@ -273,7 +280,6 @@ $( function() {
 			}
 		});
 	}
-	
 	
 	function reloadMap(statesData) {
 		if (isInit) {

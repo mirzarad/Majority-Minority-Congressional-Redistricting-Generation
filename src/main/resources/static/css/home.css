@@ -42,6 +42,12 @@ body {
   transition: .5s ease;
 }
 
+.nav-item{
+	color: white;
+	border-radius: 5px;
+	background-color:#004080;
+}
+
 #map-container{
 	display: flex;
     flex-flow: column wrap;
@@ -58,7 +64,7 @@ body {
 	color:white;
 }
 
-#sys-controls-text{
+#controls-text{
 	color:white;	
 }
 
