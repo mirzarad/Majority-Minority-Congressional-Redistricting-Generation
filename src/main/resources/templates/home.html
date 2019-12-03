@@ -115,6 +115,7 @@
     <h3 id="sys-controls-text" class="text-center">System Controls</h3> 
 	<div class="row">
 		<div class="col-md-12">
+			<div class="tabbable" id="tabs-99982">
 				<ul class="nav nav-tabs">
 					<li class="nav-item">
 						<a class="nav-link active show" href="#tab4" data-toggle="tab" id="#system-controls-tab">System Controls</a>
@@ -126,6 +127,7 @@
 						<a class="nav-link" href="#tab6" data-toggle="tab" id="#data-analysis-tab">Data Analysis</a>
 					</li>
 				</ul>
+			</div>
 			<div class="tabbable" id="tabs-99982">
 				<ul class="nav nav-tabs">
 					<li class="nav-item">
@@ -138,6 +140,9 @@
 						<a class="nav-link" href="#tab3" data-toggle="tab" id="phase2-tab">Simulated Annealing</a>
 					</li>
 				</ul>
+			</div>
+			<div class="tab-content">
+				<div class="tab-pane active" id="sys-controls-content">
 	<!----------------------------------------------------------------------------------------------------------------------->
 	<!----------------------------------------------- END OF SYSTEM CONTROLS ------------------------------------------------>
 	<!----------------------------------------------------------------------------------------------------------------------->
@@ -177,6 +182,7 @@
 	<!----------------------------------------------------------------------------------------------------------------------->
 	<!------------------------------------------------------ PHASE 1 -------------------------------------------------------->
 	<!----------------------------------------------------------------------------------------------------------------------->
+					<br/>
 					<div class="tab-pane" id="phase1-content">
 						<div class="row">
 							<div class="col-md-8">
@@ -299,63 +305,13 @@
 								</div>
 								
 							</div><!-- END OF PHASE 2 CONTENT  -->
-						</div> <!-- END OF TAB PANE -->
+						</div> <!-- END OF phase 2 tab PANE -->
 	<!----------------------------------------------------------------------------------------------------------------------->
 	<!-------------------------------------------------- END OF PHASE 2 ----------------------------------------------------->
 	<!----------------------------------------------------------------------------------------------------------------------->
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	</div>
-	
-	<div class="col-md-7">
-	</div>
-	<div class="col-md-5">
-		<input type="hidden" value="0" id="phase0-is-running"/>
-			<button type="button" class="btn btn-success btn-block" id="phase0-run">Run</button> 
-		    <button type="button" class="btn btn-block active disabled btn-danger" id="phase0-stop">Stop</button>
-	</div>
-	
-	<!----------------------------------------------------------------------------------------------------------------------->
-	<!--------------------------------------------- End of new User Interface ----------------------------------------------->
-	<!----------------------------------------------------------------------------------------------------------------------->
-
-    <div class="container-fluid">	  
-			<div class="row">
-				<div class="col-md-8">
-
-<!----------------------------------------------  LEAFLET ------------------------------------------------->
-					<!-- container -->
-					<div class="container">
-						<br/>
-						 <div class="row">
-						 	<div class="col-md-8">
-								<div id="leaflet-map">
-								</div>
-								<script type="text/javascript">
-									$(function() {
-										$("#leaflet-map").load("leaflet", function() {
-											$(this).trigger("pagecreate");
-										});
-									});
-								</script>
-						 	</div>
-						</div>
-										<div class="col-md-2">
-											<h3>State Data</h3>
-											<p>Republican Votes: </p>
-											<p>Democrat Votes: </p>
-											<p>Independent Votes: </p>
-											<p>Other Votes: </p>
-											<p>Percentage of Representatives: </p>
-											<p>Majority Party: </p>
-										</div>
-					</div>
-<!----------------------------------------------  /LEAFLET ------------------------------------------------->
-				</div>
-				
+					</div> <!--  End of phase controls inner tab content -->
+			</div> <!-- end of sys-controls-content -->
+			<div class="tab-pane" id="map-data-content">
 				<div class="col-md-2">
 					<h3>State Data</h3>
 					<p>Republican Votes: </p>
@@ -364,7 +320,9 @@
 					<p>Other Votes: </p>
 					<p>Percentage of Representatives: </p>
 					<p>Majority Party: </p>
-<!--
+				</div>
+			</div>
+			<div class="tab-pane" id="data-analysis-content">
 					<h3>District Data</h3>
 					<p>Population: </p>
 					<p>White: </p>
@@ -374,39 +332,32 @@
 					<p>Asian: </p>
 					<p>Native Hawaiian: </p>
 					<p>Native Alaskan: </p>
-					
-					<h3>Precinct Data</h3>
-					<h5>Demographic Data</h5>
-					<p>Population: </p>
-					<p>White: </p>
-					<p>Black: </p>
-					<p>Hispanic: </p>
-					<p>Native American: </p>
-					<p>Asian: </p>
-					<p>Native Hawaiian: </p>
-					<p>Native Alaskan: </p>
-					<h5>Voting Data</h5>
-					<p>Republican Votes: </p>
-					<p>Democrat Votes: </p>
-					<p>Independent Votes: </p>
-					<p>Other Votes: </p>
-					<p>Id: </p>
-					<p>District </p>
-					<p>County: </p>
-  -->
-					
-				</div>
-				
-				<div class="col-md-2">
-					<h2>Data Analysis<br></h2>
-				</div>
 			</div>
+	</div>
+	</div>
+	</div>
 	
-</div>
+	<!----------------------------------------------------------------------------------------------------------------------->
+	<!--------------------------------------------- Algorithm Button Controls ----------------------------------------------->
+	<!----------------------------------------------------------------------------------------------------------------------->
+	
+	<div class="row">
+		<div class="col-md-12">
+			<input type="hidden" value="0" id="phase0-is-running"/>
+				<button type="button" class="btn btn-success btn-block" id="phase0-run">Run</button> 
+			    <button type="button" class="btn btn-block active disabled btn-danger" id="phase0-stop">Stop</button>
+		</div>
+	</div>
+	
+	<!----------------------------------------------------------------------------------------------------------------------->
+	<!--------------------------------------------- End of new User Interface ----------------------------------------------->
+	<!----------------------------------------------------------------------------------------------------------------------->
+
 <!-- END OF CONTAINER -->
 <p id="error"></p>
  <!-- Optional JavaScript -->
  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="/js/phasecontrollers.js"></script>
+    <script src="/js/mainmenucontroller.js"></script>
   </body>
 </html>

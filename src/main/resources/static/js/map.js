@@ -18,7 +18,7 @@ $( function() {
 	
 	// control that shows state info on hover
 	var info = L.control();
-	
+	/*
 	info.onAdd = function (map) {
 		this._div = L.DomUtil.create('div', 'info');
 		this.update();
@@ -32,6 +32,7 @@ $( function() {
 	};
 	
 	info.addTo(map);
+	*/
 
 	var geojson;
 	
