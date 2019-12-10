@@ -1,8 +1,10 @@
 $( function() {
+	var stateId = {};
+	stateId["06"] = "california";
+	stateId["42"] = "pennsylvania";
 	var mode = "stateHover";
-	var currentState = "full";
+	var currentState = "usa";
 	var isInit = true;
-	var election = "PRESIDENTIAL2016";
 	var isPrecinctZoomed = false;
 	var districtResponse = null;
 	var precinctResponse = null;
@@ -10,9 +12,7 @@ $( function() {
 	var map = L.map('map', {
 		zoomSnap: .05
 	});
-	var clickStates = {};
-	clickStates["42"] = "penn";
-	clickStates["6"] = "california";
+
 	
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		maxZoom: 18,
@@ -147,23 +147,22 @@ $( function() {
 		
 		layer.on("click", function(e) {
 			if (feature.id == "42" || feature.id == "06") {
-				districtResponse = districtAjax(feature.id);
-				precinctResponse = precinctAjax(feature.id);
+				districtResponse = districtAjax(stateId[feature.id]);
+				precinctResponse = precinctAjax(stateId[feature.id]);
 			}
 		});
 	}
 	
 	$("#california").on("click",function(e) {
 		e.preventDefault();
-		districtAjax("6");
-		precinctAjax(6);
+		districtAjax(this.id);
+		precinctAjax(this.id);
 	});
    
-	$("#penn").on("click",function(e) {
-
+	$("#pennsylvania").on("click",function(e) {
 		e.preventDefault();
-		districtAjax("42");
-		precinctAjax(42);
+		districtAjax(this.id);
+		precinctAjax(this.id);
 	});
    
 	$("#full").on("click",function(e) {
@@ -203,11 +202,11 @@ $( function() {
 		$.ajax({
 			type: "GET",
 			contentType: "application/json",
-			url: "selectState/full",
+			url: "selectState/usa",
 			dataType: 'json',
 			timeout: 600000,
 			success: function(results) {
-				currentState = "full";
+				currentState = "usa";
 				$("#phase-inputs").hide();
 	
 				mode = "stateHover";
@@ -233,7 +232,7 @@ $( function() {
 		$.ajax({
 			type: "GET",
 			contentType: "application/json",
-			url: "selectState/" + clickStates[state],
+			url: "selectState/precincts/" + selectedElection + "/" + state,
 			dataType: 'json',
 			timeout: 600000,
 			success: function(results) {
@@ -260,7 +259,7 @@ $( function() {
 			dataType: 'json',
 			timeout: 600000,
 			success: function(results) {
-				currentState = clickStates[state];
+				currentState = state;
 				
 				$("#phase-inputs").show();
 				mode = "districtHover";

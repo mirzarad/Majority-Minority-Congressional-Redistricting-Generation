@@ -4,7 +4,7 @@ $(document).ready(function() {
 		$("#state-select-menu").text('FULL MAP');
 	});
 	
-	$("#penn").click(function () {
+	$("#pennsylvania").click(function () {
 		$("#state-select-menu").text('PENNSYLVANIA');
 	});
 	

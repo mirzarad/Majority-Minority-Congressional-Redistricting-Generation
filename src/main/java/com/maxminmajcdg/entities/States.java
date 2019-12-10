@@ -1,7 +1,7 @@
 package com.maxminmajcdg.entities;
 
 public enum States {
-	PENN("penn", "42"),
+	PENN("pennsylvania", "42"),
 	CALI("california", "06"),
 	USA("usa", "-1");
 
