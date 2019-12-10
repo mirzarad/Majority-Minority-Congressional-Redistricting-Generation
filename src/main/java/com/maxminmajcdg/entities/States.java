@@ -1,13 +1,19 @@
 package com.maxminmajcdg.entities;
 
 public enum States {
-	PENN("penn"),
-	CALI("california");
+	PENN("penn", "42"),
+	CALI("california", "06"),
+	USA("usa", "-1");
 
 	private String val;
+	private String id;
 	
-	private States(String val) {
+	private States(String val, String id) {
 		this.val = val;
+	}
+	
+	public String getId() {
+		return id;
 	}
 	
 	public static States fromValue(String val) {

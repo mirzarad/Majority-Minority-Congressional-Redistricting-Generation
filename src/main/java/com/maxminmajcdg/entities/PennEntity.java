@@ -9,15 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
-import org.locationtech.jts.geom.Geometry;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.maxminmajcdg.GeoJSONParser;
 
 @Entity
 @Table(name="pa_precincts_geom")
-public class PennEntity {
+public class PennEntity extends StateEntity{
 	
 	@Id
 	@GeneratedValue
@@ -51,11 +47,6 @@ public class PennEntity {
 	@Column(name="vtd_name")
 	@JsonIgnore
 	private String vtdName;
-	
-	@Column(name="shape")
-	@Type(type="org.locationtech.jts.geom.Geometry")
-	@JsonIgnore
-	private Geometry shapeFile;
 			
 	public Long getId() {
 		return id;
@@ -89,10 +80,6 @@ public class PennEntity {
 		return vtdName;
 	}
 	
-	public Geometry getShapeFile() {
-		return shapeFile;
-	}
-	
 	public String getType() {
 		return "Feature";
 	}
@@ -104,10 +91,6 @@ public class PennEntity {
 		return properties;
 	}
 	
-	public GeometryEntity getGeometry() {
-		return GeoJSONParser.getGeometryEntity(shapeFile);
-	}
-	
 	@Override
 	public String toString() {
 		return "StateEntity [id=" + id +
@@ -117,7 +100,6 @@ public class PennEntity {
 				", correctstf=" + correctSTF +
 				", countyname=" + countyName +
 				", mcdName=" + mcdName +
-				", vtdName=" + vtdName +
-				", shape=" + shapeFile;
+				", vtdName=" + vtdName;
  	}
 }

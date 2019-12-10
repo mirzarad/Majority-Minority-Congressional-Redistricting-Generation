@@ -9,15 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
-import org.locationtech.jts.geom.Geometry;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.maxminmajcdg.GeoJSONParser;
 
 @Entity
 @Table(name="cali_geom_2016")
-public class CaliEntity {
+public class CaliEntity extends StateEntity{
 	
 	@Id
 	@GeneratedValue
@@ -43,11 +39,6 @@ public class CaliEntity {
 	@Column(name="area")
 	@JsonIgnore
 	private double area;
-	
-	@Column(name="shape")
-	@Type(type="org.locationtech.jts.geom.Geometry")
-	@JsonIgnore
-	private Geometry shapeFile;
 			
 	public Long getId() {
 		return id;
@@ -68,10 +59,6 @@ public class CaliEntity {
 	public String getElection() {
 		return election;
 	}
-
-	public Geometry getShapeFile() {
-		return shapeFile;
-	}
 	
 	public String getType() {
 		return "Feature";
@@ -89,10 +76,6 @@ public class CaliEntity {
 		return properties;
 	}
 	
-	public GeometryEntity getGeometry() {
-		return GeoJSONParser.getGeometryEntity(shapeFile);
-	}
-	
 	@Override
 	public String toString() {
 		return "StateEntity [id=" + id +
@@ -100,7 +83,6 @@ public class CaliEntity {
 //				", precinct=" + precinct + 
 //				", precinct key=" + precinctKey + 
 				", area=" + area +
-				", election=" + election +
-				", shape=" + shapeFile;
+				", election=" + election;
  	}
 }

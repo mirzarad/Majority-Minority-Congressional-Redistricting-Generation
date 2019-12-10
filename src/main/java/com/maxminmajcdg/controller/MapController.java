@@ -16,6 +16,7 @@ import com.maxminmajcdg.entities.ElectionCategory;
 import com.maxminmajcdg.entities.States;
 import com.maxminmajcdg.services.CaliService;
 import com.maxminmajcdg.services.PennService;
+import com.maxminmajcdg.services.StateService;
 import com.maxminmajcdg.services.USAService;
 
 @Controller
@@ -55,19 +56,22 @@ public class MapController{
 		ElectionCategory electionEnum = ElectionCategory.fromValue(election);
 		States stateEnum = States.fromValue(state);
 		
+		StateService service;
+		
 		switch(stateEnum) {
 		case PENN:
-			data.setVotes(pennService.getPrecinctVoteData(electionEnum, new Long(precinctId)));
-			data.setDemographics(pennService.getPrecinctDemographicData(electionEnum, new Long(precinctId)));
-			result.setResponse(data);
+			service = pennService;
 			break;
 		case CALI:
-			data.setVotes(caliService.getPrecinctVoteData(electionEnum, new Long(precinctId)));
-			data.setDemographics(caliService.getPrecinctDemographicData(electionEnum, new Long(precinctId)));
-			result.setResponse(data);
+			service = caliService;
 			break;
+			default:
+				return null;
 		}
 		
+		data.setVotes(service.getPrecinctVoteData(electionEnum, new Long(precinctId)));
+		data.setDemographics(service.getPrecinctDemographicData(electionEnum, new Long(precinctId)));
+		result.setResponse(data);
 		result.setMessage("Success");
 		return result;
 	}
@@ -82,19 +86,22 @@ public class MapController{
 		ElectionCategory electionEnum = ElectionCategory.fromValue(election);
 		States stateEnum = States.fromValue(state);
 		
+		StateService service;
+		
 		switch(stateEnum) {
 		case PENN:
-			//data.setVotes(pennService.getPrecinctVoteData(electionEnum, new Long(districtId)));
-			//data.setDemographics(pennService.getPrecinctDemographicData(electionEnum, new Long(districtId)));
-			//result.setResponse(data);
+			service = pennService;
 			break;
 		case CALI:
-			//data.setVotes(caliService.getPrecinctVoteData(electionEnum, new Long(districtId)));
-			//data.setDemographics(caliService.getPrecinctDemographicData(electionEnum, new Long(districtId)));
-			//result.setResponse(data);
+			service = caliService;
 			break;
+			default:
+				return null;
 		}
 		
+		//data.setVotes(service.getPrecinctVoteData(electionEnum, new Long(districtId)));
+		//data.setDemographics(service.getPrecinctDemographicData(electionEnum, new Long(districtId)));
+		//result.setResponse(data);
 		result.setMessage("Success");
 		return result;
 	}
