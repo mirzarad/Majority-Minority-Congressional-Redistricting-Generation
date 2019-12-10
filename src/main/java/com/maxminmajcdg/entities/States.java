@@ -10,6 +10,7 @@ public enum States {
 	
 	private States(String val, String id) {
 		this.val = val;
+		this.id = id;
 	}
 	
 	public String getId() {

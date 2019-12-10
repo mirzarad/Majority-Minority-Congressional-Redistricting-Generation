@@ -66,9 +66,8 @@ public class StateSelectMenuController{
 			leaflet.setLevel(Properties.USA_LEVEL);
 			break;
 			default:
-				return null;
+				return null; 
 		}
-		
 		
 		MapEntity<DistrictEntity> districts = new MapEntity<DistrictEntity>();
 		districts.setFeatures(districtService.getState(id));
