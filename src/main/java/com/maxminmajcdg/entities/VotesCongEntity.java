@@ -18,6 +18,7 @@ public abstract class VotesCongEntity extends VoteEntity {
 	@Column(name="geom_ID")
 	private Long geomID;
 	
+	@Override
 	public Long getGeomID() {
 		return geomID;
 	}
