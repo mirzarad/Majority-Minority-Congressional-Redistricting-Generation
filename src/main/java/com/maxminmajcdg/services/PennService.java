@@ -37,8 +37,17 @@ public class PennService extends StateService{
 	private PADemographics2018Repository paDemographics2018Repository;
 	
 	@Override
-	public List<PennEntity> getAllPrecincts() {
-		return pennRepository.findAll();
+	public List<PennEntity> getAllPrecincts(ElectionCategory election) {
+		switch(election) {
+		case PRESIDENTIAL2016:
+		case CONGRESSIONAL2016:
+			return pennRepository.findAll();
+		case CONGRESSIONAL2018:
+			return pennRepository.findAll();
+			default:
+				return null;
+			
+		}
 	}
 
 	@Override

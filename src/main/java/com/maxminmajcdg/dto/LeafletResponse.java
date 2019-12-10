@@ -2,11 +2,11 @@ package com.maxminmajcdg.dto;
 
 import com.maxminmajcdg.entities.MapEntity;
 
-public class LeafletResponse<T> {
+public class LeafletResponse {
 	
 	private float[] view;
 	private int level;
-	private MapEntity<T> map;
+	private MapEntity<?> map;
 	
 	public float[] getView() {
 		return view;
@@ -20,10 +20,10 @@ public class LeafletResponse<T> {
 	public void setLevel(int level) {
 		this.level = level;
 	}
-	public MapEntity<T> getMap() {
+	public MapEntity<?> getMap() {
 		return map;
 	}
-	public void setMap(MapEntity<T> map) {
+	public void setMap(MapEntity<?> map) {
 		this.map = map;
 	}
 }

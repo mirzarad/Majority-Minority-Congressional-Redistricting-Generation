@@ -16,7 +16,7 @@ public abstract class StateService {
 	public abstract List<?> getVotes(ElectionCategory election);
 	public abstract Optional<?> getPrecinctDemographicData(ElectionCategory election, Long geomID);
 	public abstract Optional<?> getPrecinctVoteData(ElectionCategory election, Long geomID);
-	public abstract List<?> getAllPrecincts();
+	public abstract List<?> getAllPrecincts(ElectionCategory election);
 	
 	public List<?> getDemographicBloc(ElectionCategory election, float threshold) {
 		List<?> demographics = getDemographics(election);

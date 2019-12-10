@@ -37,8 +37,17 @@ public class CaliService extends StateService{
 	private CADemographics2018Repository caDemographics2018Repository;
 	
 	@Override
-	public List<CaliEntity> getAllPrecincts() {
-		return caliRepository.findAll();
+	public List<CaliEntity> getAllPrecincts(ElectionCategory election) {
+		switch(election) {
+		case PRESIDENTIAL2016:
+		case CONGRESSIONAL2016:
+			return caliRepository.findAll();
+		case CONGRESSIONAL2018:
+			return caliRepository.findAll();
+			default:
+				return null;
+			
+		}
 	}
 
 	@Override
