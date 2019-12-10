@@ -295,4 +295,3 @@ $( function() {
 		}).addTo(map);
 	}
 });
-
