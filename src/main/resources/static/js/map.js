@@ -157,12 +157,15 @@ $( function() {
 		e.preventDefault();
 		districtAjax(this.id);
 		precinctAjax(this.id);
+
 	});
    
 	$("#pennsylvania").on("click",function(e) {
+
 		e.preventDefault();
 		districtAjax(this.id);
 		precinctAjax(this.id);
+		
 	});
    
 	$("#full").on("click",function(e) {
@@ -271,7 +274,6 @@ $( function() {
 			
 				map.setView(view, level)
 				reloadMap(statesData);
-				colorizeFeatures(statesData);
 				districtResponse = response;
 			},
 			error: function(e) {
