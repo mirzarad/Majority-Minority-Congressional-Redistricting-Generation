@@ -1,7 +1,10 @@
 package com.maxminmajcdg.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.thymeleaf.expression.Sets;
 
 import com.maxminmajcdg.dto.DemVotePair;
 import com.maxminmajcdg.dto.DemographicBlocForm;
@@ -57,22 +61,20 @@ public class PhaseController{
 			default:
 				return null;
 		}
-				
-		List<?> demographics = service.getDemographicBloc(election, demographicThreshold);
+			
+		Map<Long, DemographicsEntity> demographics = service.getDemographicBloc(election, demographicThreshold);
+		Set<Long> geomID = demographics.keySet();
+		Map<Long, VoteEntity> votes = service.votesAsBloc(election, geomID, voteThreshold);
+		Set<Long> voteGeomID = votes.keySet();
+		geomID.retainAll(voteGeomID);
 
-		for (Object demographicObject : demographics) {
-			DemographicsEntity demographic = (DemographicsEntity) demographicObject;
-			Long geomID = demographic.getGeomID();
-			if (service.votesAsBloc(election, geomID, voteThreshold)) {
-				DemVotePair data = new DemVotePair();
-				Object voteObject = service.getPrecinctVoteData(election, geomID).get();
-				VoteEntity vote = (VoteEntity) voteObject;
-				data.setDemographics(demographic);
-				data.setVotes(vote);
-				precincts.add(data);
-			}
+		for(Long blocGeomID : geomID) {
+			DemVotePair pair = new DemVotePair();
+			pair.setDemographics(demographics.get(blocGeomID));
+			pair.setVotes(votes.get(blocGeomID));
+			precincts.add(pair);
 		}
-				
+		
 		result.setMessage("Success");
 		result.setResponse(precincts);
 		return result;

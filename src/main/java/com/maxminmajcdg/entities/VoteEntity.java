@@ -10,6 +10,10 @@ public class VoteEntity {
 		return null;
 	}
 	
+	public Long getGeomID() {
+		return null;
+	}
+	
 	public String toString() {
 		return getVotes().toString();
 	}

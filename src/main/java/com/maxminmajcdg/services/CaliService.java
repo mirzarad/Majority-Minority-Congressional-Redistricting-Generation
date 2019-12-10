@@ -2,6 +2,7 @@ package com.maxminmajcdg.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -100,6 +101,20 @@ public class CaliService extends StateService{
 			return caVotesPres2016Repository.findAll();
 		case CONGRESSIONAL2018:
 			return caVotesCong2018Repository.findAll();
+			default:
+				return null;
+		}
+	}
+
+	@Override
+	public List<?> getVotesIn(ElectionCategory election, Set<Long> geomID) {
+		switch(election) {
+		case CONGRESSIONAL2016:
+			return caVotesCong2016Repository.findAllById(geomID);
+		case PRESIDENTIAL2016:
+			return caVotesPres2016Repository.findAllById(geomID);
+		case CONGRESSIONAL2018:
+			return caVotesCong2018Repository.findAllById(geomID);
 			default:
 				return null;
 		}

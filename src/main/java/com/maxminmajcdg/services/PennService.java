@@ -1,13 +1,16 @@
 package com.maxminmajcdg.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.maxminmajcdg.entities.ElectionCategory;
 import com.maxminmajcdg.entities.PennEntity;
+import com.maxminmajcdg.entities.VoteEntity;
 import com.maxminmajcdg.repo.PADemographics2016Repository;
 import com.maxminmajcdg.repo.PADemographics2018Repository;
 import com.maxminmajcdg.repo.PAVotesCong2016Repository;
@@ -104,5 +107,21 @@ public class PennService extends StateService{
 				return null;
 		}
 	}
+
+	@Override
+	public List<?> getVotesIn(ElectionCategory election, Set<Long> geomID) {
+		switch(election) {
+		case CONGRESSIONAL2016:
+			return paVotesCong2016Repository.findAllById(geomID);
+		case PRESIDENTIAL2016:
+			return paVotesPres2016Repository.findAllById(geomID);
+		case CONGRESSIONAL2018:
+			return paVotesCong2018Repository.findAllById(geomID);
+			default:
+				return null;
+		}
+	}
+
+
 	
 }

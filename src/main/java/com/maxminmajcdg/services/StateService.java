@@ -1,8 +1,10 @@
 package com.maxminmajcdg.services;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import com.maxminmajcdg.entities.DemographicCategory;
 import com.maxminmajcdg.entities.DemographicsEntity;
@@ -14,35 +16,39 @@ public abstract class StateService {
 	
 	public abstract List<?> getDemographics(ElectionCategory election);
 	public abstract List<?> getVotes(ElectionCategory election);
+	public abstract List<?> getVotesIn(ElectionCategory election, Set<Long> geomID);
 	public abstract Optional<?> getPrecinctDemographicData(ElectionCategory election, Long geomID);
 	public abstract Optional<?> getPrecinctVoteData(ElectionCategory election, Long geomID);
 	public abstract List<?> getAllPrecincts(ElectionCategory election);
 	
-	public List<?> getDemographicBloc(ElectionCategory election, float threshold) {
+	public Map<Long, DemographicsEntity> getDemographicBloc(ElectionCategory election, float threshold) {
 		List<?> demographics = getDemographics(election);
-		List<DemographicsEntity> demographicBloc = new ArrayList<DemographicsEntity>();
-
+		Map<Long, DemographicsEntity> demographicBloc = new HashMap<Long, DemographicsEntity>();
+		
 		for (Object demographicObject : demographics) {
 			DemographicsEntity demographic = (DemographicsEntity) demographicObject;
 			
 			DemographicCategory maxDemographic = demographic.getMaxVotingDemographic();
 			if (demographic.doesVotingDemographicExceedThreshold(maxDemographic, threshold)) {
-				demographicBloc.add(demographic);
+				demographicBloc.put(demographic.getGeomID(), demographic);
 			}
 		}
 		return demographicBloc;
 	}
 	
-	public boolean votesAsBloc(ElectionCategory election, Long geomID, float threshold) {
-		Optional<?> votesOptional = getPrecinctVoteData(election, geomID);
+	public Map<Long, VoteEntity> votesAsBloc(ElectionCategory election, Set<Long> geomID, float threshold) {
+		List<?> votes = getVotesIn(election, geomID);
+		Map<Long, VoteEntity> voteBlocs = new HashMap<Long, VoteEntity>();
 
-		if (votesOptional == null || !votesOptional.isPresent()) {
-			return false;
+		for (Object voteObject : votes) {
+			VoteEntity vote = (VoteEntity) voteObject;
+			
+			PartyCategory maxVote = vote.getMaxVotingDemographics();
+			if (vote.doesVotingDemographicExceedThreshold(maxVote, threshold)) {
+				voteBlocs.put(vote.getGeomID(), vote);
+			}
 		}
 		
- 		VoteEntity votes = (VoteEntity) votesOptional.get();
-		PartyCategory maxVote = votes.getMaxVotingDemographics();
-		
-		return votes.doesVotingDemographicExceedThreshold(maxVote, threshold);
+		return voteBlocs;
 	}
 }
