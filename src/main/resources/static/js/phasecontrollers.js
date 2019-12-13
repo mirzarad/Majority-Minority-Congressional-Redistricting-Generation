@@ -39,16 +39,13 @@ $(function (){
 			var data = {};
 			data["demographicBlocPercentage"] = $("#phase0-demographic-bloc-measure").val();
 			data["voteBlocPercentage"] = $("#phase0-vote-bloc-measure").val();
-			data["election"] = "PRESIDENTIAL2016";
+			data["election"] = "CONGRESSIONAL2016";
 			data["state"] = "pennsylvania";
 
-			phasePost("runPhase0", data, "1", "Couldn't Start Demographic Bloc Analysis.", phase0);
+			phasePost("phase0", data, "1", "Couldn't Start Demographic Bloc Analysis.", phase0);
 		}
 		else if (is_running == "1") {
-			phasePost("pausePhase0", "", "2", "Couldn't Pause Demographic Bloc Analysis.", phase0);
-		}
-		else if (is_running == "2") {
-			phasePost("resumePhase0", "", "1", "Couldn't Resume Demographic Bloc Analysis.", phase0);
+			//STOP THE CLICKING UNTILL SUCCESS
 		}
 	});
 	
@@ -67,13 +64,10 @@ $(function (){
 									 HISPANIC: $("#phase1-hispanic").is(":checked"),
 									 WHITE: $("#phase1-white").is(":checked")};
 
-			phasePost("runPhase1", data, "1", "Couldn't Start Graph Partitioning.", phase1);
+			phasePost("phase1", data, "1", "Couldn't Start Graph Partitioning.", phase1);
 		}
 		else if (is_running == "1") {
-			phasePost("pausePhase1", "", "2", "Couldn't Pause Graph Partitioning.", phase1);
-		}
-		else if (is_running == "2") {
-			phasePost("resumePhase1", "", "1", "Couldn't Resume Graph Partitioning.", phase1);
+			//STOP THE CLICKING UNTILL SUCCESS
 		}
 	});
 	
@@ -93,13 +87,10 @@ $(function (){
 			data["lopsidedMargins"] = $("#phase2-lopsided-margins-measure").val();
 			data["meanMedianDifference"] = $("#phase2-mean-median-difference-measure").val();
 
-			phasePost("runPhase2", data, "1", "Couldn't Start Simmulated Annealing.", phase2);
+			phasePost("phase2", data, "1", "Couldn't Start Simmulated Annealing.", phase2);
 		}
 		else if (is_running == "1") {
-			phasePost("pausePhase2", "", "2", "Couldn't Pause Simmulated Annealing.", phase2);
-		}
-		else if (is_running == "2") {
-			phasePost("resumePhase2", "", "1", "Couldn't Resume Simmulated Annealing.", phase2);
+			//STOP THE CLICKING UNTILL SUCCESS
 		}
 	});
 });
@@ -118,39 +109,9 @@ function phasePost(path, data, setVal, err, phase) {
 			phase.val(0);
 		},
 		error: function(e) {
-			phase.val(0);
+			phase.val(1);
 			alert(err);
 		}
 	});
 };
 
-$(function (){
-	$('#phase0-stop').on("click",function(e) {
-		e.preventDefault();
-		stopPhase("stopPhase0");
-	});
-	$('#phase1-stop').on("click",function(e) {
-		e.preventDefault();
-		stopPhase("stopPhase1");
-	});
-	$('#phase2-stop').on("click",function(e) {
-		e.preventDefault();
-		stopPhase("stopPhase2");
-	});
-});
-
-function stopPhase(phase) {
-	$.ajax({
-		type: "POST",
-		contentType: "application/json",
-		url: "/phaseController/" + phase,
-		data: "",
-		dataType: 'json',
-		timeout: 600000,
-		success: function(results) {
-		},
-		error: function(e) {
-			alert("Couldn't Stop Phase " + phase + ".");
-		}
-	});
-};

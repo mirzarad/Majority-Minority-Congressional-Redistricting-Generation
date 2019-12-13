@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="cali_votes_2016")
+@Table(name="cali_election16")
 public class CAVotesCong2016Entity extends VotesCongEntity { 
 	
 	public Map<ElectionCategory, Map<PartyCategory, Integer>> getPresVotes() {

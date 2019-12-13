@@ -1,7 +1,6 @@
 package com.maxminmajcdg.services;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.maxminmajcdg.entities.ElectionCategory;
 import com.maxminmajcdg.entities.PennEntity;
-import com.maxminmajcdg.entities.VoteEntity;
 import com.maxminmajcdg.repo.PADemographics2016Repository;
 import com.maxminmajcdg.repo.PADemographics2018Repository;
 import com.maxminmajcdg.repo.PAVotesCong2016Repository;
