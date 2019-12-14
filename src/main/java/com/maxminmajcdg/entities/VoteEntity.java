@@ -24,7 +24,7 @@ public class VoteEntity {
 		Map.Entry<PartyCategory, Integer> maxVote = null;
 		
 		for (Map.Entry<PartyCategory, Integer> vote : votes.entrySet()) {
-			if (maxVote == null || vote.getValue().compareTo(maxVote.getValue()) > 0) {
+			if (vote.getValue() != null && (maxVote == null || vote.getValue().compareTo(maxVote.getValue()) > 0)) {
 				maxVote = vote;
 			}
 		}
@@ -37,7 +37,9 @@ public class VoteEntity {
 		int total = 0;
 		
 		for(Integer i : votes.values()) {
-			total += i;
+			if (i != null) {
+				total += i;
+			}
 		}
 		
 		

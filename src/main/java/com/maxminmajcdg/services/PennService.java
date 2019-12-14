@@ -9,11 +9,13 @@ import org.springframework.stereotype.Service;
 
 import com.maxminmajcdg.entities.ElectionCategory;
 import com.maxminmajcdg.entities.PennEntity;
+import com.maxminmajcdg.entities.PennNeighborEntity;
 import com.maxminmajcdg.repo.PADemographics2016Repository;
 import com.maxminmajcdg.repo.PADemographics2018Repository;
 import com.maxminmajcdg.repo.PAVotesCong2016Repository;
 import com.maxminmajcdg.repo.PAVotesCong2018Repository;
 import com.maxminmajcdg.repo.PAVotesPres2016Repository;
+import com.maxminmajcdg.repo.PennNeighborRepository;
 import com.maxminmajcdg.repo.PennRepository;
 
 @Service
@@ -21,6 +23,9 @@ public class PennService extends StateService{
 	
 	@Autowired
 	private PennRepository pennRepository;
+	
+	@Autowired
+	private PennNeighborRepository pennNeighborRepository;
 	
 	@Autowired
 	private PAVotesCong2016Repository paVotesCong2016Repository;
@@ -46,11 +51,15 @@ public class PennService extends StateService{
 		case CONGRESSIONAL2018:
 			return pennRepository.findAll();
 			default:
-				return null;
-			
+				return null;		
 		}
 	}
 
+	@Override
+	public List<PennNeighborEntity> getNeighbors() {
+		return pennNeighborRepository.findAll();
+	}
+	
 	@Override
 	public Optional<?> getPrecinctVoteData(ElectionCategory election, Long geomID) {
 		switch(election) {
