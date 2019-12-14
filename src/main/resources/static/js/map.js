@@ -9,8 +9,11 @@ $( function() {
 	var districtResponse = null;
 	var precinctResponse = null;
 	
+	
 	var map = L.map('map', {
-		zoomSnap: .05
+		zoomSnap: .05,
+		minZoom: 4,
+		maxZoom: 10,
 	});
 
 	
@@ -97,6 +100,7 @@ $( function() {
 		};
 	}
 	
+	// HIGHLIGHT FEATURE HANDLER --> on mouseover
 	function highlightFeature(e) {
 		var layer = e.target;
 	
@@ -114,15 +118,19 @@ $( function() {
 		info.update(layer.feature.properties);
 	}
 	
+	// RESET HIGHLIGHT BACK TO NORMAL
 	function resetHighlight(e) {
 		geojson.resetStyle(e.target);
 		info.update();
 	}
 	
+	// ZOOM HANDLER
 	function zoomToFeature(e) {
 		map.fitBounds(e.target.getBounds());
 	}
 	
+	
+	// ON EACH FEATURE HANDLER FUNCTION
 	function onEachFeature(feature, layer) {
 		layer.on({
 			mouseover: highlightFeature,
@@ -190,15 +198,6 @@ $( function() {
 		    }
 		console.log("Current Zoom Level =" + zoomlevel)
 	});
-	
-    function colorizeFeatures(data) {
-        var counter = 0;
-        for (var i = 0; i < data.features.length; i++) {
-            data.features[i].properties.color = 'hsl(' + 360 * Math.random() + ', 50%, 50%)';
-            counter += data.features[i].geometry.coordinates[0].length;
-        }
-        return counter;
-    }
 	
 	
 	function usaAjax() {
@@ -290,9 +289,42 @@ $( function() {
 			isInit = false;
 		}
 		geojson = L.vectorGrid.slicer(statesData, {
-			interactive: true,
-			style: style,
-			onEachFeature: onEachFeature
-		}).addTo(map);
+	          rendererFactory: L.canvas.tile,
+	          vectorTileLayerStyles: {
+	            sliced: {
+	              Color: "blue",
+	              fill: true,
+	              fillColor: "blue",
+	              weight: .9
+	            }
+	          },
+	          maxZoom: 22,
+		      indexMaxZoom: 5,
+	          interactive: true,
+	          promoteId: true,
+	          onEachFeature: onEachFeature,
+	          getFeatureId: function(feature) { return feature.properties["id"]}
+	    }).addTo(map);
 	}
+	
+	L.tileLayer.on('mouseover', function(e){
+		var id = 0;
+		var properties = null;
+		console.log(e);
+		if(e.layer.feature){
+			properties = e.layer.feature.properties;
+		}else{
+			properties = e.layer.properties;
+		}
+		if(id != 0){
+			tileLayer.setFeatureStyle(id, {color:"orange",});
+		}
+		id = properties["id"];
+		setTimeout(function(){
+				tileLayer.setFeatureStyle(id,{color: "red"}, 100);
+		});
+	});
+	
+	map.on('mouseover', onEachFeature);
+	
 });

@@ -25,7 +25,7 @@
    
 	<link rel="stylesheet" href="/css/leaflet.css"/>	
 	<link rel="stylesheet" href="/css/home.css"/>
-		<link rel="stylesheet" href="/css/slider.css"/>
+	<link rel="stylesheet" href="/css/slider.css"/>
 
 </head>
 <body>
@@ -39,10 +39,10 @@
             <div class="collapse navbar-collapse right" id="navbarColor01">
             	<ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                  <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
+                  <a id="home-button" class="nav-link ignore-bg" href="home.html" style="font-weight: bold;">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="about.html">About</a>
+                  <a id="about-button" class="nav-link ignore-bg" href="about.html">About</a>
                 </li>
               	</ul>
               <div class="dropdown">
@@ -131,7 +131,7 @@
 			<div class="tabbable" id="phase-tabs">
 				<ul class="nav nav-tabs">
 					<li class="nav-item">
-						<a class="nav-link active show" href="#tab1" data-toggle="tab" id="phase0-tab">Demographic Bloc Analysis</a>
+						<a class="nav-link active" href="#tab1" data-toggle="tab" id="phase0-tab">Demographic Bloc Analysis</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="#tab2" data-toggle="tab" id="phase1-tab">Graph Partitioning</a>
@@ -155,21 +155,35 @@
 							<div class="col-md-12">
 							<br/>
 							<p><span class="badge badge-primary">Demographic Bloc Percentage</span></p>
-									<div class="d-flex justify-content-center my-4">
-									  <span id="slider-text" class="font-weight-bold indigo-text mr-2 mt-1">0</span>
-									  <form class="range-field w-50">
-									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase0-demographic-bloc-measure"/>
-									  </form>
-									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
-							</div>
+							<p>Value:  <span id="phase0-dem-bloc-value">15</span></p>
+								<div class="d-flex justify-content-center my-4">
+								  <span id="slider-text" class="font-weight-bold indigo-text mr-2 mt-1">0</span>
+								  <form class="range-field w-50">
+								    <input  id="phase0-demographic-bloc-measure" class="slider" type="range"  min="0" max="100" value="0" oninput="sliderChange(this.value)"/>
+								  </form>
+								  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
+								</div>
+
 							
-							<p><span class="badge badge-primary">Vote Bloc Population </span></p>
+							<p><span class="badge badge-primary">Vote Bloc Percentage </span></p>
+							<p>Value:  <span id="phase0-voting-bloc-value">0</span></p>
 									<div class="d-flex justify-content-center my-4">
 									  <span id="slider-text" class="font-weight-bold indigo-text mr-2 mt-1">0</span>
 									  <form class="range-field w-50">
-									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase0-vote-bloc-measure"/>
+									    <input class="slider" type="range" value="0" min="0" max="100" id="phase0-vote-bloc-measure">
 									  </form>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
+									</div>
+							
+	<!----------------------------------------------------------------------------------------------------------------------->
+	<!------------------------------------------------- Run Phase 0 --------------------------------------------------------->
+	<!----------------------------------------------------------------------------------------------------------------------->
+	
+							<div class="row">
+								<div class="col-md-12">
+									<input type="hidden" value="0" id="phase0-is-running"/>
+										<button type="button" class="btn btn-success btn-block" id="phase0-run">Run</button> 
+								</div>
 							</div>
 				
 							</div>
@@ -187,18 +201,20 @@
 						<div class="row">
 							<div class="col-md-8">
 							<p><span class="badge badge-primary">Demographic Bloc Percentage</span></p>
+							<p>Value: <span id="phase1-dem-bloc-value">0</span></p>
 									<div class="d-flex justify-content-center my-4">
 									  <span id="slider-text" class="font-weight-bold indigo-text mr-2 mt-1">0</span>
 									  <form class="range-field w-25">
-									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase1-demographic-bloc-measure"/>
+									    <input class="slider" type="range" value="0" min="0" max="100" id="phase1-demographic-bloc-measure"/>
 									  </form>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>
 							<p><span class="badge badge-primary">Vote Bloc Percentage</span></p>
+							<p> Value: <span id="phase1-voting-bloc-value">0</span></p>
 									<div class="d-flex justify-content-center my-4">
 									  <span id="slider-text" class="font-weight-bold indigo-text mr-2 mt-1">0</span>
 									  <form class="range-field w-25">
-									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase1-vote-bloc-measure"/>
+									    <input class="slider" type="range" value="0" min="0" max="100" id="phase1-vote-bloc-measure"/>
 									  </form>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>
@@ -206,24 +222,34 @@
 							<div class="col-md-4">
 							<p><span class="badge badge-primary">Demographic Grouping</span></p>
 								 <div class="checkbox">
-								  <label><input type="checkbox" value="0" id="phase1-asian">Asian</label>
+								  <label class="checkbox-label" style="font-weight: bold;"><input type="checkbox" value="0" id="phase1-asian"> Asian</label>
 								</div>
 								<div class="checkbox">
-								  <label><input type="checkbox" value="0" id="phase1-african">African American</label>
+								  <label class="checkbox-label" style="font-weight: bold;"><input type="checkbox" value="0" id="phase1-african"> African American</label>
 								</div>
 								<div class="checkbox">
-								  <label><input type="checkbox" value="0" id="phase1-hispanic">Hispanic</label>
+								  <label class="checkbox-label" style="font-weight: bold;"><input type="checkbox" value="0" id="phase1-hispanic"> Hispanic</label>
 								</div>
 								<div class="checkbox">
-								  <label><input type="checkbox" value="0" id="phase1-white">White</label>
+								  <label class="checkbox-label" style="font-weight: bold;"><input type="checkbox" value="0" id="phase1-white"> White</label>
 								</div> 
 								<div class="checkbox">
-								  <label><input type="checkbox" value="0" id="phase1-native">Native American</label>
+								  <label class="checkbox-label" style="font-weight: bold;"><input type="checkbox" value="0" id="phase1-native"> Native American</label>
 								</div> 
 								<div class="checkbox">
-								  <label><input type="checkbox" value="0" id="phase1-hawiian">Native Hawiian</label>
+								  <label class="checkbox-label" style="font-weight: bold;"><input type="checkbox" value="0" id="phase1-hawiian"> Native Hawaiian</label>
 								</div> 
 							</div>
+						</div>
+	<!----------------------------------------------------------------------------------------------------------------------->
+	<!------------------------------------------------- Run Phase 1 --------------------------------------------------------->
+	<!----------------------------------------------------------------------------------------------------------------------->
+						
+						<div class="row">
+									<div class="col-md-12">
+										<input type="hidden" value="0" id="phase1-is-running"/>
+											<button type="button" class="btn btn-success btn-block" id="phase1-run">Run</button>
+									</div>
 						</div>
 					</div>
 	<!----------------------------------------------------------------------------------------------------------------------->
@@ -234,32 +260,34 @@
 	<!------------------------------------------------------ PHASE 2 -------------------------------------------------------->
 	<!----------------------------------------------------------------------------------------------------------------------->
 					<div class="tab-pane" id="phase2-content">
-						<br/>
 
 						<div class="row">
 								<div class="col-md-6">
 									<h5 id="measures-text">Political Fairness Measures</h5>
 									<p><span class="badge badge-primary">Efficiency Gap</span></p>
+									<p>Value: <span id="phase2-political-fairness-value">0</span></p>
 									<div class="d-flex justify-content-center my-4">
 									  <span id="slider-text" class="font-weight-bold indigo-text mr-2 mt-1">0</span>
 									  <form class="range-field w-25">
-									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase2-efficiency-gap-measure"/>
+									    <input class="slider" type="range" value="0" min="0" max="100" id="phase2-efficiency-gap-measure"/>
 									  </form>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>
 									<p><span class="badge badge-primary">Lopsided Margins</span></p>
+									<p>Value: <span id="phase2-lopsided-margins-value">0</span></p>
 									<div class="d-flex justify-content-center my-4">
 									  <span id="slider-text" class="font-weight-bold indigo-text mr-2 mt-1">0</span>
 									  <form class="range-field w-25">
-									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase2-lopsided-margins-measure"/>
+									    <input class="slider" type="range" value="0" min="0" max="100" id="phase2-lopsided-margins-measure"/>
 									  </form>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>
 									<p><span class="badge badge-primary">Mean Median Difference</span></p>
+									<p>Value: <span id="phase2-mean-median-difference-value">0</span></p>
 									<div class="d-flex justify-content-center my-4">
 									  <span id="slider-text" class="font-weight-bold indigo-text mr-2 mt-1">0</span>
 									  <form class="range-field w-25">
-									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase2-mean-median-difference-measure"/>
+									    <input class="slider" type="range" value="0" min="0" max="100" id="phase2-mean-median-difference-measure"/>
 									  </form>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>		
@@ -268,42 +296,56 @@
 								<div class="col-md-6">
 									<h5 id="measures-text">Compactness Measures</h5>
 									<p><span class="badge badge-primary">Graph Compactness</span></p>
+									<p>Value: <span id="phase2-graph-compactness-value">0</span> </p>
 									<div class="d-flex justify-content-center my-4">
 									  <span id="slider-text" class="font-weight-bold indigo-text mr-2 mt-1">0</span>
 									  <form class="range-field w-25">
-									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase2-compactness-measure"/>
+									    <input class="slider" type="range" value="0" min="0" max="100" id="phase2-compactness-measure"/>
 									  </form>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>
 									<p><span class="badge badge-primary">Polsby-Popper</span></p>
+									<p>Value: <span id="phase2-polsby-popper-value">0</span> </p>
 									<div class="d-flex justify-content-center my-4">
 									  <span id="slider-text" class="font-weight-bold indigo-text mr-2 mt-1">0</span>
 									  <form class="range-field w-25">
-									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase2-polsby-popper-measure"/>
+									    <input class="slider" type="range" value="0" min="0" max="100" id="phase2-polsby-popper-measure"/>
 									  </form>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>
 									<p><span class="badge badge-primary">Schwartzberg</span></p>
+									<p>Value: <span id="phase2-schwartzberg-value">0</span> </p>
 									<div class="d-flex justify-content-center my-4">
 									  <span id="slider-text" class="font-weight-bold indigo-text mr-2 mt-1">0</span>
 									  <form class="range-field w-25">
-									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase2-schwartzberg-measure"/>
+									    <input class="slider" type="range" value="0" min="0" max="100" id="phase2-schwartzberg-measure"/>
 									  </form>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>
 								</div>	
-								
+
 								<div class="col-md-12">
 									<h5 id="measures-text">Population Equality Measure</h5>
 									<p><span class="badge badge-primary">Population Percent Difference Measure</span></p>
+									<p> Value: <span id="phase2-population-difference-value">0</span> </p>
 									<div class="d-flex justify-content-center my-4">
 									  <span id="slider-text" class="font-weight-bold indigo-text mr-2 mt-1">0</span>
-									  <form class="range-field w-25">
-									    <input class="border-0" type="range" value="0" min="0" max="100" id="phase2-pop-measure"/>
+									  <form class="range-field">
+									    <input class="slider" type="range" value="0" min="0" max="100" id="phase2-pop-measure"/>
 									  </form>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>	
 								</div>
+	<!----------------------------------------------------------------------------------------------------------------------->
+	<!------------------------------------------------- Run Phase 2 --------------------------------------------------------->
+	<!----------------------------------------------------------------------------------------------------------------------->
+						
+	
+						<div class="col-md-12">
+							<input type="hidden" value="0" id="phase2-is-running"/>
+								<button type="button" class="btn btn-success btn-block" id="phase2-run">Run</button>
+						</div>
+
 								
 							</div><!-- END OF PHASE 2 CONTENT  -->
 						</div> <!-- END OF phase 2 tab PANE -->
@@ -316,40 +358,40 @@
 			<div class="container-fluid">
 				<div id="row">
 					<div class="col-4">
-						<h5>State Data</h5>
+						<h5 style="text-decoration:underline;" id="state-data-text">State Data</h5>
 						
-						<p>Republican Votes: </p>
-						<p>Democrat Votes: </p>
-						<p>Independent Votes: </p>
-						<p>Other Votes: </p>
-						<p>Percentage of Representatives: </p>
-						<p>Majority Party: </p>
+						<p id="state-republican-votes">Republican Votes: </p>
+						<p id="state-democratic-votes">Democrat Votes: </p>
+						<p id="state-independent-votes">Independent Votes: </p>
+						<p id="state-other-votes">Other Votes: </p>
+						<p id="state-percentage">Percentage of Representatives: </p>
+						<p id="state-majority-party">Majority Party: </p>
 					</div>
 					
 					<div class="col-4">
-						<h5>District Data</h5>
+						<h5 style="text-decoration:underline;" id="district-data-text">District Data</h5>
 						
-						<p>Population: </p>
-						<p>White: </p>
-						<p>Black: </p>
-						<p>Hispanic: </p>
-						<p>Native American: </p>
-						<p>Asian: </p>
-						<p>Native Hawaiian: </p>
-						<p>Native Alaskan: </p>
+						<p id="district-population">Population: </p>
+						<p id="district-white">White: </p>
+						<p id="district-african-american">African American: </p>
+						<p id="district-hispanic">Hispanic: </p>
+						<p id="district-native-american">Native American: </p>
+						<p id="district-asian">Asian: </p>
+						<p id="district-native-hawaiian">Native Hawaiian: </p>
+						<p id="district-native-alaskan">Native Alaskan: </p>
 					</div>
 					
 					<div class="col-4">
-						<h5>Precinct Data</h5>
+						<h5 style="text-decoration:underline;" id="precinct-data-text">Precinct Data</h5>
 						
-						<p>Population: </p>
-						<p>White: </p>
-						<p>Black: </p>
-						<p>Hispanic: </p>
-						<p>Native American: </p>
-						<p>Asian: </p>
-						<p>Native Hawaiian: </p>
-						<p>Native Alaskan: </p>
+						<p id="precinct-population">Population: </p>
+						<p id="precinct-white">White: </p>
+						<p id="precinct-african-american">African American: </p>
+						<p id="precinct-hispanic">Hispanic: </p>
+						<p id="precinct-native-american">Native American: </p>
+						<p id="precinct-asian">Asian: </p>
+						<p id="precinct-native-hawaiian">Native Hawaiian: </p>
+						<p id="precinct-native-alaskan">Native Alaskan: </p>
 					</div>
 				</div>
 				<div class="tab-pane" id="data-analysis-content">
@@ -360,21 +402,9 @@
 	</div>
 	</div>
 	
-	<!----------------------------------------------------------------------------------------------------------------------->
-	<!--------------------------------------------- Algorithm Button Controls ----------------------------------------------->
-	<!----------------------------------------------------------------------------------------------------------------------->
-	
-	<div class="row">
-		<div class="col-md-12">
-			<input type="hidden" value="0" id="phase0-is-running"/>
-				<button type="button" class="btn btn-success btn-block" id="phase0-run">Run</button> 
-			    <button type="button" class="btn btn-block active disabled btn-danger" id="phase0-stop">Stop</button>
-		</div>
-	</div>
-	
-	<!----------------------------------------------------------------------------------------------------------------------->
-	<!--------------------------------------------- End of new User Interface ----------------------------------------------->
-	<!----------------------------------------------------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------------------------------------------------->
+<!--------------------------------------------- End of new User Interface ----------------------------------------------->
+<!----------------------------------------------------------------------------------------------------------------------->
 
 <!-- END OF CONTAINER -->
 <p id="error"></p>
@@ -384,5 +414,6 @@
     <script src="/js/mainmenucontroller.js"></script>
     <script src="/js/electionselect.js"></script>
     <script src="/js/stateselect.js"></script>
+    <script src="/js/slider.js"></script>
   </body>
 </html>

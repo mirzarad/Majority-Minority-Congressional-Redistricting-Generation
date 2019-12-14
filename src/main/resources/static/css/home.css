@@ -6,13 +6,26 @@ p{
 	color: white;
 }
 
-body {
+body{
  	  height: 100%;
  	  background-color:#2A1B80;
 	  background-repeat: no-repeat;
 	  font-family: sans-serif;
 	  color: #0f222d;
 	  background-size: auto;	  	
+}
+
+/* ************************ */
+/*       NAVBAR LINKS       */
+/* ************************ */
+#home-button{
+	color:white;
+    background: linear-gradient(40deg, #2E4BBF,#1F3280) !important;
+}
+
+#about-button{
+	color:white;
+    background: linear-gradient(40deg, #8097FF,#345AFF) !important;
 }
 
 #map-view-text{
@@ -53,11 +66,68 @@ body {
   transition: .5s ease;
 }
 
-.nav-item{
-	color: white;
-	border-radius: 5px;
-	background-color:#004080;
+/* MAP DATA HEADERS */
+.col-4{
+	margin-top: 8px;
 }
+
+#state-data-text{
+	color:white;
+}
+
+#district-data-text{
+	color:white;	
+}
+
+#precinct-data-text{
+	color:white;	
+}
+
+/* ************************ */
+/* TAB STYLES FOR MAIN MENU */
+/* ************************ */
+
+
+.nav-item{
+	color:white;
+	background-color: #004080;
+}
+
+.nav-item.active{
+	color:black;
+	background-color: white;
+}
+
+/*
+#system-controls-tab{
+	color: white;
+}
+
+#map-data-tab{
+	color: white;
+}
+
+#data-analysis-tab{
+	color: white;
+}
+
+#phase0-tab{
+	color: white;
+}
+
+#phase1-tab{
+	color: white;
+}
+
+#phase2-tab{
+	color: white;
+}
+*/
+
+
+/* ************************ */
+/* TAB STYLES FOR MAIN MENU */
+/* ************************ */
 
 #map-container{
 	display: flex;
@@ -120,24 +190,162 @@ body {
 
 #sys-controls-col{
 	background-image: radial-gradient(farthest-corner at 40px 40px, #255CB3 0%, #4F92FF 100%);
+	height: 890px;
+}
+
+/* **************************** */
+/* TAB STYLES FOR CHECKBOX TEXT */
+/* **************************** */
+.checkbox-label{
+	color:white;
 }
 
 #mmmcdg-navbar{
 	background-image: radial-gradient(farthest-corner at 40px 40px, #255CB3 0%, #4F92FF 100%);
 }
 
-/* Style of slider */
-.range-field input[type=range] {
-    cursor: pointer;
-    position: relative;
-    background-color: transparent;
-    border: none;
-    outline: 0;
-    width: 100%;
-    margin: 15px 0;
-    padding: 0;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border: 1px solid #fff;
+/* ****************************** */
+/* STYLING FOR SLIDER BACKGROUNDS */
+/* ****************************** */
+
+#phase0-demographic-bloc-measure{
+	background: transparent;
+}
+
+#phase0-vote-bloc-measure{
+	background: transparent;
+}
+
+#phase1-demographic-bloc-measure{
+	background: transparent;
+}
+
+#phase1-vote-bloc-measure{
+	background: transparent;
+}
+
+#phase2-efficiency-gap-measure{
+	background: transparent;	
+}
+
+#phase2-lopsided-margins-measure{
+	background: transparent;	
+}
+
+#phase2-mean-median-difference-measure{
+	background: transparent;	
+}
+
+#phase2-compactness-measure{
+	background: transparent;	
+}
+
+#phase2-polsby-popper-measure{
+	background: transparent;	
+}
+
+#phase2-schwartzberg-measure{
+	background: transparent;	
+}
+
+#phase2-pop-measure{
+	background:transparent;
+}
+
+#phase2-pop-measure{
+	background:transparent;
+}
+
+/* ****************************** */
+/* STYLING FOR SLIDER APPEARANCE  */
+/* ****************************** */
+
+input[type=range] {
+  height: 27px;
+  -webkit-appearance: none;
+  margin: 10px 0;
+  width: 100%;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #000000;
+  background: #E8EEFF;
+  border-radius: 1px;
+  border: 0px solid #000000;
+}
+input[type=range]::-webkit-slider-thumb {
+  box-shadow: 2px 2px 2px #1B2AB3;
+  border: 1px solid #737CFF;
+  height: 18px;
+  width: 18px;
+  border-radius: 50px;
+  background: #FCFDFF;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -7px;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #E8EEFF;
+}
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #000000;
+  background: #E8EEFF;
+  border-radius: 1px;
+  border: 0px solid #000000;
+}
+input[type=range]::-moz-range-thumb {
+  box-shadow: 2px 2px 2px #1B2AB3;
+  border: 1px solid #737CFF;
+  height: 18px;
+  width: 18px;
+  border-radius: 50px;
+  background: #FCFDFF;
+  cursor: pointer;
+}
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: #E8EEFF;
+  border: 0px solid #000000;
+  border-radius: 2px;
+  box-shadow: 0px 0px 0px #000000;
+}
+input[type=range]::-ms-fill-upper {
+  background: #E8EEFF;
+  border: 0px solid #000000;
+  border-radius: 2px;
+  box-shadow: 0px 0px 0px #000000;
+}
+input[type=range]::-ms-thumb {
+  margin-top: 1px;
+  box-shadow: 2px 2px 2px #1B2AB3;
+  border: 1px solid #737CFF;
+  height: 18px;
+  width: 18px;
+  border-radius: 50px;
+  background: #FCFDFF;
+  cursor: pointer;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: #E8EEFF;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #E8EEFF;
 }
