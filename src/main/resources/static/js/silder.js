@@ -1,8 +1,14 @@
 /* *************** */
 /*     PHASE 0     */
 /* *************** */
-var phase0DemSlider = $("#phase0-demographic-bloc-measure").val()
-$("#phase0-dem-bloc-value").innerHTML = phase0DemSlider;
+var phase0DemSlider = Document.getElementById("phase0-demographic-bloc-measure"); // Slider
+var phase0DemOutput = Document.getElementById("phase0-dem-bloc-value"); // Output value for phase0 demographic Slider
+
+phase0DemOutput.innerHTML = $("#phase0-demographic-bloc-measure").val();
+
+phase0DemSlider.addEventListener('input', function(){
+	phas0DemOutput.innerHTML = $("#phase0-demographic-bloc-measure").val();
+}, false);
 
 /*
 var phase0VoteSlider = $("#phase0-vote-bloc-measure").val()

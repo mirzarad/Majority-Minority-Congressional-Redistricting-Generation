@@ -155,12 +155,20 @@
 							<div class="col-md-12">
 							<br/>
 							<p><span class="badge badge-primary">Demographic Bloc Percentage</span></p>
-							<p>Value:  <span id="phase0-dem-bloc-value">15</span></p>
+							<p>Value:  <output id="phase0-dem-bloc-value">15</output></p>
 								<div class="d-flex justify-content-center my-4">
 								  <span id="slider-text" class="font-weight-bold indigo-text mr-2 mt-1">0</span>
 								  <form class="range-field w-50">
-								    <input  id="phase0-demographic-bloc-measure" class="slider" type="range"  min="0" max="100" value="0" oninput="sliderChange(this.value)"/>
+								    <input  id="phase0-demographic-bloc-measure" class="slider" type="range"  min="0" max="100">
 								  </form>
+								  <script type="text/javascript">
+								  	var phase0DemSlider = document.getElementById("phase0-demographic-bloc-measure");
+								  	var phase0DemOutput = document.getElementById("phase0-dem-bloc-value");
+								  	phase0DemOutput.innerHTML = phase0DemSlider.value;
+								  	phase0DemSlider.oninput=function(){
+								  		phase0DemOutput.innerHTML=this.value;
+								  	}
+								  </script>
 								  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 								</div>
 
@@ -172,6 +180,14 @@
 									  <form class="range-field w-50">
 									    <input class="slider" type="range" value="0" min="0" max="100" id="phase0-vote-bloc-measure">
 									  </form>
+										<script type="text/javascript">
+										  	var phase0VoteSlider = document.getElementById("phase0-vote-bloc-measure");
+										  	var phase0VoteOutput = document.getElementById("phase0-voting-bloc-value");
+										  	phase0VoteOutput.innerHTML = phase0VoteSlider.value;
+										  	phase0VoteSlider.oninput=function(){
+										  		phase0VoteOutput.innerHTML=this.value;
+										  	}
+								  		</script>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>
 							
@@ -207,6 +223,16 @@
 									  <form class="range-field w-25">
 									    <input class="slider" type="range" value="0" min="0" max="100" id="phase1-demographic-bloc-measure"/>
 									  </form>
+
+								  <script type="text/javascript">
+								  	var phase1DemSlider = document.getElementById("phase1-demographic-bloc-measure");
+								  	var phase1DemOutput = document.getElementById("phase1-dem-bloc-value");
+								  	phase1DemOutput.innerHTML = phase1DemSlider.value;
+								  	phase1DemSlider.oninput=function(){
+								  		phase1DemOutput.innerHTML=this.value;
+								  	}
+								  </script>
+
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>
 							<p><span class="badge badge-primary">Vote Bloc Percentage</span></p>
@@ -216,6 +242,14 @@
 									  <form class="range-field w-25">
 									    <input class="slider" type="range" value="0" min="0" max="100" id="phase1-vote-bloc-measure"/>
 									  </form>
+								  <script type="text/javascript">
+								  	var phase1VoteSlider = document.getElementById("phase1-vote-bloc-measure");
+								  	var phase1VoteOutput = document.getElementById("phase1-voting-bloc-value");
+								  	phase1VoteOutput.innerHTML = phase1VoteSlider.value;
+								  	phase1VoteSlider.oninput=function(){
+								  		phase1VoteOutput.innerHTML=this.value;
+								  	}
+								  </script>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>
 							</div>
@@ -399,6 +433,8 @@
 				</div>
 
 				</div>
+	</div>
+	</div>
 	</div>
 	</div>
 	
