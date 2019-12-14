@@ -305,6 +305,14 @@
 									  <form class="range-field w-25">
 									    <input class="slider" type="range" value="0" min="0" max="100" id="phase2-efficiency-gap-measure"/>
 									  </form>
+									  <script type="text/javascript">
+									  	var phase2EfficiencySlider = document.getElementById("phase2-efficiency-gap-measure");
+									  	var phase2EfficiencyOutput = document.getElementById("phase2-political-fairness-value");
+									  	phase2EfficiencyOutput.innerHTML = phase2EfficiencySlider.value;
+									  	phase2EfficiencySlider.oninput=function(){
+									  		phase2EfficiencyOutput.innerHTML=this.value;
+									  	}
+									  </script>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>
 									<p><span class="badge badge-primary">Lopsided Margins</span></p>
@@ -314,6 +322,14 @@
 									  <form class="range-field w-25">
 									    <input class="slider" type="range" value="0" min="0" max="100" id="phase2-lopsided-margins-measure"/>
 									  </form>
+									  <script type="text/javascript">
+									  	var phase2LopsidedSlider = document.getElementById("phase2-lopsided-margins-measure");
+									  	var phase2LopsidedOutput = document.getElementById("phase2-lopsided-margins-value");
+									  	phase2LopsidedOutput.innerHTML = phase2LopsidedSlider.value;
+									  	phase2LopsidedSlider.oninput=function(){
+									  		phase2LopsidedOutput.innerHTML=this.value;
+									  	}
+									  </script>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>
 									<p><span class="badge badge-primary">Mean Median Difference</span></p>
@@ -323,6 +339,14 @@
 									  <form class="range-field w-25">
 									    <input class="slider" type="range" value="0" min="0" max="100" id="phase2-mean-median-difference-measure"/>
 									  </form>
+									  <script type="text/javascript">
+									  	var phase2MeanMedianSlider = document.getElementById("phase2-mean-median-difference-measure");
+									  	var phase2MeanMedianOutput = document.getElementById("phase2-mean-median-difference-value");
+									  	phase2MeanMedianOutput.innerHTML = phase2MeanMedianSlider.value;
+									  	phase2MeanMedianSlider.oninput=function(){
+									  		phase2MeanMedianOutput.innerHTML=this.value;
+									  	}
+									  </script>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>		
 								</div>
@@ -336,6 +360,14 @@
 									  <form class="range-field w-25">
 									    <input class="slider" type="range" value="0" min="0" max="100" id="phase2-compactness-measure"/>
 									  </form>
+									  <script type="text/javascript">
+									  	var phase2CompactnessSlider = document.getElementById("phase2-compactness-measure");
+									  	var phase2CompactnessOutput = document.getElementById("phase2-graph-compactness-value");
+									  	phase2CompactnessOutput.innerHTML = phase2CompactnessSlider.value;
+									  	phase2compactnessSlider.oninput=function(){
+									  		phase2CompactnessOutput.innerHTML=this.value;
+									  	}
+									  </script>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>
 									<p><span class="badge badge-primary">Polsby-Popper</span></p>
@@ -345,6 +377,14 @@
 									  <form class="range-field w-25">
 									    <input class="slider" type="range" value="0" min="0" max="100" id="phase2-polsby-popper-measure"/>
 									  </form>
+									  <script type="text/javascript">
+									  	var phase2PopperSlider = document.getElementById("phase2-polsby-popper-measure");
+									  	var phase2PopperOutput = document.getElementById("phase2-polsby-popper-value");
+									  	phase2PopperOutput.innerHTML = phase2PopperSlider.value;
+									  	phase2PopperSlider.oninput=function(){
+									  		phase2PopperOutput.innerHTML=this.value;
+									  	}
+									  </script>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>
 									<p><span class="badge badge-primary">Schwartzberg</span></p>
@@ -354,6 +394,14 @@
 									  <form class="range-field w-25">
 									    <input class="slider" type="range" value="0" min="0" max="100" id="phase2-schwartzberg-measure"/>
 									  </form>
+									  <script type="text/javascript">
+									  	var phase2SchwartzburgSlider = document.getElementById("phase2-schwartzberg-measure");
+									  	var phase2SchwartzburgOutput = document.getElementById("phase2-schwartzberg-value");
+									  	phase2SchwartzburgOutput.innerHTML = phase2SchwartzburgSlider.value;
+									  	phase2SchwartzburgSlider.oninput=function(){
+									  		phase2SchwartzburgOutput.innerHTML=this.value;
+									  	}
+									  </script>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>
 								</div>	
@@ -367,6 +415,14 @@
 									  <form class="range-field">
 									    <input class="slider" type="range" value="0" min="0" max="100" id="phase2-pop-measure"/>
 									  </form>
+									  <script type="text/javascript">
+									  	var phase2EqualitySlider = document.getElementById("phase2-pop-measure");
+									  	var phase2EqualityOutput = document.getElementById("phase2-population-difference-value");
+									  	phase2EqualityOutput.innerHTML = phase2EqualitySlider.value;
+									  	phase2EqualitySlider.oninput=function(){
+									  		phase2EqualityOutput.innerHTML=this.value;
+									  	}
+									  </script>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 									</div>	
 								</div>
