@@ -1,7 +1,6 @@
 package com.maxminmajcdg.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.thymeleaf.expression.Sets;
 
 import com.maxminmajcdg.dto.DemVotePair;
 import com.maxminmajcdg.dto.DemographicBlocForm;
@@ -39,13 +37,12 @@ public class PhaseController{
 	@Autowired
 	CaliService caliService;
 	
-	@PostMapping(value = "/runPhase0")
+	@PostMapping(value="/phase0")
 	@ResponseBody
-	public Response<List<DemVotePair>> runPhase0(@RequestBody DemographicBlocForm phase0Form){
-		System.err.println("Running Phase 0: Initial Run");
+	public Response<?> phase0(@RequestBody DemographicBlocForm phase0Form) {
 		Response<List<DemVotePair>> result = new Response<List<DemVotePair>>();
 		List<DemVotePair> precincts = new ArrayList<DemVotePair>();
-		
+			
 		ElectionCategory election = phase0Form.getElection();
 		float demographicThreshold =  phase0Form.getDemographicBlocPercentage();
 		float voteThreshold =  phase0Form.getVoteBlocPercentage();
@@ -61,7 +58,7 @@ public class PhaseController{
 			default:
 				return null;
 		}
-			
+		
 		Map<Long, DemographicsEntity> demographics = service.getDemographicBloc(election, demographicThreshold);
 		Set<Long> geomID = demographics.keySet();
 		Map<Long, VoteEntity> votes = service.votesAsBloc(election, geomID, voteThreshold);
@@ -76,108 +73,37 @@ public class PhaseController{
 		}
 		
 		result.setMessage("Success");
-		result.setResponse(precincts);
+		result.setResponse(precincts);	
+
 		return result;
 	}
-	
-	@PostMapping(value="/pausePhase0")
+		
+	@PostMapping(value = "/phase1")
 	@ResponseBody
-	public ResponseEntity<Response<Object>> pausePhase0() {
-		System.err.println("Pausing Phase 0");
-	    
-		Response<Object> result = new Response<Object>();
-		result.setMessage("Success");
-		return ResponseEntity.ok(result);
-	}
-	
-	@PostMapping(value="/resumePhase0")
-	@ResponseBody
-	public ResponseEntity<Response<Object>> resumePhase0() {
-		System.err.println("Resuming Phase 0");
-		Response<Object> result = new Response<Object>();
-		result.setMessage("Success");
-		return ResponseEntity.ok(result);
-	}
-	
-	@PostMapping(value="/stopPhase0")
-	@ResponseBody
-	public ResponseEntity<Response<Object>> stopPhase0() {
-		System.err.println("Stopping Phase 0");
-		Response<Object> result = new Response<Object>();
-		result.setMessage("Success");
-		return ResponseEntity.ok(result);
-	}
-
-	@PostMapping(value = "/runPhase1")
-	@ResponseBody
-	public ResponseEntity<Response<Object>> runPhase1(@RequestBody GraphPartitioningForm phase1Form, HttpSession session){
+	public ResponseEntity<Response<Object>> phase1(@RequestBody GraphPartitioningForm phase1Form, HttpSession session){
 		System.err.println("Running Phase 1: Initial Run");
 		Response<Object> result = new Response<Object>();
 		result.setMessage("Success");
 		return ResponseEntity.ok(result);
 	}
 	
-	@PostMapping(value="/pausePhase1")
+	@PostMapping(value = "/phase2/iterate")
 	@ResponseBody
-	public ResponseEntity<Response<Object>> pausePhase1() {
-		System.err.println("Pausing Phase 1");
-		Response<Object> result = new Response<Object>();
-		result.setMessage("Success");
-		return ResponseEntity.ok(result);
-	}
-	
-	@PostMapping(value="/resumePhase1")
-	@ResponseBody
-	public ResponseEntity<Response<Object>> resumePhase1() {
-		System.err.println("Resuming Phase 1");
-		Response<Object> result = new Response<Object>();
-		result.setMessage("Success");
-		return ResponseEntity.ok(result);
-	}
-	
-	@PostMapping(value="/stopPhase1")
-	@ResponseBody
-	public ResponseEntity<Response<Object>> stopPhase1() {
-		System.err.println("Stopping Phase 1");
-		Response<Object> result = new Response<Object>();
-		result.setMessage("Success");
-		return ResponseEntity.ok(result);
-	}
-	
-	@PostMapping(value = "/runPhase2")
-	@ResponseBody
-	public ResponseEntity<Response<Object>> runPhase2(@RequestBody SimmulatedAnnealingForm phase2Form, HttpSession session){
+	public ResponseEntity<Response<Object>> phase2Iterate(@RequestBody SimmulatedAnnealingForm phase2Form, HttpSession session){
 		System.err.println("Running Phase 2: Initial Run");
 		Response<Object> result = new Response<Object>();
 		result.setMessage("Success");
 		return ResponseEntity.ok(result);
 	}
 	
-	@PostMapping(value="/pausePhase2")
+	@PostMapping(value = "/phase2/entire")
 	@ResponseBody
-	public ResponseEntity<Response<Object>> pausePhase2() {
-		System.err.println("Pausing Phase 2");
+	public ResponseEntity<Response<Object>> phase2Entire(@RequestBody SimmulatedAnnealingForm phase2Form, HttpSession session){
+		System.err.println("Running Phase 2: Initial Run");
 		Response<Object> result = new Response<Object>();
 		result.setMessage("Success");
 		return ResponseEntity.ok(result);
 	}
-	
-	@PostMapping(value="/resumePhase2")
-	@ResponseBody
-	public ResponseEntity<Response<Object>> resumePhase2() {
-		System.err.println("Resuming Phase 2");
-		Response<Object> result = new Response<Object>();
-		result.setMessage("Success");
-		return ResponseEntity.ok(result);
-	}
-	
-	@PostMapping(value="/stopPhase2")
-	@ResponseBody
-	public ResponseEntity<Response<Object>> stopPhase2() {
-		System.err.println("Stopping Phase 2");
-		Response<Object> result = new Response<Object>();
-		result.setMessage("Success");
-		return ResponseEntity.ok(result);
-	}
+
 	
 }

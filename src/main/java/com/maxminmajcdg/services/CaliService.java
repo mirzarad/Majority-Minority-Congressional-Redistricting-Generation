@@ -83,7 +83,6 @@ public class CaliService extends StateService{
 		switch(election) {
 		case CONGRESSIONAL2016:
 		case PRESIDENTIAL2016:
-			System.out.println(caDemographics2016Repository.findAll().get(0));
 			return caDemographics2016Repository.findAll();
 		case CONGRESSIONAL2018:
 			return caDemographics2018Repository.findAll();
