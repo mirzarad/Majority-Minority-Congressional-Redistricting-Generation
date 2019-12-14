@@ -7,20 +7,23 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.maxminmajcdg.entities.CaliEntity;
 import com.maxminmajcdg.entities.ElectionCategory;
 import com.maxminmajcdg.repo.CADemographics2016Repository;
 import com.maxminmajcdg.repo.CADemographics2018Repository;
 import com.maxminmajcdg.repo.CAVotesCong2016Repository;
 import com.maxminmajcdg.repo.CAVotesCong2018Repository;
 import com.maxminmajcdg.repo.CAVotesPres2016Repository;
-import com.maxminmajcdg.repo.CaliRepository;
+import com.maxminmajcdg.repo.CaliRepository2016;
+import com.maxminmajcdg.repo.CaliRepository2018;
 
 @Service
 public class CaliService extends StateService{
 	
 	@Autowired
-	private CaliRepository caliRepository;
+	private CaliRepository2016 cali2016Repository;
+	
+	@Autowired
+	private CaliRepository2018 cali2018Repository;
 	
 	@Autowired
 	private CAVotesCong2016Repository caVotesCong2016Repository;
@@ -38,13 +41,13 @@ public class CaliService extends StateService{
 	private CADemographics2018Repository caDemographics2018Repository;
 	
 	@Override
-	public List<CaliEntity> getAllPrecincts(ElectionCategory election) {
+	public List<?> getAllPrecincts(ElectionCategory election) {
 		switch(election) {
 		case PRESIDENTIAL2016:
 		case CONGRESSIONAL2016:
-			return caliRepository.findAll();
+			return cali2016Repository.findAll();
 		case CONGRESSIONAL2018:
-			return caliRepository.findAll();
+			return cali2018Repository.findAll();
 			default:
 				return null;
 			
@@ -117,5 +120,11 @@ public class CaliService extends StateService{
 			default:
 				return null;
 		}
+	}
+
+	@Override
+	public List<?> getNeighbors() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

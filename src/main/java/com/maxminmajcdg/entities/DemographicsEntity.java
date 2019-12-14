@@ -20,67 +20,67 @@ public abstract class DemographicsEntity {
 	
 	@Column(name="TAPERSONS")
 	@JsonIgnore
-	private double totalPopulation;
+	private Double totalPopulation;
 	
 	@Column(name="TAHISPANIC")
 	@JsonIgnore
-	private double totalHispanicPopulation;
+	private Double totalHispanicPopulation;
 	
 	@Column(name="TAWHITEALN")
 	@JsonIgnore
-	private double totalWhitePopulation;
+	private Double totalWhitePopulation;
 	
 	@Column(name="TABLACKALN")
 	@JsonIgnore
-	private double totalBlackPopulation;
+	private Double totalBlackPopulation;
 	
 	@Column(name="TAAMINDALN")
 	@JsonIgnore
-	private double totalNativePopulation;
+	private Double totalNativePopulation;
 	
 	@Column(name="TAOTHERALN")
 	@JsonIgnore
-	private double totalOtherPopulation;
+	private Double totalOtherPopulation;
 	
 	@Column(name="TANHPOALN")
 	@JsonIgnore
-	private double totalNativeHawiianPopulation;
+	private Double totalNativeHawiianPopulation;
 	
 	@Column(name="TAASIANALN")
 	@JsonIgnore
-	private double totalAsianPopulation;
+	private Double totalAsianPopulation;
 	
 	@Column(name="VAPERSONS")
 	@JsonIgnore
-	private double votingPopulation;
+	private Double votingPopulation;
 	
 	@Column(name="VAHISPANIC")
 	@JsonIgnore
-	private double votingHispanicPopulation;
+	private Double votingHispanicPopulation;
 	
 	@Column(name="VAWHITEALN")
 	@JsonIgnore
-	private double votingWhitePopulation;
+	private Double votingWhitePopulation;
 	
 	@Column(name="VABLACKALN")
 	@JsonIgnore
-	private double votingBlackPopulation;
+	private Double votingBlackPopulation;
 	
 	@Column(name="VAAIANALN")
 	@JsonIgnore
-	private double votingNativePopulation;
+	private Double votingNativePopulation;
 	
 	@Column(name="VAOTHERALN")
 	@JsonIgnore
-	private double votingOtherPopulation;
+	private Double votingOtherPopulation;
 	
 	@Column(name="VANHPOALN")
 	@JsonIgnore
-	private double votingNativeHawiianPopulation;
+	private Double votingNativeHawiianPopulation;
 	
 	@Column(name="VAASIANALN")
 	@JsonIgnore
-	private double votingAsianPopulation;
+	private Double votingAsianPopulation;
 	
 	public Map<DemographicCategory, Double> getTotalDemographics() {
 		Map<DemographicCategory, Double> demographics = new HashMap<DemographicCategory, Double>();

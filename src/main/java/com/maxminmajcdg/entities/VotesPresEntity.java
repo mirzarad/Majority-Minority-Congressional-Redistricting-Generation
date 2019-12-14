@@ -24,19 +24,19 @@ public abstract class VotesPresEntity extends VoteEntity {
 	
 	@Column(name="PRESD")
 	@JsonIgnore
-	private int presidentialDemocratic;
+	private Integer presidentialDemocratic;
 	
 	@Column(name="PRESR")
 	@JsonIgnore
-	private int presidentialRepublican;
+	private Integer presidentialRepublican;
 	
 	@Column(name="PRESG")
 	@JsonIgnore
-	private int presidentialGreen;
+	private Integer presidentialGreen;
 	
 	@Column(name="PRESI")
 	@JsonIgnore
-	private int presidentialIndependent;
+	private Integer presidentialIndependent;
 	
 	@JsonIgnore
 	public Map<PartyCategory, Integer> getVotes() {

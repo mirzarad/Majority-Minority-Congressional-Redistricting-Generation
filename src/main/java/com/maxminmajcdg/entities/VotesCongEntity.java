@@ -25,19 +25,19 @@ public abstract class VotesCongEntity extends VoteEntity {
 	
 	@Column(name="CONGD")
 	@JsonIgnore
-	private int congressionalDemocratic;
+	private Integer congressionalDemocratic;
 	
 	@Column(name="CONGR")
 	@JsonIgnore
-	private int congressionalRepublican;
+	private Integer congressionalRepublican;
 	
 	@Column(name="CONGG")
 	@JsonIgnore
-	private int congressionalGreen;
+	private Integer congressionalGreen;
 	
 	@Column(name="CONGI")
 	@JsonIgnore
-	private int congressionalIndependent;
+	private Integer congressionalIndependent;
 	
 	@JsonIgnore
 	@Override

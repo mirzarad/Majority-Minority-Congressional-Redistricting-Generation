@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +20,7 @@ import com.maxminmajcdg.dto.Response;
 import com.maxminmajcdg.dto.SimmulatedAnnealingForm;
 import com.maxminmajcdg.entities.DemographicsEntity;
 import com.maxminmajcdg.entities.ElectionCategory;
+import com.maxminmajcdg.entities.PennNeighborEntity;
 import com.maxminmajcdg.entities.VoteEntity;
 import com.maxminmajcdg.services.CaliService;
 import com.maxminmajcdg.services.PennService;
@@ -40,6 +39,8 @@ public class PhaseController{
 	@PostMapping(value="/phase0")
 	@ResponseBody
 	public Response<?> phase0(@RequestBody DemographicBlocForm phase0Form) {
+		System.err.println("PHASE 0 " + phase0Form.getState() + " " + phase0Form.getElection());		
+		
 		Response<List<DemVotePair>> result = new Response<List<DemVotePair>>();
 		List<DemVotePair> precincts = new ArrayList<DemVotePair>();
 			
@@ -80,16 +81,19 @@ public class PhaseController{
 		
 	@PostMapping(value = "/phase1")
 	@ResponseBody
-	public ResponseEntity<Response<Object>> phase1(@RequestBody GraphPartitioningForm phase1Form, HttpSession session){
+	public Response<?> phase1(@RequestBody GraphPartitioningForm phase1Form){
 		System.err.println("Running Phase 1: Initial Run");
-		Response<Object> result = new Response<Object>();
+		Response<List<PennNeighborEntity>> result = new Response<List<PennNeighborEntity>>();
+		List<PennNeighborEntity> p = pennService.getNeighbors();
+		//System.out.println(p.get(0));
 		result.setMessage("Success");
-		return ResponseEntity.ok(result);
+		result.setResponse(p);
+		return result;
 	}
 	
 	@PostMapping(value = "/phase2/iterate")
 	@ResponseBody
-	public ResponseEntity<Response<Object>> phase2Iterate(@RequestBody SimmulatedAnnealingForm phase2Form, HttpSession session){
+	public ResponseEntity<Response<Object>> phase2Iterate(@RequestBody SimmulatedAnnealingForm phase2Form){
 		System.err.println("Running Phase 2: Initial Run");
 		Response<Object> result = new Response<Object>();
 		result.setMessage("Success");
@@ -98,7 +102,7 @@ public class PhaseController{
 	
 	@PostMapping(value = "/phase2/entire")
 	@ResponseBody
-	public ResponseEntity<Response<Object>> phase2Entire(@RequestBody SimmulatedAnnealingForm phase2Form, HttpSession session){
+	public ResponseEntity<Response<Object>> phase2Entire(@RequestBody SimmulatedAnnealingForm phase2Form){
 		System.err.println("Running Phase 2: Initial Run");
 		Response<Object> result = new Response<Object>();
 		result.setMessage("Success");

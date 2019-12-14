@@ -32,9 +32,6 @@ public class MapController{
 	@Autowired
 	CaliService caliService;
 	
-	//@Autowired
-	//CAVotesService caVotes;
-	
 	@RequestMapping(value="/stateHover/full/{id}/{election}", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<Response<Map<?, ?>>> onHoverState(@PathVariable(value="id") String stateId) {
