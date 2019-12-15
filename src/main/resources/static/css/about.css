@@ -1,0 +1,42 @@
+
+/* ************************ */
+/*       NAVBAR LINKS       */
+/* ************************ */
+#home-button2{
+	color:white;
+	background: #3902cc;
+}
+
+#about-button2{
+	color: white;
+	background: #2A1B80;
+	box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.4);
+}
+
+#about-header{
+	color:white;
+}
+
+#background-header-text{
+	color:white;
+}
+
+#legal-guidelines-header-text{
+	color:white;
+}
+
+#cali-legal-header{
+	color:white;
+}
+
+#penn-legal-header{
+	color:white;
+}
+
+#penn-rules-text{
+	color:white;
+}
+
+#cali-rules-text{
+	color:white;
+}

@@ -39,10 +39,10 @@
             <div class="collapse navbar-collapse right" id="navbarColor01">
             	<ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                  <a id="home-button" class="nav-link ignore-bg" href="home.html" style="font-weight: bold;">Home <span class="sr-only">(current)</span></a>
+                  <a id="home-button" class="nav-link ignore-bg" href="home" style="font-weight: bold;">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                  <a id="about-button" class="nav-link ignore-bg" href="about.html">About</a>
+                  <a id="about-button" class="nav-link ignore-bg" href="about">About</a>
                 </li>
               	</ul>
               <div class="dropdown">
@@ -364,7 +364,7 @@
 									  	var phase2CompactnessSlider = document.getElementById("phase2-compactness-measure");
 									  	var phase2CompactnessOutput = document.getElementById("phase2-graph-compactness-value");
 									  	phase2CompactnessOutput.innerHTML = phase2CompactnessSlider.value;
-									  	phase2compactnessSlider.oninput=function(){
+									  	phase2CompactnessSlider.oninput=function(){
 									  		phase2CompactnessOutput.innerHTML=this.value;
 									  	}
 									  </script>

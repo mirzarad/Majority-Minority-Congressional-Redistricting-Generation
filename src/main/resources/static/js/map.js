@@ -35,7 +35,7 @@ $( function() {
 	};
 	
 	info.update = function (props) {
-		this._div.innerHTML = '<h5>The Polsby-Popper ratio</h5>' +  (props ?
+		this._div.innerHTML = '<h5>State:</h5>' +  (props ?
 			'<b>' + props.name + '</b><br />' + props.score + ' <sup></sup>'
 			: 'Hover over a state');
 	};

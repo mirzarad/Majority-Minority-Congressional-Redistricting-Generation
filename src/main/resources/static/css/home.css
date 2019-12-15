@@ -19,13 +19,14 @@ body{
 /*       NAVBAR LINKS       */
 /* ************************ */
 #home-button{
-	color:white;
-    background: linear-gradient(40deg, #2E4BBF,#1F3280) !important;
+	color: white;
+	background: #2A1B80;
+	 box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.4);
 }
 
 #about-button{
 	color:white;
-    background: linear-gradient(40deg, #8097FF,#345AFF) !important;
+	background: #3902cc;
 }
 
 #map-view-text{
