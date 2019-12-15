@@ -63,6 +63,7 @@ public class PhaseController{
 		
 		Set<Long> geomID = demographics.keySet();
 		Map<Long, VoteEntity> votes = service.votesAsBloc(election, geomID, voteThreshold);
+
 		Set<Long> voteGeomID = votes.keySet();
 		geomID.retainAll(voteGeomID);
 		

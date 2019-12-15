@@ -24,23 +24,23 @@ public abstract class VotesPresEntity extends VoteEntity {
 	
 	@Column(name="PRESD")
 	@JsonIgnore
-	private Integer presidentialDemocratic;
+	private Double presidentialDemocratic;
 	
 	@Column(name="PRESR")
 	@JsonIgnore
-	private Integer presidentialRepublican;
+	private Double presidentialRepublican;
 	
 	@Column(name="PRESG")
 	@JsonIgnore
-	private Integer presidentialGreen;
+	private Double presidentialGreen;
 	
 	@Column(name="PRESI")
 	@JsonIgnore
-	private Integer presidentialIndependent;
+	private Double presidentialIndependent;
 	
 	@JsonIgnore
-	public Map<PartyCategory, Integer> getVotes() {
-		Map<PartyCategory, Integer> votes = new HashMap<PartyCategory, Integer>();
+	public Map<PartyCategory, Double> getVotes() {
+		Map<PartyCategory, Double> votes = new HashMap<PartyCategory, Double>();
 
 		votes.put(PartyCategory.DEMOCRATIC, presidentialDemocratic);
 		votes.put(PartyCategory.REPUBLICAN, presidentialRepublican);

@@ -25,24 +25,24 @@ public abstract class VotesCongEntity extends VoteEntity {
 	
 	@Column(name="CONGD")
 	@JsonIgnore
-	private Integer congressionalDemocratic;
+	private Double congressionalDemocratic;
 	
 	@Column(name="CONGR")
 	@JsonIgnore
-	private Integer congressionalRepublican;
+	private Double congressionalRepublican;
 	
 	@Column(name="CONGG")
 	@JsonIgnore
-	private Integer congressionalGreen;
+	private Double congressionalGreen;
 	
 	@Column(name="CONGI")
 	@JsonIgnore
-	private Integer congressionalIndependent;
+	private Double congressionalIndependent;
 	
 	@JsonIgnore
 	@Override
-	public Map<PartyCategory, Integer> getVotes() {
-		Map<PartyCategory, Integer> votes = new HashMap<PartyCategory, Integer>();
+	public Map<PartyCategory, Double> getVotes() {
+		Map<PartyCategory, Double> votes = new HashMap<PartyCategory, Double>();
 		
 		votes.put(PartyCategory.DEMOCRATIC, congressionalDemocratic);
 		votes.put(PartyCategory.REPUBLICAN, congressionalRepublican);

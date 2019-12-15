@@ -289,7 +289,7 @@ $( function() {
 			isInit = false;
 		}
 		geojson = L.vectorGrid.slicer(statesData, {
-	          rendererFactory: L.canvas.tile,
+	          rendererFactory: L.svg.tile,
 	          vectorTileLayerStyles: {
 	            sliced: {
 	              Color: "blue",
@@ -304,27 +304,29 @@ $( function() {
 	          promoteId: true,
 	          onEachFeature: onEachFeature,
 	          getFeatureId: function(feature) { return feature.properties["id"]}
-	    }).addTo(map);
-	}
-	
-	L.tileLayer.on('mouseover', function(e){
-		var id = 0;
-		var properties = null;
-		console.log(e);
-		if(e.layer.feature){
-			properties = e.layer.feature.properties;
-		}else{
-			properties = e.layer.properties;
-		}
-		if(id != 0){
-			tileLayer.setFeatureStyle(id, {color:"orange",});
-		}
-		id = properties["id"];
-		setTimeout(function(){
-				tileLayer.setFeatureStyle(id,{color: "red"}, 100);
+	    }).addTo(map).on('mouseover', function(e){
+			var id = 0;
+			var properties = null;
+			console.log(e);
+		
+			if(e.layer.feature){
+				properties = e.layer.feature.properties;
+			}else{
+				properties = e.layer.properties;
+			}
+			if(id != 0){
+				geojson.setFeatureStyle(id, {color:"orange",});
+			}
+			id = properties["id"]; 
+
+			setTimeout(function(){
+					geojson.setFeatureStyle(id,{color: "red"}, 100);
+			});
+
 		});
-	});
+	}
+
 	
-	map.on('mouseover', onEachFeature);
+	//map.on('mouseover', onEachFeature);
 	
 });

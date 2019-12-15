@@ -86,6 +86,7 @@ public class PennEntity extends StateEntity{
 	
 	public Map<String, String> getProperties() {
 		Map<String, String> properties = new HashMap<String, String>();
+		properties.put("id", id.toString());
 		properties.put("Name", mcdName);
 		properties.put("County Name", countyName);
 		return properties;

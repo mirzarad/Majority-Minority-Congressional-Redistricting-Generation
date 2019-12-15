@@ -18,13 +18,13 @@ public class CaliEntity2018 extends StateEntity{
 	@Id
 	@GeneratedValue
 	@Column(name="OGR_FID")
-	private int id;
+	private Long id;
 	
 	@Column(name="fid")
 	@JsonIgnore
 	private int fid;
 	
-	public int getID() {
+	public Long getID() {
 		return id;
 	}
 	
@@ -38,6 +38,7 @@ public class CaliEntity2018 extends StateEntity{
 	
 	public Map<String, String> getProperties() {
 		Map<String, String> properties = new HashMap<String, String>();
+		properties.put("id", id.toString());
 		return properties;
 	}
 	

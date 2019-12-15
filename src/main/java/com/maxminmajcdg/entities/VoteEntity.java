@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class VoteEntity {
 	
-	public Map<PartyCategory, Integer> getVotes() {
+	public Map<PartyCategory, Double> getVotes() {
 		return null;
 	}
 	
@@ -20,10 +20,10 @@ public class VoteEntity {
 	
 	@JsonIgnore
 	public PartyCategory getMaxVotingDemographics() {
-		Map<PartyCategory, Integer> votes = getVotes();
-		Map.Entry<PartyCategory, Integer> maxVote = null;
+		Map<PartyCategory, Double> votes = getVotes();
+		Map.Entry<PartyCategory, Double> maxVote = null;
 		
-		for (Map.Entry<PartyCategory, Integer> vote : votes.entrySet()) {
+		for (Map.Entry<PartyCategory, Double> vote : votes.entrySet()) {
 			if (vote.getValue() != null && (maxVote == null || vote.getValue().compareTo(maxVote.getValue()) > 0)) {
 				maxVote = vote;
 			}
@@ -33,10 +33,10 @@ public class VoteEntity {
 	
 	@JsonIgnore
 	public double getVotePercentage(PartyCategory party) {
-		Map<PartyCategory, Integer> votes = getVotes();
+		Map<PartyCategory, Double> votes = getVotes();
 		int total = 0;
 		
-		for(Integer i : votes.values()) {
+		for(Double i : votes.values()) {
 			if (i != null) {
 				total += i;
 			}
