@@ -56,8 +56,8 @@ public class PennService extends StateService{
 	}
 
 	@Override
-	public List<PennNeighborEntity> getNeighbors() {
-		return pennNeighborRepository.findAll();
+	public List<PennNeighborEntity> getNeighbors(ElectionCategory election) {
+		return pennNeighborRepository.findAllDistinct();
 	}
 	
 	@Override

@@ -20,7 +20,6 @@ import com.maxminmajcdg.dto.Response;
 import com.maxminmajcdg.dto.SimmulatedAnnealingForm;
 import com.maxminmajcdg.entities.DemographicsEntity;
 import com.maxminmajcdg.entities.ElectionCategory;
-import com.maxminmajcdg.entities.PennNeighborEntity;
 import com.maxminmajcdg.entities.VoteEntity;
 import com.maxminmajcdg.services.CaliService;
 import com.maxminmajcdg.services.PennService;
@@ -83,11 +82,23 @@ public class PhaseController{
 	@ResponseBody
 	public Response<?> phase1(@RequestBody GraphPartitioningForm phase1Form){
 		System.err.println("Running Phase 1: Initial Run");
-		Response<List<PennNeighborEntity>> result = new Response<List<PennNeighborEntity>>();
-		List<PennNeighborEntity> p = pennService.getNeighbors();
-		//System.out.println(p.get(0));
+		Response<List<?>> result = new Response<List<?>>();
+		
+		StateService service;
+		switch(phase1Form.getState()) {
+		case PENN:
+			service = pennService;
+			break;
+		case CALI:
+			service = caliService;
+			break;
+			default:
+				return null;
+		}
+		List<?> neighbors = service.getNeighbors(phase1Form.getElection());	
+
 		result.setMessage("Success");
-		result.setResponse(p);
+		//result.setResponse(p);
 		return result;
 	}
 	

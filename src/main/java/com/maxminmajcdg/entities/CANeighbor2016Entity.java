@@ -15,44 +15,34 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="pa_neighbors_graph")
-public class PennNeighborEntity extends NeighborEntity{
+@Table(name="cali_neighbors_16")
+public class CANeighbor2016Entity extends NeighborEntity{
 	
 	@ElementCollection
-	@CollectionTable(name="pa_neighbors_graph", joinColumns = { @JoinColumn(name = "src_ID") })
+	@CollectionTable(name="cali_neighbors_16", joinColumns = { @JoinColumn(name = "src_ID") })
 	@Column(name="nbr_ID")
 	private List<Long> neighbors;
 	
 	@OneToMany
 	@JoinColumn(name="geom_ID", referencedColumnName="src_ID")
 	@JsonIgnore
-	private List<PAVotesCong2016Entity> paVotesCong2016;
-	
-	//@OneToMany
-	//@JoinColumn(name="geom_ID")
-	//@JsonIgnore
-	//private List<PAVotesCong2018Entity> paVotesCong2018;
+	private List<CAVotesCong2016Entity> caVotesCong2016;
 	
 	@OneToMany
 	@JoinColumn(name="geom_ID", referencedColumnName="src_ID")
 	@JsonIgnore
-	private List<PAVotesPres2016Entity> paVotesPres2016;
+	private List<CAVotesPres2016Entity> caVotesPres2016;
 	
 	@OneToMany
 	@JoinColumn(name="geom_ID", referencedColumnName="src_ID")
 	@JsonIgnore
-	private List<PADemographics2016Entity> paDemographics2016;
-	
-	@OneToMany
-	@JoinColumn(name="geom_ID", referencedColumnName="src_ID")
-	@JsonIgnore
-	private List<PADemographics2018Entity> paDemographics2018;
+	private List<CADemographics2016Entity> caDemographics2016;
 
 	@Override
 	public Map<ElectionCategory, List<?>> getVotes() {
 		Map<ElectionCategory, List<?>> votes = new HashMap<ElectionCategory, List<?>>();
-		votes.put(ElectionCategory.CONGRESSIONAL2016, paVotesCong2016);
-		votes.put(ElectionCategory.PRESIDENTIAL2016, paVotesPres2016);
+		votes.put(ElectionCategory.CONGRESSIONAL2016, caVotesCong2016);
+		votes.put(ElectionCategory.PRESIDENTIAL2016, caVotesPres2016);
 		votes.put(ElectionCategory.CONGRESSIONAL2018, null);
 		return votes;
 	}
@@ -60,9 +50,9 @@ public class PennNeighborEntity extends NeighborEntity{
 	@Override
 	public Map<ElectionCategory, List<?>> getDemographics() {
 		Map<ElectionCategory, List<?>> demographics = new HashMap<ElectionCategory, List<?>>();
-		demographics.put(ElectionCategory.CONGRESSIONAL2016, paDemographics2016);
-		demographics.put(ElectionCategory.PRESIDENTIAL2016, paDemographics2016);
-		demographics.put(ElectionCategory.CONGRESSIONAL2018, paDemographics2018);
+		demographics.put(ElectionCategory.CONGRESSIONAL2016, caDemographics2016);
+		demographics.put(ElectionCategory.PRESIDENTIAL2016, caDemographics2016);
+		demographics.put(ElectionCategory.CONGRESSIONAL2018, null);
 		return demographics;
 	}
 
