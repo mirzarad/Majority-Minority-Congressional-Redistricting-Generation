@@ -302,28 +302,29 @@ $( function() {
 		      indexMaxZoom: 5,
 	          interactive: true,
 	          promoteId: true,
-	          onEachFeature: onEachFeature,
 	          getFeatureId: function(feature) { return feature.properties["id"]}
 	    }).addTo(map);
-	}
-	
-	L.tileLayer.on('mouseover', function(e){
-		var id = 0;
-		var properties = null;
-		console.log(e);
-		if(e.layer.feature){
-			properties = e.layer.feature.properties;
-		}else{
-			properties = e.layer.properties;
-		}
-		if(id != 0){
-			tileLayer.setFeatureStyle(id, {color:"orange",});
-		}
-		id = properties["id"];
-		setTimeout(function(){
-				tileLayer.setFeatureStyle(id,{color: "red"}, 100);
+		geojson.on('click', function(e) {
+			console.log(e);
+			if (e.layer.feature) {
+				var prop = e.layer.feature.properties;
+			}else {
+				var prop = e.layer.properties;
+			}
+			if (id != 0) {
+				tileLayer.setFeatureStyle(id, {
+					color:"orange",
+					weight: .5,
+				});
+			}
+			id = prop["cartodb_id"];
+			setTimeout(function() {
+				tileLayer.setFeatureStyle(id, {
+					color: "red"
+				}, 100);
+			});
 		});
-	});
+	}
 	
 	map.on('mouseover', onEachFeature);
 	

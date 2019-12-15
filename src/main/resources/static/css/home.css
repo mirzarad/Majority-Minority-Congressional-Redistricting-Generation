@@ -337,7 +337,7 @@ input[type=range]::-ms-fill-upper {
 input[type=range]::-ms-thumb {
   margin-top: 1px;
   box-shadow: 2px 2px 2px #1B2AB3;
-  border: 1px solid #737CFF;
+  border: 1px solid #0000ff;
   height: 18px;
   width: 18px;
   border-radius: 50px;
