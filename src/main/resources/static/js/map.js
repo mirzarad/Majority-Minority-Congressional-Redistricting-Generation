@@ -289,7 +289,7 @@ $( function() {
 			isInit = false;
 		}
 		geojson = L.vectorGrid.slicer(statesData, {
-	          rendererFactory: L.canvas.tile,
+	          rendererFactory: L.svg.tile,
 	          vectorTileLayerStyles: {
 	            sliced: {
 	              Color: "blue",
@@ -303,6 +303,7 @@ $( function() {
 	          interactive: true,
 	          promoteId: true,
 	          getFeatureId: function(feature) { return feature.properties["id"]}
+<<<<<<< HEAD
 	    }).addTo(map);
 		geojson.on('click', function(e) {
 			console.log(e);
@@ -325,7 +326,31 @@ $( function() {
 			});
 		});
 	}
+=======
+	    }).addTo(map).on('mouseover', function(e){
+			var id = 0;
+			var properties = null;
+			console.log(e);
+		
+			if(e.layer.feature){
+				properties = e.layer.feature.properties;
+			}else{
+				properties = e.layer.properties;
+			}
+			if(id != 0){
+				geojson.setFeatureStyle(id, {color:"orange",});
+			}
+			id = properties["id"]; 
+
+			setTimeout(function(){
+					geojson.setFeatureStyle(id,{color: "red"}, 100);
+			});
+
+		});
+	}
+
+>>>>>>> 126ecc800ffc2e938d6d164fcdf2b15309fdb8b7
 	
-	map.on('mouseover', onEachFeature);
+	//map.on('mouseover', onEachFeature);
 	
 });

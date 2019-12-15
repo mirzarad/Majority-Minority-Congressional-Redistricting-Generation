@@ -10,8 +10,8 @@ import javax.persistence.Table;
 @Table(name="cali_election16")
 public class CAVotesCong2016Entity extends VotesCongEntity { 
 	
-	public Map<ElectionCategory, Map<PartyCategory, Integer>> getPresVotes() {
-		Map<ElectionCategory, Map<PartyCategory, Integer>> election = new HashMap<ElectionCategory, Map<PartyCategory, Integer>>();
+	public Map<ElectionCategory, Map<PartyCategory, Double>> getPresVotes() {
+		Map<ElectionCategory, Map<PartyCategory, Double>> election = new HashMap<ElectionCategory, Map<PartyCategory, Double>>();
 		election.put(ElectionCategory.CONGRESSIONAL2016, getVotes());
 		return election;
 	}

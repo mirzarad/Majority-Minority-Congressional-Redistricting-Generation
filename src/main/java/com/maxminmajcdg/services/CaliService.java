@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.maxminmajcdg.entities.ElectionCategory;
 import com.maxminmajcdg.repo.CADemographics2016Repository;
 import com.maxminmajcdg.repo.CADemographics2018Repository;
+import com.maxminmajcdg.repo.CANeighbor2016Repository;
+import com.maxminmajcdg.repo.CANeighbor2018Repository;
 import com.maxminmajcdg.repo.CAVotesCong2016Repository;
 import com.maxminmajcdg.repo.CAVotesCong2018Repository;
 import com.maxminmajcdg.repo.CAVotesPres2016Repository;
@@ -24,6 +26,12 @@ public class CaliService extends StateService{
 	
 	@Autowired
 	private CaliRepository2018 cali2018Repository;
+	
+	@Autowired
+	private CANeighbor2016Repository caNeighbor2016Repository;
+	
+	@Autowired
+	private CANeighbor2018Repository caNeighbor2018Repository;
 	
 	@Autowired
 	private CAVotesCong2016Repository caVotesCong2016Repository;
@@ -54,6 +62,20 @@ public class CaliService extends StateService{
 		}
 	}
 
+	@Override
+	public List<?> getNeighbors(ElectionCategory election) {
+		switch(election) {
+		case PRESIDENTIAL2016:
+		case CONGRESSIONAL2016:
+			return caNeighbor2016Repository.findAllDistinct();
+		case CONGRESSIONAL2018:
+			return caNeighbor2018Repository.findAllDistinct();
+			default:
+				return null;
+			
+		}
+	}
+	
 	@Override
 	public Optional<?> getPrecinctVoteData(ElectionCategory election, Long geomID) {
 		switch(election) {
@@ -120,11 +142,5 @@ public class CaliService extends StateService{
 			default:
 				return null;
 		}
-	}
-
-	@Override
-	public List<?> getNeighbors() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

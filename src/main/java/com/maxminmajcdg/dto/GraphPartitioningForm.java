@@ -3,6 +3,8 @@ package com.maxminmajcdg.dto;
 import java.util.Map;
 
 import com.maxminmajcdg.entities.DemographicCategory;
+import com.maxminmajcdg.entities.ElectionCategory;
+import com.maxminmajcdg.entities.States;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +19,8 @@ public class GraphPartitioningForm {
 	private float demographicBlocPercentage;
 	private float voteBlocPercentage;
 	private Map<DemographicCategory, Boolean> demographics;
+	private String election;
+	private String state;
 	
 	public float getDemographicBlocPercentage() {
 		return demographicBlocPercentage;
@@ -35,5 +39,17 @@ public class GraphPartitioningForm {
 	}
 	public void setDemographics(Map<DemographicCategory, Boolean> demographics) {
 		this.demographics = demographics;
+	}
+	public ElectionCategory getElection() {
+		return ElectionCategory.fromValue(election);
+	}
+	public void setElection(String election) {
+		this.election = election;
+	}
+	public States getState() {
+		return States.fromValue(state);
+	}
+	public void setState(String state) {
+		this.state = state;
 	}
 }

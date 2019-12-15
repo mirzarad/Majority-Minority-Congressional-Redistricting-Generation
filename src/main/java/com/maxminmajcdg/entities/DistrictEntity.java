@@ -1,5 +1,8 @@
 package com.maxminmajcdg.entities;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,6 +47,12 @@ public class DistrictEntity {
 	
 	public String getType() {
 		return "Feature";
+	}
+	
+	public Map<String, String> getProperties() {
+		Map<String, String> properties = new HashMap<String, String>();
+		properties.put("id", id.toString());
+		return properties;
 	}
 	
 	public GeometryEntity getGeometry() {

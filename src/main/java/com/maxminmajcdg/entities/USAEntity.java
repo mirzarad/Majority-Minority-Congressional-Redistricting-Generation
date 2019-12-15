@@ -88,6 +88,7 @@ public class USAEntity {
 	
 	public Map<String, String> getProperties() {
 		Map<String, String> properties = new HashMap<String, String>();
+		properties.put("id", geoId);
 		properties.put("name", name);
 		properties.put("Census Area", Double.toString(censusArea));
 		return properties;
