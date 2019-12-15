@@ -60,10 +60,12 @@ public class PhaseController{
 		}
 		
 		Map<Long, DemographicsEntity> demographics = service.getDemographicBloc(election, demographicThreshold);
+		
 		Set<Long> geomID = demographics.keySet();
 		Map<Long, VoteEntity> votes = service.votesAsBloc(election, geomID, voteThreshold);
 		Set<Long> voteGeomID = votes.keySet();
 		geomID.retainAll(voteGeomID);
+		
 
 		for(Long blocGeomID : geomID) {
 			DemVotePair pair = new DemVotePair();
@@ -71,7 +73,6 @@ public class PhaseController{
 			pair.setVotes(votes.get(blocGeomID));
 			precincts.add(pair);
 		}
-		
 		result.setMessage("Success");
 		result.setResponse(precincts);	
 

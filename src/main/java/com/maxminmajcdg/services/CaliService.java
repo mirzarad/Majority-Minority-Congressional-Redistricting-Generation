@@ -25,13 +25,13 @@ public class CaliService extends StateService{
 	private CaliRepository2016 cali2016Repository;
 	
 	@Autowired
+	private CaliRepository2018 cali2018Repository;
+	
+	@Autowired
 	private CANeighbor2016Repository caNeighbor2016Repository;
 	
 	@Autowired
 	private CANeighbor2018Repository caNeighbor2018Repository;
-	
-	@Autowired
-	private CaliRepository2018 cali2018Repository;
 	
 	@Autowired
 	private CAVotesCong2016Repository caVotesCong2016Repository;
