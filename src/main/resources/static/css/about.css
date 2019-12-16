@@ -4,13 +4,13 @@
 /* ************************ */
 #home-button2{
 	color:white;
-	background: #3902cc;
+	background: linear-gradient(40deg, #6600ff, #3d0099) !important;
 }
 
 #about-button2{
 	color: white;
-	background: #2A1B80;
-	box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.4);
+	background: linear-gradient(40deg, #3902cc, #3d0099) !important;
+	box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.4);
 }
 
 #about-header{
