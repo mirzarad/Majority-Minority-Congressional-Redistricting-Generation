@@ -6,10 +6,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import com.maxminmajcdg.entities.DemographicCategory;
+import com.maxminmajcdg.DemographicCategory;
+import com.maxminmajcdg.PartyCategory;
 import com.maxminmajcdg.entities.DemographicsEntity;
 import com.maxminmajcdg.entities.ElectionCategory;
-import com.maxminmajcdg.entities.PartyCategory;
+import com.maxminmajcdg.entities.NeighborDistrictWrapper;
 import com.maxminmajcdg.entities.VoteEntity;
 
 public abstract class StateService {
@@ -17,10 +18,11 @@ public abstract class StateService {
 	public abstract List<?> getDemographics(ElectionCategory election);
 	public abstract List<?> getVotes(ElectionCategory election);
 	public abstract List<?> getVotesIn(ElectionCategory election, Set<Long> geomID);
-	public abstract List<?> getNeighbors(ElectionCategory election);
+	public abstract Map<Integer, NeighborDistrictWrapper> getNeighbors(ElectionCategory election);
 	public abstract Optional<?> getPrecinctDemographicData(ElectionCategory election, Long geomID);
 	public abstract Optional<?> getPrecinctVoteData(ElectionCategory election, Long geomID);
 	public abstract List<?> getAllPrecincts(ElectionCategory election);
+	public abstract Double getTotalPopulation(ElectionCategory election);
 	
 	public Map<Long, DemographicsEntity> getDemographicBloc(ElectionCategory election, float threshold) {
 		List<?> demographics = getDemographics(election);

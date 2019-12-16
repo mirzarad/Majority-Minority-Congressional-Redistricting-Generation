@@ -21,7 +21,7 @@ public class CANeighbor2016Entity extends NeighborEntity{
 	@ElementCollection
 	@CollectionTable(name="cali_neighbors_16", joinColumns = { @JoinColumn(name = "src_ID") })
 	@Column(name="nbr_ID")
-	private List<Long> neighbors;
+	private List<Integer> neighbors;
 	
 	@OneToMany
 	@JoinColumn(name="geom_ID", referencedColumnName="src_ID")
@@ -39,32 +39,33 @@ public class CANeighbor2016Entity extends NeighborEntity{
 	private List<CADemographics2016Entity> caDemographics2016;
 
 	@Override
-	public Map<ElectionCategory, List<?>> getVotes() {
-		Map<ElectionCategory, List<?>> votes = new HashMap<ElectionCategory, List<?>>();
-		votes.put(ElectionCategory.CONGRESSIONAL2016, caVotesCong2016);
-		votes.put(ElectionCategory.PRESIDENTIAL2016, caVotesPres2016);
+	public Map<ElectionCategory, VotesWrapper> getVotes() {
+		Map<ElectionCategory, VotesWrapper> votes = new HashMap<ElectionCategory, VotesWrapper>();
+		votes.put(ElectionCategory.CONGRESSIONAL2016, caVotesCong2016.get(0));
+		votes.put(ElectionCategory.PRESIDENTIAL2016, caVotesPres2016.get(0));
 		votes.put(ElectionCategory.CONGRESSIONAL2018, null);
 		return votes;
 	}
 
 	@Override
-	public Map<ElectionCategory, List<?>> getDemographics() {
-		Map<ElectionCategory, List<?>> demographics = new HashMap<ElectionCategory, List<?>>();
-		demographics.put(ElectionCategory.CONGRESSIONAL2016, caDemographics2016);
-		demographics.put(ElectionCategory.PRESIDENTIAL2016, caDemographics2016);
+	public Map<ElectionCategory, DemographicWrapper> getDemographics() {
+		Map<ElectionCategory, DemographicWrapper> demographics = new HashMap<ElectionCategory, DemographicWrapper>();
+		demographics.put(ElectionCategory.CONGRESSIONAL2016, caDemographics2016.get(0));
+		demographics.put(ElectionCategory.PRESIDENTIAL2016, caDemographics2016.get(0));
 		demographics.put(ElectionCategory.CONGRESSIONAL2018, null);
 		return demographics;
 	}
 
 	@Override
-	public List<Long> getNeighbors() {
+	public List<Integer> getNeighbors() {
 		return neighbors;
 	}
 	
 	public String toString() {
 		return "[PrecinctID: " + getNodeID() +
-				" Neighbors: " + getNeighbors().toString() + 
-				" ,Votes: " + getVotes().toString() + 
+				", Neighbors: " + getNeighbors().toString() + 
+				", Votes: " + getVotes().toString() + 
+				", Demographics: " + getDemographics().toString() +
 				"]";
 	}
 }

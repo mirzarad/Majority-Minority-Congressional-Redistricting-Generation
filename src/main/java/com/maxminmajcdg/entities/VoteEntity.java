@@ -3,8 +3,9 @@ package com.maxminmajcdg.entities;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.maxminmajcdg.PartyCategory;
 
-public class VoteEntity {
+public class VoteEntity extends VotesWrapper{
 	
 	public Map<PartyCategory, Double> getVotes() {
 		return null;

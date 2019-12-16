@@ -1,4 +1,4 @@
-package com.maxminmajcdg.entities;
+package com.maxminmajcdg;
 
 public enum PartyCategory {
 	 DEMOCRATIC("DEMOCRATIC"), 
@@ -7,7 +7,7 @@ public enum PartyCategory {
 	 INDEPENDENT("INDEPENDENT"),
 	 OTHER("OTHER");
 	 
-	 private String val;
+	private String val;
 	
 	private PartyCategory(String val) {
 		this.val = val;

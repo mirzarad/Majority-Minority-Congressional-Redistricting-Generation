@@ -1,18 +1,25 @@
 package com.maxminmajcdg.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.maxminmajcdg.Mode;
+import com.maxminmajcdg.PrecinctGraph;
+import com.maxminmajcdg.Properties;
 import com.maxminmajcdg.dto.DemVotePair;
 import com.maxminmajcdg.dto.DemographicBlocForm;
 import com.maxminmajcdg.dto.GraphPartitioningForm;
@@ -20,6 +27,8 @@ import com.maxminmajcdg.dto.Response;
 import com.maxminmajcdg.dto.SimmulatedAnnealingForm;
 import com.maxminmajcdg.entities.DemographicsEntity;
 import com.maxminmajcdg.entities.ElectionCategory;
+import com.maxminmajcdg.entities.NeighborDistrictWrapper;
+import com.maxminmajcdg.entities.NeighborEntity;
 import com.maxminmajcdg.entities.VoteEntity;
 import com.maxminmajcdg.services.CaliService;
 import com.maxminmajcdg.services.PennService;
@@ -34,7 +43,7 @@ public class PhaseController{
 	
 	@Autowired
 	CaliService caliService;
-	
+			
 	@PostMapping(value="/phase0")
 	@ResponseBody
 	public Response<?> phase0(@RequestBody DemographicBlocForm phase0Form) {
@@ -80,12 +89,15 @@ public class PhaseController{
 		return result;
 	}
 		
-	@PostMapping(value = "/phase1")
+	@PostMapping(value = "/phase1/{mode}")
 	@ResponseBody
-	public Response<?> phase1(@RequestBody GraphPartitioningForm phase1Form){
-		System.err.println("Running Phase 1: Initial Run");
-		Response<List<?>> result = new Response<List<?>>();
-		
+	public Response<?> phase1(@RequestBody GraphPartitioningForm phase1Form, @PathVariable(name="mode") String mode, HttpServletResponse response) throws IOException {
+		System.err.println("Running Phase 1: " + mode + " state: " + phase1Form.getState());
+
+		Response<NeighborEntity> result = new Response<NeighborEntity>();
+		result.setMessage("Success");
+		Mode modeEnum = Mode.fromValue(mode);	
+
 		StateService service;
 		switch(phase1Form.getState()) {
 		case PENN:
@@ -97,11 +109,29 @@ public class PhaseController{
 			default:
 				return null;
 		}
-		List<?> neighbors = service.getNeighbors(phase1Form.getElection());	
 
-		result.setMessage("Success");
-		//result.setResponse(p);
-		return result;
+		Map<Integer, NeighborDistrictWrapper> precincts = service.getNeighbors(phase1Form.getElection());
+		int totalPopulation = service.getTotalPopulation(phase1Form.getElection()).intValue();
+		PrecinctGraph graph = new PrecinctGraph(precincts, phase1Form.getState(), phase1Form.getElection(), totalPopulation, phase1Form.getNumberOfDistricts());
+		
+		switch(modeEnum) {
+		case ITERATE:
+			System.out.println(graph.getNumDistricts());
+			NeighborDistrictWrapper randomPrecinct;
+			do
+			{
+				randomPrecinct = graph.getRandomPrecinct(phase1Form.getElection(), phase1Form.getDemographics(), phase1Form.getDemographicBlocPercentage(), 10f);			
+				NeighborDistrictWrapper optimalPrecinct = graph.getOptimalPrecinct(randomPrecinct, phase1Form.getElection(), phase1Form.getDemographics(), phase1Form.getDemographicBlocPercentage(), 10f);			
+				NeighborDistrictWrapper merged = graph.join(randomPrecinct, optimalPrecinct, phase1Form.getState(), phase1Form.getElection());
+			} while (randomPrecinct != null || graph.isFinished() || graph.getPhase1Iter() >= Properties.MAX_ITERATIONS);
+			System.out.println(graph.getNumDistricts());
+			return result;
+		case FULL:
+			return null;
+			default:
+				return null;
+		}
+		
 	}
 	
 	@PostMapping(value = "/phase2/iterate")
@@ -122,5 +152,4 @@ public class PhaseController{
 		return ResponseEntity.ok(result);
 	}
 
-	
 }

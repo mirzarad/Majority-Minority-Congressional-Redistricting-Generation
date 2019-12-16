@@ -9,4 +9,6 @@ public class Properties {
 	
 	public final static float[] PENN_VIEW = new float[]{40.54f, -77.49f};
 	public final static int PENN_LEVEL = 5;
+	
+	public final static int MAX_ITERATIONS = 10000;
 }

@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.maxminmajcdg.PartyCategory;
 
 @MappedSuperclass
 public abstract class VotesPresEntity extends VoteEntity {
