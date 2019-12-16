@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.maxminmajcdg.States;
 import com.maxminmajcdg.dto.Response;
 import com.maxminmajcdg.dto.StateDataResponse;
 import com.maxminmajcdg.entities.ElectionCategory;
-import com.maxminmajcdg.entities.States;
 import com.maxminmajcdg.services.CaliService;
 import com.maxminmajcdg.services.PennService;
 import com.maxminmajcdg.services.StateService;

@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maxminmajcdg.Properties;
+import com.maxminmajcdg.States;
 import com.maxminmajcdg.dto.LeafletResponse;
 import com.maxminmajcdg.dto.Response;
 import com.maxminmajcdg.entities.DistrictEntity;
 import com.maxminmajcdg.entities.ElectionCategory;
 import com.maxminmajcdg.entities.MapEntity;
 import com.maxminmajcdg.entities.StateEntity;
-import com.maxminmajcdg.entities.States;
 import com.maxminmajcdg.entities.USAEntity;
 import com.maxminmajcdg.services.CaliService;
 import com.maxminmajcdg.services.DistrictService;

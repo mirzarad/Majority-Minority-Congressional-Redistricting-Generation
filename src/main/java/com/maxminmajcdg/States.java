@@ -1,4 +1,4 @@
-package com.maxminmajcdg.entities;
+package com.maxminmajcdg;
 
 public enum States {
 	PENN("pennsylvania", "42"),

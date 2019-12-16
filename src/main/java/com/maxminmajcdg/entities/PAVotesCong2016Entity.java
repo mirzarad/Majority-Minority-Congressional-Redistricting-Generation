@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.maxminmajcdg.PartyCategory;
+
 @Entity
 @Table(name="pa_votes_2016")
 public class PAVotesCong2016Entity extends VotesCongEntity { 

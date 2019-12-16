@@ -1,15 +1,18 @@
 package com.maxminmajcdg.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.maxminmajcdg.entities.ElectionCategory;
+import com.maxminmajcdg.entities.NeighborEntity;
 import com.maxminmajcdg.entities.PennEntity;
-import com.maxminmajcdg.entities.PennNeighborEntity;
 import com.maxminmajcdg.repo.PADemographics2016Repository;
 import com.maxminmajcdg.repo.PADemographics2018Repository;
 import com.maxminmajcdg.repo.PAVotesCong2016Repository;
@@ -56,8 +59,10 @@ public class PennService extends StateService{
 	}
 
 	@Override
-	public List<PennNeighborEntity> getNeighbors(ElectionCategory election) {
-		return pennNeighborRepository.findAllDistinct();
+	public Map<Integer, NeighborEntity> getNeighbors(ElectionCategory election) {
+		Map<Integer, NeighborEntity> result = pennNeighborRepository.findAllDistinct().stream()
+				.collect(Collectors.toMap(NeighborEntity::getNodeID, Function.identity()));
+		return result;
 	}
 	
 	@Override
@@ -124,6 +129,19 @@ public class PennService extends StateService{
 			return paVotesPres2016Repository.findAllById(geomID);
 		case CONGRESSIONAL2018:
 			return paVotesCong2018Repository.findAllById(geomID);
+			default:
+				return null;
+		}
+	}
+
+	@Override
+	public Double getTotalPopulation(ElectionCategory election) {
+		switch(election) {
+		case CONGRESSIONAL2016:
+		case PRESIDENTIAL2016:
+			return paDemographics2016Repository.getTotalPopulation();
+		case CONGRESSIONAL2018:
+			return paDemographics2018Repository.getTotalPopulation();
 			default:
 				return null;
 		}

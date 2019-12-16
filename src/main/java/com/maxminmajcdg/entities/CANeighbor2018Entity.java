@@ -21,7 +21,7 @@ public class CANeighbor2018Entity extends NeighborEntity{
 	@ElementCollection
 	@CollectionTable(name="cali_neighbors_18", joinColumns = { @JoinColumn(name = "src_ID") })
 	@Column(name="nbr_ID")
-	private List<Long> neighbors;
+	private List<Integer> neighbors;
 	
 	@OneToMany
 	@JoinColumn(name="geom_ID", referencedColumnName="src_ID")
@@ -34,25 +34,25 @@ public class CANeighbor2018Entity extends NeighborEntity{
 	private List<CADemographics2018Entity> caDemographics2018;
 
 	@Override
-	public Map<ElectionCategory, List<?>> getVotes() {
-		Map<ElectionCategory, List<?>> votes = new HashMap<ElectionCategory, List<?>>();
+	public Map<ElectionCategory, VotesWrapper> getVotes() {
+		Map<ElectionCategory, VotesWrapper> votes = new HashMap<ElectionCategory, VotesWrapper>();
 		votes.put(ElectionCategory.CONGRESSIONAL2016, null);
 		votes.put(ElectionCategory.PRESIDENTIAL2016, null);
-		votes.put(ElectionCategory.CONGRESSIONAL2018, caVotesCong2018);
+		votes.put(ElectionCategory.CONGRESSIONAL2018, caVotesCong2018.get(0));
 		return votes;
 	}
 
 	@Override
-	public Map<ElectionCategory, List<?>> getDemographics() {
-		Map<ElectionCategory, List<?>> demographics = new HashMap<ElectionCategory, List<?>>();
+	public Map<ElectionCategory, DemographicsEntity> getDemographics() {
+		Map<ElectionCategory, DemographicsEntity> demographics = new HashMap<ElectionCategory, DemographicsEntity>();
 		demographics.put(ElectionCategory.CONGRESSIONAL2016, null);
 		demographics.put(ElectionCategory.PRESIDENTIAL2016, null);
-		demographics.put(ElectionCategory.CONGRESSIONAL2018, caDemographics2018);
+		demographics.put(ElectionCategory.CONGRESSIONAL2018, caDemographics2018.get(0));
 		return demographics;
 	}
 
 	@Override
-	public List<Long> getNeighbors() {
+	public List<Integer> getNeighbors() {
 		return neighbors;
 	}
 	

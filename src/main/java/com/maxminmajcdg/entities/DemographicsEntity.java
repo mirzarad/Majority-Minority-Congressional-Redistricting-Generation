@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.maxminmajcdg.DemographicCategory;
 
 @MappedSuperclass
 public abstract class DemographicsEntity {

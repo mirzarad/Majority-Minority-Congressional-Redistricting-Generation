@@ -1,7 +1,7 @@
 package com.maxminmajcdg.dto;
 
+import com.maxminmajcdg.States;
 import com.maxminmajcdg.entities.ElectionCategory;
-import com.maxminmajcdg.entities.States;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
