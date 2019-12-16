@@ -77,24 +77,40 @@ body{
   transition: .5s ease;
 }
 
-/* MAP DATA HEADERS */
-.col-4{
-	margin-top: 8px;
-}
-
-#state-data-text{
+/* ********************* */
+/*  VOTING DATA HEADERS  */
+/* ********************* */
+#state-voting-data-text{
 	color:white;
 	margin-top: 20px;
 }
 
-#district-data-text{
+#district-voting-data-text{
 	color:white;
 	margin-top: 20px;
 }
 
-#precinct-data-text{
+#precinct-voting-data-text{
 	color:white;
 	margin-top: 20px;
+}
+
+/* ************************** */
+/*  DEMOGRAPHIC DATA HEADERS  */
+/* ************************** */
+#state-demographic-data-text{
+	color:white;
+	margin-top: 10px;
+}
+
+#district-demographic-data-text{
+	color:white;
+	margin-top: 10px;	
+}
+
+#precinct-demographic-data-text{
+	color:white;
+	margin-top: 10px;
 }
 
 /* ************************ */

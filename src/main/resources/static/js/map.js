@@ -39,9 +39,9 @@ $( function() {
 			'<b>' + props.name + '</b><br />' + props.score + ' <sup></sup>'
 			: '');
 	};
-	
-	info.addTo(map);
 
+	info.addTo(map);
+	
 	var geojson;
 	
 	geojson = L.geoJson(null, {

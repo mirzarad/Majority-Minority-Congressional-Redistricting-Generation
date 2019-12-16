@@ -11,6 +11,9 @@ $(document).ready(function() {
 		$("#election-select-menu").attr("disabled", true); 
 		$("#election-select-menu").css("background-color", "#999999");
 		$("#district-view-toggle").attr("disabled", true);
+		$("#phase0-run").attr("disabled", true);
+		$("#phase1-run").attr("disabled", true);
+		$("#phase2-run").attr("disabled", true);
 	});
 	
 	$("#pennsylvania").click(function () {
@@ -21,6 +24,9 @@ $(document).ready(function() {
 		$("#election-select-menu").attr("disabled", false);
 		$("#election-select-menu").css("background-color", "#3902cc");
 		$("#district-view-toggle").attr("disabled", false);
+		$("#phase0-run").attr("disabled", true);
+		$("#phase1-run").attr("disabled", true);
+		$("#phase2-run").attr("disabled", true);
 	});
 	
 	$("#california").click(function () {
@@ -31,5 +37,8 @@ $(document).ready(function() {
 		$("#election-select-menu").attr("disabled", false);
 		$("#election-select-menu").css("background-color","#3902cc");
 		$("#district-view-toggle").attr("disabled", false);
+		$("#phase0-run").attr("disabled", true);
+		$("#phase1-run").attr("disabled", true);
+		$("#phase2-run").attr("disabled", true);
 	});
 });

@@ -127,10 +127,13 @@
 						<a class="nav-link active show" href="#tab4" data-toggle="tab" id="system-controls-tab">System Controls</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#tab5" data-toggle="tab" id="map-data-tab">Map Data</a>
+						<a class="nav-link" href="#tab5" data-toggle="tab" id="voting-data-tab">Voting Data</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#tab6" data-toggle="tab" id="data-analysis-tab">Data Analysis</a>
+						<a class="nav-link" href="#tab6" data-toggle="tab" id="demographic-data-tab">Demographic Data</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#tab7" data-toggle="tab" id="data-analysis-tab">Data Analysis</a>
 					</li>
 				</ul>
 			</div>
@@ -455,11 +458,11 @@
 	<!----------------------------------------------- MAP DATA CONTENT ------------------------------------------------------>
 	<!----------------------------------------------------------------------------------------------------------------------->			
 			
-			<div class="tab-pane" id="map-data-content">
+			<div class="tab-pane" id="voting-data-content">
 			<div class="container-fluid">
 				<div id="row">
 					<div class="col-12">
-						<h5 style="text-decoration:underline;" id="state-data-text">State Voting Data</h5>
+						<h5 style="text-decoration:underline;" id="state-voting-data-text">State Voting Data</h5>
 						<p id="state-republican-votes">Republican Votes: </p>
 						<p id="state-democratic-votes">Democrat Votes: </p>
 						<p id="state-independent-votes">Independent Votes: </p>
@@ -469,42 +472,85 @@
 					</div>
 					
 					<div class="col-12">
-						<h5 style="text-decoration:underline;" id="district-data-text">District Demographic Data</h5>
-						
-						<p id="district-population">Population: </p>
-						<p id="district-white">White: </p>
-						<p id="district-african-american">African American: </p>
-						<p id="district-hispanic">Hispanic: </p>
-						<p id="district-native-american">Native American: </p>
-						<p id="district-asian">Asian: </p>
-						<p id="district-native-hawaiian">Native Hawaiian: </p>
-						<p id="district-native-alaskan">Native Alaskan: </p>
+						<h5 style="text-decoration:underline;" id="district-voting-data-text">District Voting Data</h5>
+						<p id="district-republican-votes">Republican Votes: </p>
+						<p id="district-democratic-votes">Democrat Votes: </p>
+						<p id="district-independent-votes">Independent Votes: </p>
+						<p id="district-other-votes">Other Votes: </p>
+						<p id="district-percentage">Percentage of Representatives: </p>
+						<p id="district-majority-party">Majority Party: </p>
 					</div>
 					
 					<div class="col-12">
-						<h5 style="text-decoration:underline;" id="precinct-data-text">Precinct Voting Data</h5>
-						
-						<p id="precinct-population">Population: </p>
-						<p id="precinct-white">White: </p>
-						<p id="precinct-african-american">African American: </p>
-						<p id="precinct-hispanic">Hispanic: </p>
-						<p id="precinct-native-american">Native American: </p>
-						<p id="precinct-asian">Asian: </p>
-						<p id="precinct-native-hawaiian">Native Hawaiian: </p>
-						<p id="precinct-native-alaskan">Native Alaskan: </p>
+						<h5 style="text-decoration:underline;" id="precinct-voting-data-text">Precinct Voting Data</h5>
+						<p id="precinct-republican-votes">Republican Votes: </p>
+						<p id="precinct-democratic-votes">Democrat Votes: </p>
+						<p id="precinct-independent-votes">Independent Votes: </p>
+						<p id="precinct-other-votes">Other Votes: </p>
+						<p id="precinct-percentage">Percentage of Representatives: </p>
+						<p id="precinct-majority-party">Majority Party: </p>
+					</div>
+				</div>
+			</div>
+			</div>
+				
+	<!----------------------------------------------------------------------------------------------------------------------->
+	<!--------------------------------------- DEMOGRPAHIC DATA CONTENT ------------------------------------------------------>
+	<!----------------------------------------------------------------------------------------------------------------------->						
+				
+				<div class="tab-pane" id="demographic-data-content">
+					<div class="container-fluid">
+						<div id="row">
+							<div class="col-12">
+							<h5 style="text-decoration:underline;" id="state-demographic-data-text">State Demographic Data</h5>
+								<p id="state-population">Population: </p>
+								<p id="state-white">White: </p>
+								<p id="state-african-american">African American: </p>
+								<p id="state-hispanic">Hispanic: </p>
+								<p id="state-native-american">Native American: </p>
+								<p id="state-asian">Asian: </p>
+								<p id="state-native-hawaiian">Native Hawaiian: </p>
+								<p id="state-native-alaskan">Native Alaskan: </p>
+							</div>
+							
+							<div class="col-12">
+								<h5 style="text-decoration:underline;" id="district-demographic-data-text">District Demographic Data</h5>
+								
+								<p id="district-population">Population: </p>
+								<p id="district-white">White: </p>
+								<p id="district-african-american">African American: </p>
+								<p id="district-hispanic">Hispanic: </p>
+								<p id="district-native-american">Native American: </p>
+								<p id="district-asian">Asian: </p>
+								<p id="district-native-hawaiian">Native Hawaiian: </p>
+								<p id="district-native-alaskan">Native Alaskan: </p>
+							</div>
+							
+							<div class="col-12">
+								<h5 style="text-decoration:underline;" id="precinct-demographic-data-text">Precinct Demographic Data</h5>
+								<p id="precinct-population">Population: </p>
+								<p id="precinct-white">White: </p>
+								<p id="precinct-african-american">African American: </p>
+								<p id="precinct-hispanic">Hispanic: </p>
+								<p id="precinct-native-american">Native American: </p>
+								<p id="precinct-asian">Asian: </p>
+								<p id="precinct-native-hawaiian">Native Hawaiian: </p>
+								<p id="precinct-native-alaskan">Native Alaskan: </p>
+							</div>
+						</div>
 					</div>
 				</div>
 				
 	<!----------------------------------------------------------------------------------------------------------------------->
 	<!------------------------------------------ DATA ANALYSIS CONTENT ------------------------------------------------------>
-	<!----------------------------------------------------------------------------------------------------------------------->						
+	<!----------------------------------------------------------------------------------------------------------------------->	
 				
 				<div class="tab-pane" id="data-analysis-content">
 					
 				</div>
 
-	</div>
-	</div>
+
+
 	</div>
 	</div>
 	</div>
@@ -532,5 +578,7 @@
     <script src="/js/stateselect.js"></script>
     <script src="/js/slider.js"></script>
     <script src="js/graph.js"></script>
+    <script src="js/demographicdataupdate.js"></script>
+    <script src="js/votingdataupdate.js"></script>
   </body>
 </html>

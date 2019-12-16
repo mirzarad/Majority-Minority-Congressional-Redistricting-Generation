@@ -1,31 +1,43 @@
 $(function () {
 	var $sysCtrl = $("#sys-controls-content");
-	var $mapData = $("#map-data-content");
+	var $voteData = $("#voting-data-content");
+	var $demographicData = $("#demographic-data-content");
 	var $dataAnalysis = $("#data-analysis-content");
 	var $phaseTabs = $("#phase-tabs");
 	var $menuTitle = $("#controls-text");
-	
     
-	$("#system-controls-tab").click(function () {
+	$("#system-controls-tab").click(function (){
 		$phaseTabs.show();
 		$sysCtrl.show();
-		$mapData.hide();
+		$voteData.hide();
+		$demographicData.hide();
 		$dataAnalysis.hide();
 		$("#controls-text").html("System Controls");
     });
 
-    $("#map-data-tab").click(function () {
+    $("#voting-data-tab").click(function () {
 		$phaseTabs.hide();
 		$sysCtrl.hide();
-		$mapData.show();
+		$voteData.show();
+		$demographicData.hide();
 		$dataAnalysis.hide();
-		$("#controls-text").html("Map Data");
+		$("#controls-text").html("Voting Data");
+    });
+    
+    $("#demographic-data-tab").click(function () {
+		$phaseTabs.hide();
+		$sysCtrl.hide();
+		$voteData.hide();
+		$demographicData.show();
+		$dataAnalysis.hide();
+		$("#controls-text").html("Demographic Data");
     });
 
     $("#data-analysis-tab").click(function () {
 		$phaseTabs.hide();
 		$sysCtrl.hide();
-		$mapData.hide();
+		$voteData.hide();
+		$demographicData.hide();
 		$dataAnalysis.show();
 		$("#controls-text").html("Data Analysis");
     });
