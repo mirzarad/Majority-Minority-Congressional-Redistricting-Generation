@@ -3,7 +3,7 @@ $(function () {
 	var $mapData = $("#map-data-content");
 	var $dataAnalysis = $("#data-analysis-content");
 	var $phaseTabs = $("#phase-tabs");
-	var $menuTitle = $("#controls-text")
+	var $menuTitle = $("#controls-text");
 	
     
 	$("#system-controls-tab").click(function () {

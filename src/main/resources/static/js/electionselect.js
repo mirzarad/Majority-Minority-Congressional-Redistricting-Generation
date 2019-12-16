@@ -2,6 +2,9 @@
 var selectedElection = "PRESIDENTIAL2016"; // PRESEDENTIAL 2016 IS THE DEFAULT
 
 $(document).ready(function() {
+	$("#election-select-menu").attr("disabled", true);
+	
+	
 	$("#congress-2016").click(function () {
 		$("#election-select-menu").text('2016 Congressional Election');
 		selectedElection = "CONGRESSIONAL2016";

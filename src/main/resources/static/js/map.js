@@ -35,9 +35,9 @@ $( function() {
 	};
 	
 	info.update = function (props) {
-		this._div.innerHTML = '<h5>State:</h5>' +  (props ?
+		this._div.innerHTML = '<h5></h5>' +  (props ?
 			'<b>' + props.name + '</b><br />' + props.score + ' <sup></sup>'
-			: 'Hover over a state');
+			: '');
 	};
 	
 	info.addTo(map);
@@ -181,20 +181,27 @@ $( function() {
 		usaAjax();
 	});
 	
+	$("#district-view-toggle").on("click", function(e){
+		e.preventDefault();
+		reloadMap(districtResponse["map"]);
+	});
+	
 	map.on('zoomend', function() {
 		if(mode == "stateHover"){
 			return;
 		}
 		var zoomlevel = map.getZoom();
-		    if (zoomlevel < 8 && isPrecinctZoomed == true){
+		    if (zoomlevel < 7 && isPrecinctZoomed == true){
 		    	// display district mode
 		    	isPrecinctZoomed = false;
 		    	reloadMap(districtResponse["map"]);
+				$("#district-view-toggle").attr("disabled", false);
 		    }
-		    if (zoomlevel >= 8 && isPrecinctZoomed == false){
+		    if (zoomlevel >= 7 && isPrecinctZoomed == false){
 		    	// display precinct mode
 		    	isPrecinctZoomed = true;
 		    	reloadMap(precinctResponse["map"]);
+				$("#district-view-toggle").attr("disabled", true);
 		    }
 		console.log("Current Zoom Level =" + zoomlevel)
 	});
@@ -288,6 +295,7 @@ $( function() {
 		else {
 			isInit = false;
 		}
+		// For MouseOver
 		geojson = L.vectorGrid.slicer(statesData, {
 	          rendererFactory: L.svg.tile,
 	          vectorTileLayerStyles: {
@@ -302,36 +310,13 @@ $( function() {
 		      indexMaxZoom: 5,
 	          interactive: true,
 	          promoteId: true,
+	          onEachFeature: onEachFeature,
 	          getFeatureId: function(feature) { return feature.properties["id"]}
-<<<<<<< HEAD
-	    }).addTo(map);
-		geojson.on('click', function(e) {
-			console.log(e);
-			if (e.layer.feature) {
-				var prop = e.layer.feature.properties;
-			}else {
-				var prop = e.layer.properties;
-			}
-			if (id != 0) {
-				tileLayer.setFeatureStyle(id, {
-					color:"orange",
-					weight: .5,
-				});
-			}
-			id = prop["cartodb_id"];
-			setTimeout(function() {
-				tileLayer.setFeatureStyle(id, {
-					color: "red"
-				}, 100);
-			});
-		});
-	}
-=======
 	    }).addTo(map).on('mouseover', function(e){
 			var id = 0;
 			var properties = null;
 			console.log(e);
-		
+	
 			if(e.layer.feature){
 				properties = e.layer.feature.properties;
 			}else{
@@ -341,16 +326,18 @@ $( function() {
 				geojson.setFeatureStyle(id, {color:"orange",});
 			}
 			id = properties["id"]; 
+			var stateName = properties["name"];
+			console.log(stateName);
 
 			setTimeout(function(){
 					geojson.setFeatureStyle(id,{color: "red"}, 100);
 			});
+			
+			//vectorGrid.resetFeatureStyle(id);
 
 		});
 	}
 
->>>>>>> 126ecc800ffc2e938d6d164fcdf2b15309fdb8b7
-	
 	//map.on('mouseover', onEachFeature);
 	
 });

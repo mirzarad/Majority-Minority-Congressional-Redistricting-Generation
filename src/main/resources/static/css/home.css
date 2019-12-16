@@ -35,6 +35,16 @@ body{
     margin-top: 8px;
 }
 
+#current-map-view-text{
+	color:white;
+	text-align:center;
+}
+
+#district-view-toggle{
+	color:white;
+	background: linear-gradient(40deg, #a6a6a6,#737373) !important;
+}
+
 #main-menu-text{
 	color: white;
 	text-align: center;
@@ -74,14 +84,17 @@ body{
 
 #state-data-text{
 	color:white;
+	margin-top: 20px;
 }
 
 #district-data-text{
-	color:white;	
+	color:white;
+	margin-top: 20px;
 }
 
 #precinct-data-text{
-	color:white;	
+	color:white;
+	margin-top: 20px;
 }
 
 /* ************************ */
@@ -185,13 +198,13 @@ body{
     transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,-webkit-box-shadow 0.15s ease-in-out;
     transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
     transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out,-webkit-box-shadow 0.15s ease-in-out;
-    padding: .84rem 2.14rem;
+    padding: .34rem 1.14rem;
     font-size: .81rem;
 }
 
 #sys-controls-col{
 	background-image: radial-gradient(farthest-corner at 40px 40px, #255CB3 0%, #4F92FF 100%);
-	height: 890px;
+	height: 790px;
 }
 
 /* **************************** */

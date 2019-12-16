@@ -1,10 +1,9 @@
 
 /* Map */
 #map {
-	width: 890px;
-	height: 890px;
+	width: 100%;
+	height: 790px;
 	position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
 }

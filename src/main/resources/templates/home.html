@@ -18,6 +18,9 @@
    <!-- Import jQuery -->
    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
    
+   <!-- plotly-latest.min.jss-->
+   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+   
    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="anonymous"/>
    
 	<!--  Import Leaflet -->
@@ -56,7 +59,7 @@
               <div class="dropdown">
               <button class="btn btn-secondary dropdown-toggle" type="button" id="state-select-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">State View Select</button>
                    <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-	                   <a id="full" class="dropdown-item" href="#!">Full Map</a>
+	                   <a id="full" class="dropdown-item" href="#!">Full USA Map</a>
 	                   <a id="pennsylvania" class="dropdown-item" href="#!">Pennsylvania</a>
 	                   <a id="california" class="dropdown-item" href="#!">California</a>
                    </div>
@@ -70,11 +73,14 @@
 				<!-- MAP SELECTION VIEW AND BUTTONS -->
 		<div class="row">
 			<div class="col-md-7">
-				<h2 id="map-view-text">Map View</h2>
-			 </div>
+				<h4 id="map-view-text" style="text-decoration:underline">Map View</h4> 
+				<h4 id="current-map-view-text" style="font-weight:bold">Full USA Map</h4>
+		</div>
 			 
 			 <div id="main-menu-col" class="col-md-5">
-			 	<h2 id="main-menu-text">Main Menu</h2>
+			 	<h4 id="main-menu-text" style="text-decoration:underline">Main Menu</h4>
+			 	
+				<center><button id="district-view-toggle" class="btn btn-rounded waves-effect waves-light">Show Original Districts</button></center>
 			 		<!-- <button id="full" class="btn blue-gradient btn-rounded waves-effect waves-light">FULL MAP</button>  -->
 					<!-- <button id="california" class="btn blue-gradient btn-rounded waves-effect waves-light">CALIFORNIA</button>  -->
 					<!-- <button id="penn" class="btn blue-gradient btn-rounded waves-effect waves-light">PENNSYLVANIA</button>  -->
@@ -112,7 +118,7 @@
 		<!-- System Controls Container -->
 		<div id="sys-controls-col" class="col-md-5">
 <div id="phase-inputs" class="container-fluid">
-    <h3 id="controls-text" class="text-center">System Controls</h3> 
+    <h4 id="controls-text" class="text-center">System Controls</h4> 
 	<div class="row">
 		<div class="col-md-12">
 			<div class="tabbable" id="tabs-99982">
@@ -171,7 +177,6 @@
 								  </script>
 								  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
 								</div>
-
 							
 							<p><span class="badge badge-primary">Vote Bloc Percentage </span></p>
 							<p>Value:  <span id="phase0-voting-bloc-value">0</span></p>
@@ -185,7 +190,7 @@
 										  	var phase0VoteOutput = document.getElementById("phase0-voting-bloc-value");
 										  	phase0VoteOutput.innerHTML = phase0VoteSlider.value;
 										  	phase0VoteSlider.oninput=function(){
-										  		phase0VoteOutput.innerHTML=this.value;
+										  	phase0VoteOutput.innerHTML=this.value;
 										  	}
 								  		</script>
 									  <span id="slider-text" class="font-weight-bold indigo-text ml-2 mt-1">100</span>
@@ -444,11 +449,17 @@
 	<!----------------------------------------------------------------------------------------------------------------------->
 					</div> <!--  End of phase controls inner tab content -->
 			</div> <!-- end of sys-controls-content -->
+			
+			
+	<!----------------------------------------------------------------------------------------------------------------------->
+	<!----------------------------------------------- MAP DATA CONTENT ------------------------------------------------------>
+	<!----------------------------------------------------------------------------------------------------------------------->			
+			
 			<div class="tab-pane" id="map-data-content">
 			<div class="container-fluid">
 				<div id="row">
-					<div class="col-4">
-						<h5 style="text-decoration:underline;" id="state-data-text">State Data</h5>
+					<div class="col-12">
+						<h5 style="text-decoration:underline;" id="state-data-text">State Voting Data</h5>
 						
 						<p id="state-republican-votes">Republican Votes: </p>
 						<p id="state-democratic-votes">Democrat Votes: </p>
@@ -458,8 +469,8 @@
 						<p id="state-majority-party">Majority Party: </p>
 					</div>
 					
-					<div class="col-4">
-						<h5 style="text-decoration:underline;" id="district-data-text">District Data</h5>
+					<div class="col-12">
+						<h5 style="text-decoration:underline;" id="district-data-text">District Demographic Data</h5>
 						
 						<p id="district-population">Population: </p>
 						<p id="district-white">White: </p>
@@ -471,8 +482,8 @@
 						<p id="district-native-alaskan">Native Alaskan: </p>
 					</div>
 					
-					<div class="col-4">
-						<h5 style="text-decoration:underline;" id="precinct-data-text">Precinct Data</h5>
+					<div class="col-12">
+						<h5 style="text-decoration:underline;" id="precinct-data-text">Precinct Voting Data</h5>
 						
 						<p id="precinct-population">Population: </p>
 						<p id="precinct-white">White: </p>
@@ -484,15 +495,29 @@
 						<p id="precinct-native-alaskan">Native Alaskan: </p>
 					</div>
 				</div>
+				
+	<!----------------------------------------------------------------------------------------------------------------------->
+	<!------------------------------------------ DATA ANALYSIS CONTENT ------------------------------------------------------>
+	<!----------------------------------------------------------------------------------------------------------------------->						
+				
 				<div class="tab-pane" id="data-analysis-content">
-	
+					
 				</div>
 
-				</div>
 	</div>
 	</div>
 	</div>
 	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	
+	<div class="footer">
+     </br>
+     <center style="color:white">© The Grizzlies, CSE 308 Fall 2019</center>
+     </br>
+    </div>
 	
 <!----------------------------------------------------------------------------------------------------------------------->
 <!--------------------------------------------- End of new User Interface ----------------------------------------------->
@@ -507,5 +532,6 @@
     <script src="/js/electionselect.js"></script>
     <script src="/js/stateselect.js"></script>
     <script src="/js/slider.js"></script>
+    <script src="js/graph.js"></script>
   </body>
 </html>
