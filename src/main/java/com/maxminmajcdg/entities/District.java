@@ -56,4 +56,8 @@ public class District implements NeighborDistrictWrapper{
 		return totalDemographics.get(DemographicCategory.TOTAL);
 	}
 
+	public void addPrecincts(Integer nodeID) {
+		precincts.add(nodeID);
+	}
+
 }

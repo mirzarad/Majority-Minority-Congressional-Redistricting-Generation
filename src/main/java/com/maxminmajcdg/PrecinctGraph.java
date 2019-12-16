@@ -14,6 +14,7 @@ import com.maxminmajcdg.entities.ElectionCategory;
 import com.maxminmajcdg.entities.NeighborDistrictWrapper;
 import com.maxminmajcdg.entities.NeighborEntity;
 import com.maxminmajcdg.entities.PennNeighborEntity;
+import com.maxminmajcdg.entities.VotesWrapper;
 import com.maxminmajcdg.measures.Measure;
 import com.maxminmajcdg.measures.MeasuresUtil;
 
@@ -111,6 +112,9 @@ public class PrecinctGraph {
 		}
 		
 		int newKey = Collections.max(districts.keySet()) + 1;
+		newDistrict.setNodeID(newKey);
+		newDistrict.addPrecincts(a.getNodeID());
+		newDistrict.addPrecincts(b.getNodeID());
 		ab.setNodeID(newKey);
 		
 		List<Integer> aNeighbors = a.getNeighbors();
@@ -131,11 +135,16 @@ public class PrecinctGraph {
 		
 		Map<PartyCategory, Double> aVotes = a.getVotes().get(election).getVotes();
 		Map<PartyCategory, Double> bVotes = b.getVotes().get(election).getVotes();
-		Map<PartyCategory, Double>  totalVotes = new HashMap<PartyCategory, Double>();
+		Map<ElectionCategory, VotesWrapper>  totalVotes = new HashMap<ElectionCategory, VotesWrapper>();
+		Map<PartyCategory, Double>  votes = new HashMap<PartyCategory, Double>();
+		VotesWrapper newVotes = new VotesWrapper();
 		
 		for (PartyCategory p : PartyCategory.values()) {
-			totalVotes.put(p, aVotes.get(p) + bVotes.get(p)); 
+			
+			votes.put(p, aVotes.get(p) + bVotes.get(p)); 
 		}
+		newVotes.setVotes(votes);
+		totalVotes.put(election, newVotes);
 		
 		newDistrict.setTotalVotes(totalVotes);
 		
