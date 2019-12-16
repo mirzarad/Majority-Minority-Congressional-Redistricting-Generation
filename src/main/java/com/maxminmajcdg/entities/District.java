@@ -6,12 +6,14 @@ import java.util.Map;
 
 import com.maxminmajcdg.DemographicCategory;
 
-public class District implements NeighborDistrictWrapper{
+public class District extends NeighborEntity{
 	private Integer nodeID;
 	private Map<ElectionCategory, DemographicWrapper> demographics;
 	private Map<ElectionCategory, VotesWrapper>  votes;
 	private List<Integer> neighbors;
 	private List<Integer> precincts = new ArrayList<Integer>();
+	private double internalEdges;
+	private double externalEdges;
 	
 	public Map<ElectionCategory, DemographicWrapper> getDemographics() {
 		return demographics;
@@ -60,28 +62,26 @@ public class District implements NeighborDistrictWrapper{
 		precincts.add(nodeID);
 	}
 
-	@Override
-	public boolean isThresholdMet(ElectionCategory election, Map<DemographicCategory, Boolean> demographics,
-			float maxDemographicBlocPercentage, float minDemographicBlocPercentage)  {
-		Map<DemographicCategory, Double> demo = getDemographics().get(election).getTotalDemographics();
-		
-		double sum = 0, total = demo.get(DemographicCategory.TOTAL);
-		for (DemographicCategory d : demographics.keySet()) {
-			if (demographics.get(d)) {
-				sum += demo.get(d);
-			}
-		}
-		
-		double percent = sum/total * 100;
-		return percent >= minDemographicBlocPercentage && percent <= maxDemographicBlocPercentage;
+	public void addPrecincts(List<Integer> nodeIDs) {
+		precincts.addAll(nodeIDs);
 	}
 
-	public String toString() {
-		return "[PrecinctID: " + getNodeID() +
-				", Neighbors: " + getNeighbors().toString() + 
-				", Votes: " + getVotes().toString() + 
-				", Demographics: " + getDemographics().toString() +
-				"]";
+	public void setInternalEdges(double internalEdges) {
+		this.internalEdges = internalEdges;
+	}
+	
+	@Override
+	public double getInternalEdges() {
+		return internalEdges;
+	}
+	
+	public void setExternalEdges(double externalEdges) {
+		this.externalEdges = externalEdges;
+	}
+
+	@Override
+	public double getExternalEdges() {
+		return externalEdges;
 	}
 
 }

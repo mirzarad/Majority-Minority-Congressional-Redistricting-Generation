@@ -82,10 +82,9 @@ public class MeasuresUtil {
     perimeter / (circle perimeter for same area)
     */
     public static double calculateCompactness(NeighborDistrictWrapper d) {
-        //double internalEdges = d.getInternalEdges();
-        //double totalEdges = internalEdges + d.getExternalEdges();
-        //return internalEdges / totalEdges;
-    	return 0;
+        double internalEdges = d.getInternalEdges();
+        double totalEdges = internalEdges + d.getExternalEdges();
+        return internalEdges / totalEdges;
     }
 
 

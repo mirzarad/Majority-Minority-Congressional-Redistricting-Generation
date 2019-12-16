@@ -111,8 +111,20 @@ public class PhaseController{
 		}
 
 		Map<Integer, NeighborDistrictWrapper> precincts = service.getNeighbors(phase1Form.getElection());
+		System.out.println("DAMN");
+
+		Map<Integer, Double> precinctsPopulation = service.getNeighborPopulations(phase1Form.getElection());
 		int totalPopulation = service.getTotalPopulation(phase1Form.getElection()).intValue();
-		PrecinctGraph graph = new PrecinctGraph(precincts, phase1Form.getState(), phase1Form.getElection(), totalPopulation, phase1Form.getNumberOfDistricts());
+
+		PrecinctGraph graph = new PrecinctGraph(precincts, 
+				precinctsPopulation,
+				phase1Form.getState(), 
+				phase1Form.getElection(), 
+				phase1Form.getDemographics(), 
+				totalPopulation, 
+				phase1Form.getNumberOfDistricts(),
+				phase1Form.getMaxDemographicBlocPercentage(),
+				phase1Form.getMinDemographicBlocPercentage());
 		
 		switch(modeEnum) {
 		case ITERATE:
@@ -120,11 +132,18 @@ public class PhaseController{
 			NeighborDistrictWrapper randomPrecinct;
 			do
 			{
-				randomPrecinct = graph.getRandomPrecinct(phase1Form.getElection(), phase1Form.getDemographics(), phase1Form.getDemographicBlocPercentage(), 10f);			
-				NeighborDistrictWrapper optimalPrecinct = graph.getOptimalPrecinct(randomPrecinct, phase1Form.getElection(), phase1Form.getDemographics(), phase1Form.getDemographicBlocPercentage(), 10f);			
-				NeighborDistrictWrapper merged = graph.join(randomPrecinct, optimalPrecinct, phase1Form.getState(), phase1Form.getElection());
+				long a = System.nanoTime();
+				randomPrecinct = graph.getRandomPrecinct();			
+				NeighborDistrictWrapper optimalPrecinct = graph.getOptimalPrecinct(randomPrecinct);			
+				NeighborDistrictWrapper merged = graph.join(randomPrecinct, optimalPrecinct);
+				System.out.println(System.nanoTime() - a);
 			} while (randomPrecinct != null || graph.isFinished() || graph.getPhase1Iter() >= Properties.MAX_ITERATIONS);
+			
+			while(!graph.isFinished()) {
+				NeighborDistrictWrapper finalDistrict = graph.finalizeDistricts();
+			}
 			System.out.println(graph.getNumDistricts());
+			System.out.println(graph.getLiveDistricts());
 			return result;
 		case FULL:
 			return null;

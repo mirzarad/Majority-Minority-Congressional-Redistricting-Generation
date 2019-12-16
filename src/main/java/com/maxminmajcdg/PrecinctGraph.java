@@ -19,26 +19,37 @@ public class PrecinctGraph {
 
 	private Map<Integer, NeighborDistrictWrapper> districts;
 	private List<Integer> phase1IgnoreIndex;
+	private Map<Integer, Double> liveDistricts;
 	private int totalPopulation;
 	private int phase1Iter;
 	private int maxNumDistricts;
 	private int numDistricts;
 	private boolean isPhase1Done;
 	private boolean isPhase2Done;
+	private States state;
+	private ElectionCategory election;
+	private Map<DemographicCategory, Boolean> demographics;
+	private float maxDemographicBlocPercentage;
+	private float minDemographicBlocPercentage;
 	
-	public PrecinctGraph(Map<Integer, NeighborDistrictWrapper> districts, States state, ElectionCategory election, int totalPopulation, int maxNumDistricts) {
+	public PrecinctGraph(Map<Integer, NeighborDistrictWrapper> districts, Map<Integer, Double> liveDistricts, States state, ElectionCategory election, Map<DemographicCategory, Boolean> demographics, int totalPopulation, int maxNumDistricts, float maxDemographicBlocPercentage, float minDemographicBlocPercentage) {
 		this.districts = districts;
+		this.liveDistricts = liveDistricts;
 		this.phase1IgnoreIndex = new ArrayList<Integer>();
 		this.isPhase1Done = false;
 		this.isPhase2Done = false;
 		this.phase1Iter = 0;
 		this.totalPopulation = totalPopulation;
-		this.setMaxNumDistricts(maxNumDistricts);
+		this.maxNumDistricts = maxNumDistricts;
 		this.numDistricts = this.districts.size();
+		this.election = election;
+		this.state = state;
+		this.demographics = demographics;
+		this.maxDemographicBlocPercentage = maxDemographicBlocPercentage;
+		this.minDemographicBlocPercentage = minDemographicBlocPercentage;
 	}
 	
-	public NeighborDistrictWrapper getRandomPrecinct(ElectionCategory election, Map<DemographicCategory, Boolean> demographics, float maxDemographicBlocPercentage,
-			float minDemographicBlocPercentage) {
+	public NeighborDistrictWrapper getRandomPrecinct() {
 		Random rand = new Random();
 		int index = -1;
 		
@@ -53,14 +64,13 @@ public class PrecinctGraph {
 				
 		if (!precinct.isThresholdMet(election, demographics, maxDemographicBlocPercentage, minDemographicBlocPercentage)) {
 			phase1IgnoreIndex.add(index);
-			return getRandomPrecinct(election, demographics, maxDemographicBlocPercentage, minDemographicBlocPercentage);
+			return getRandomPrecinct();
 		}
 		return  precinct;
 	}
 	
 
-	public NeighborDistrictWrapper getOptimalPrecinct(NeighborDistrictWrapper randomPrecinct, ElectionCategory election,
-			Map<DemographicCategory, Boolean> demographics, float maxDemographicBlocPercentage, float minDemographicBlocPercentage) {
+	public NeighborDistrictWrapper getOptimalPrecinct(NeighborDistrictWrapper randomPrecinct) {
 		if (randomPrecinct == null) {
 			return null;
 		}
@@ -97,7 +107,7 @@ public class PrecinctGraph {
 		return optimalNeighbor;
 	}
 	
-	public NeighborDistrictWrapper join(NeighborDistrictWrapper a, NeighborDistrictWrapper b, States state, ElectionCategory election) {
+	public NeighborDistrictWrapper join(NeighborDistrictWrapper a, NeighborDistrictWrapper b) {
 		if(a == null) {
 			return null;
 		}
@@ -111,6 +121,11 @@ public class PrecinctGraph {
 		newDistrict.setNodeID(newKey);
 		newDistrict.addPrecincts(a.getNodeID());
 		newDistrict.addPrecincts(b.getNodeID());
+		newDistrict.addPrecincts(a.getPrecincts());
+		newDistrict.addPrecincts(b.getPrecincts());
+		List<Integer> newPrecincts = newDistrict.getPrecincts();
+		int internalEdges = (int) newPrecincts.stream().filter(precinct -> districts.get(precinct).getNeighbors().contains(b.getNodeID())).count();
+		newDistrict.setInternalEdges(a.getInternalEdges() + internalEdges/2);
 		
 		List<Integer> aNeighbors = a.getNeighbors();
 		List<Integer> bNeighbors = b.getNeighbors();
@@ -118,7 +133,10 @@ public class PrecinctGraph {
 		List<Integer> bCopy = new ArrayList<Integer>(bNeighbors);		
 		bCopy.removeAll(aNeighbors);
 		totalNeighbors.addAll(bCopy);
+		totalNeighbors.removeAll(a.getPrecincts());
+		totalNeighbors.removeAll(b.getPrecincts());
 		newDistrict.setNeighbors(totalNeighbors);
+		newDistrict.setExternalEdges(totalNeighbors.size());
 		
 		Map<DemographicCategory, Double>  aDemographics = a.getDemographics().get(election).getTotalDemographics();
 		Map<DemographicCategory, Double>  bDemographics = b.getDemographics().get(election).getTotalDemographics();
@@ -168,7 +186,20 @@ public class PrecinctGraph {
 		districts.put(newKey, newDistrict);
 		districts.put(a.getNodeID(), newDistrict);
 		districts.put(b.getNodeID(), newDistrict);
+		liveDistricts.remove(a.getNodeID());
+		liveDistricts.remove(b.getNodeID());
+		liveDistricts.put(newDistrict.getNodeID(), newDistrict.getPopulation(election));
 		numDistricts -= 1;
+		return newDistrict;
+	}
+	
+	public NeighborDistrictWrapper finalizeDistricts() {
+		int smallestKey = liveDistricts.entrySet().stream().min(Map.Entry.comparingByValue()).get().getKey();
+		NeighborDistrictWrapper smallestDistrict = districts.get(smallestKey);
+		List<Integer> neighbors = smallestDistrict.getNeighbors();
+		int smallestNeighborKey = liveDistricts.entrySet().stream().filter(key-> neighbors.contains(key.getKey())).min(Map.Entry.comparingByValue()).get().getKey();
+		NeighborDistrictWrapper smallestNeighbor = districts.get(smallestNeighborKey);
+		NeighborDistrictWrapper newDistrict = join(smallestDistrict, smallestNeighbor);
 		return newDistrict;
 	}
 	
@@ -234,6 +265,22 @@ public class PrecinctGraph {
 
 	public boolean isFinished() {
 		return maxNumDistricts == numDistricts;
+	}
+
+	public States getState() {
+		return state;
+	}
+
+	public void setState(States state) {
+		this.state = state;
+	}
+
+	public Map<Integer, Double> getLiveDistricts() {
+		return liveDistricts;
+	}
+
+	public void setLiveDistricts(Map<Integer, Double> liveDistricts) {
+		this.liveDistricts = liveDistricts;
 	}
 	
 }

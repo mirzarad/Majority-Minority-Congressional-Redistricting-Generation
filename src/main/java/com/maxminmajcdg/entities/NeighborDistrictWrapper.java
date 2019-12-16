@@ -19,6 +19,10 @@ public interface NeighborDistrictWrapper {
 
 	public Map<ElectionCategory, DemographicWrapper> getDemographics();
 	
+	public double getInternalEdges();
+	
+	public double getExternalEdges();
+	
 	public boolean isThresholdMet(ElectionCategory election, Map<DemographicCategory, Boolean> demographics, float maxDemographicBlocPercentage,
 			float minDemographicBlocPercentage);
 

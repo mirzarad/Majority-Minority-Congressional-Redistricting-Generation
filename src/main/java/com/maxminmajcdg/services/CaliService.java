@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.maxminmajcdg.DemographicCategory;
 import com.maxminmajcdg.entities.ElectionCategory;
 import com.maxminmajcdg.entities.NeighborDistrictWrapper;
 import com.maxminmajcdg.entities.NeighborEntity;
@@ -77,9 +78,21 @@ public class CaliService extends StateService{
 			return caNeighbor2018Repository.findAllDistinct().stream()
 					.collect(Collectors.toMap(NeighborEntity::getNodeID, Function.identity()));
 			default:
-				return null;
-			
+				return null;		
 		}
+	}
+	
+	@Override
+	public Map<Integer, Double> getNeighborPopulations(ElectionCategory election) {
+		switch(election) {
+		case CONGRESSIONAL2016:
+		case PRESIDENTIAL2016:
+			return (Map<Integer, Double>) caDemographics2016Repository.findAll().stream().collect(Collectors.toMap(e -> e.getGeomID().intValue(), e -> e.getTotalDemographics().get(DemographicCategory.TOTAL)));
+		case CONGRESSIONAL2018:
+			return (Map<Integer, Double>) caDemographics2018Repository.findAll().stream().collect(Collectors.toMap(e -> e.getGeomID().intValue(), e -> e.getTotalDemographics().get(DemographicCategory.TOTAL)));
+			default:
+				return null;
+		}	
 	}
 	
 	@Override

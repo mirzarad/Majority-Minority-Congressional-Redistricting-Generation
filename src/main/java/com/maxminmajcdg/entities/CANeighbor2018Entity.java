@@ -56,11 +56,13 @@ public class CANeighbor2018Entity extends NeighborEntity{
 		return neighbors;
 	}
 	
-	public String toString() {
-		return "[PrecinctID: " + getNodeID() +
-				", Neighbors: " + getNeighbors().toString() + 
-				", Votes: " + getVotes().toString() + 
-				", Demographics: " + getDemographics().toString() +
-				"]";
+	@Override
+	public double getInternalEdges() {
+		return 0;
+	}
+
+	@Override
+	public double getExternalEdges() {
+		return getNeighbors().size();
 	}
 }

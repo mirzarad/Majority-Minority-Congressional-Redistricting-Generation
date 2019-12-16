@@ -68,4 +68,14 @@ public abstract class NeighborEntity implements NeighborDistrictWrapper{
 		double percent = sum/total * 100;
 		return percent >= minDemographicBlocPercentage && percent <= maxDemographicBlocPercentage;
 	}
+	
+	public String toString() {
+		return "[PrecinctID: " + getNodeID() +
+				", Neighbors: " + getNeighbors().toString() + 
+				", Votes: " + getVotes().toString() + 
+				", Demographics: " + getDemographics().toString() +
+				", Internal Edges: " + getInternalEdges() +
+				", External Edges: " + getExternalEdges() +
+				"]";
+	}
 }

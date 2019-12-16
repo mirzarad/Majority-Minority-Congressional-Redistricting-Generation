@@ -19,6 +19,7 @@ public abstract class StateService {
 	public abstract List<?> getVotes(ElectionCategory election);
 	public abstract List<?> getVotesIn(ElectionCategory election, Set<Long> geomID);
 	public abstract Map<Integer, NeighborDistrictWrapper> getNeighbors(ElectionCategory election);
+	public abstract Map<Integer, Double> getNeighborPopulations(ElectionCategory election);
 	public abstract Optional<?> getPrecinctDemographicData(ElectionCategory election, Long geomID);
 	public abstract Optional<?> getPrecinctVoteData(ElectionCategory election, Long geomID);
 	public abstract List<?> getAllPrecincts(ElectionCategory election);
