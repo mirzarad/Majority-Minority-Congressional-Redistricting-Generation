@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.maxminmajcdg.entities.ElectionCategory;
+import com.maxminmajcdg.entities.NeighborDistrictWrapper;
 import com.maxminmajcdg.entities.NeighborEntity;
 import com.maxminmajcdg.repo.CADemographics2016Repository;
 import com.maxminmajcdg.repo.CADemographics2018Repository;
@@ -66,7 +67,7 @@ public class CaliService extends StateService{
 	}
 
 	@Override
-	public Map<Integer, NeighborEntity> getNeighbors(ElectionCategory election) {
+	public Map<Integer, NeighborDistrictWrapper> getNeighbors(ElectionCategory election) {
 		switch(election) {
 		case PRESIDENTIAL2016:
 		case CONGRESSIONAL2016:

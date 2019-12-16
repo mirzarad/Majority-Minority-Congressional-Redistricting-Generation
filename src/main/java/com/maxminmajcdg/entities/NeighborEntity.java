@@ -47,7 +47,7 @@ public abstract class NeighborEntity implements NeighborDistrictWrapper{
 	
 	public abstract List<Integer> getNeighbors();
 	public abstract Map<ElectionCategory, VotesWrapper> getVotes();
-	public abstract Map<ElectionCategory, DemographicsEntity> getDemographics();
+	public abstract Map<ElectionCategory, DemographicWrapper> getDemographics();
 	
 	public Double getPopulation(ElectionCategory election) {
 		return getDemographics().get(election).getTotalDemographics().get(DemographicCategory.TOTAL);

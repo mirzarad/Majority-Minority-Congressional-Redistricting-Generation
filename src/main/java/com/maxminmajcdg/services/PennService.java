@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.maxminmajcdg.entities.ElectionCategory;
+import com.maxminmajcdg.entities.NeighborDistrictWrapper;
 import com.maxminmajcdg.entities.NeighborEntity;
 import com.maxminmajcdg.entities.PennEntity;
 import com.maxminmajcdg.repo.PADemographics2016Repository;
@@ -59,8 +60,8 @@ public class PennService extends StateService{
 	}
 
 	@Override
-	public Map<Integer, NeighborEntity> getNeighbors(ElectionCategory election) {
-		Map<Integer, NeighborEntity> result = pennNeighborRepository.findAllDistinct().stream()
+	public Map<Integer, NeighborDistrictWrapper> getNeighbors(ElectionCategory election) {
+		Map<Integer, NeighborDistrictWrapper> result = pennNeighborRepository.findAllDistinct().stream()
 				.collect(Collectors.toMap(NeighborEntity::getNodeID, Function.identity()));
 		return result;
 	}

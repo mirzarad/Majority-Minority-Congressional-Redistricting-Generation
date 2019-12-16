@@ -14,4 +14,8 @@ public class VotesWrapper {
 	public void setVotes(Map<PartyCategory, Double> votes) {
 		this.votes = votes;
 	}
+	
+	public String toString() {
+		return getVotes().toString();
+	}
 }

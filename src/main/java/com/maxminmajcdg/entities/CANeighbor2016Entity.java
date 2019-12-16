@@ -48,8 +48,8 @@ public class CANeighbor2016Entity extends NeighborEntity{
 	}
 
 	@Override
-	public Map<ElectionCategory, DemographicsEntity> getDemographics() {
-		Map<ElectionCategory, DemographicsEntity> demographics = new HashMap<ElectionCategory, DemographicsEntity>();
+	public Map<ElectionCategory, DemographicWrapper> getDemographics() {
+		Map<ElectionCategory, DemographicWrapper> demographics = new HashMap<ElectionCategory, DemographicWrapper>();
 		demographics.put(ElectionCategory.CONGRESSIONAL2016, caDemographics2016.get(0));
 		demographics.put(ElectionCategory.PRESIDENTIAL2016, caDemographics2016.get(0));
 		demographics.put(ElectionCategory.CONGRESSIONAL2018, null);
@@ -63,8 +63,9 @@ public class CANeighbor2016Entity extends NeighborEntity{
 	
 	public String toString() {
 		return "[PrecinctID: " + getNodeID() +
-				" Neighbors: " + getNeighbors().toString() + 
-				" ,Votes: " + getVotes().toString() + 
+				", Neighbors: " + getNeighbors().toString() + 
+				", Votes: " + getVotes().toString() + 
+				", Demographics: " + getDemographics().toString() +
 				"]";
 	}
 }

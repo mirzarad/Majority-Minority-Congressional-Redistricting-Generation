@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.maxminmajcdg.DemographicCategory;
 
 @MappedSuperclass
-public abstract class DemographicsEntity {
+public abstract class DemographicsEntity extends DemographicWrapper{
 	
 	@Id
 	@GeneratedValue
@@ -137,5 +137,10 @@ public abstract class DemographicsEntity {
 	
 	public Long getGeomID() {
 		return geomID;
+	}
+	
+	public String toString() {
+		return "[TotalDemographics: " + getTotalDemographics().toString() +
+				", VotingDemographics: " + getVotingDemographics().toString() + "]";
 	}
 }

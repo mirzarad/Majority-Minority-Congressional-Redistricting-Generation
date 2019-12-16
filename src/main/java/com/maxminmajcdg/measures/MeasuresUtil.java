@@ -5,7 +5,6 @@ import java.util.Map;
 import com.maxminmajcdg.PartyCategory;
 import com.maxminmajcdg.entities.ElectionCategory;
 import com.maxminmajcdg.entities.NeighborDistrictWrapper;
-import com.maxminmajcdg.entities.NeighborEntity;
 
 public class MeasuresUtil {
 
@@ -132,6 +131,9 @@ public class MeasuresUtil {
     public static double calculateCompetitiveness(NeighborDistrictWrapper d, ElectionCategory election) {
         int gv = d.getVotes().get(election).getVotes().get(PartyCategory.REPUBLICAN).intValue();
         int dv = d.getVotes().get(election).getVotes().get(PartyCategory.DEMOCRATIC).intValue();
+        if ((gv + dv) == 0) {
+        	return 0;
+        }
         return 1.0 - (Math.abs(gv - dv) / (gv + dv));
     }
 

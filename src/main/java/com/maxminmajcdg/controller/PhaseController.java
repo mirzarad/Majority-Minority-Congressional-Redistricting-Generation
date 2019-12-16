@@ -8,7 +8,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maxminmajcdg.Mode;
 import com.maxminmajcdg.PrecinctGraph;
+import com.maxminmajcdg.Properties;
 import com.maxminmajcdg.dto.DemVotePair;
 import com.maxminmajcdg.dto.DemographicBlocForm;
 import com.maxminmajcdg.dto.GraphPartitioningForm;
@@ -27,6 +27,7 @@ import com.maxminmajcdg.dto.Response;
 import com.maxminmajcdg.dto.SimmulatedAnnealingForm;
 import com.maxminmajcdg.entities.DemographicsEntity;
 import com.maxminmajcdg.entities.ElectionCategory;
+import com.maxminmajcdg.entities.NeighborDistrictWrapper;
 import com.maxminmajcdg.entities.NeighborEntity;
 import com.maxminmajcdg.entities.VoteEntity;
 import com.maxminmajcdg.services.CaliService;
@@ -109,22 +110,22 @@ public class PhaseController{
 				return null;
 		}
 
-		Map<Integer, NeighborEntity> precincts = service.getNeighbors(phase1Form.getElection());
+		Map<Integer, NeighborDistrictWrapper> precincts = service.getNeighbors(phase1Form.getElection());
 		int totalPopulation = service.getTotalPopulation(phase1Form.getElection()).intValue();
-		PrecinctGraph graph = new PrecinctGraph(precincts, phase1Form.getState(), phase1Form.getElection(), totalPopulation);
+		PrecinctGraph graph = new PrecinctGraph(precincts, phase1Form.getState(), phase1Form.getElection(), totalPopulation, phase1Form.getNumberOfDistricts());
 		
 		switch(modeEnum) {
 		case ITERATE:
-			NeighborEntity randomPrecinct = graph.getRandomPrecinct(phase1Form.getElection(), phase1Form.getDemographics(), phase1Form.getDemographicBlocPercentage(), 10f);
-			System.out.println(randomPrecinct);
-			
-			NeighborEntity optimalPrecinct = graph.getOptimalPrecinct(randomPrecinct, phase1Form.getElection(), phase1Form.getDemographics(), phase1Form.getDemographicBlocPercentage(), 10f);
-			System.out.println(optimalPrecinct);
-			
-			NeighborEntity merged = graph.join(randomPrecinct, optimalPrecinct);
-			System.out.println(merged);
-			
-			return result	;
+			System.out.println(graph.getNumDistricts());
+			NeighborDistrictWrapper randomPrecinct;
+			do
+			{
+				randomPrecinct = graph.getRandomPrecinct(phase1Form.getElection(), phase1Form.getDemographics(), phase1Form.getDemographicBlocPercentage(), 10f);			
+				NeighborDistrictWrapper optimalPrecinct = graph.getOptimalPrecinct(randomPrecinct, phase1Form.getElection(), phase1Form.getDemographics(), phase1Form.getDemographicBlocPercentage(), 10f);			
+				NeighborDistrictWrapper merged = graph.join(randomPrecinct, optimalPrecinct, phase1Form.getState(), phase1Form.getElection());
+			} while (randomPrecinct != null || graph.isFinished() || graph.getPhase1Iter() >= Properties.MAX_ITERATIONS);
+			System.out.println(graph.getNumDistricts());
+			return result;
 		case FULL:
 			return null;
 			default:

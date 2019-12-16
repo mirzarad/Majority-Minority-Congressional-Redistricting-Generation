@@ -21,6 +21,7 @@ public class GraphPartitioningForm {
 	private Map<DemographicCategory, Boolean> demographics;
 	private String election;
 	private String state;
+	private int numberOfDistricts;
 	
 	public float getDemographicBlocPercentage() {
 		return demographicBlocPercentage;
@@ -51,5 +52,11 @@ public class GraphPartitioningForm {
 	}
 	public void setState(String state) {
 		this.state = state;
+	}
+	public int getNumberOfDistricts() {
+		return numberOfDistricts;
+	}
+	public void setNumberOfDistricts(int numberOfDistricts) {
+		this.numberOfDistricts = numberOfDistricts;
 	}
 }
