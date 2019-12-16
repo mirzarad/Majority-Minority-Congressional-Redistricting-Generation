@@ -2,10 +2,14 @@ package com.maxminmajcdg;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.Set;
+import java.util.SplittableRandom;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.maxminmajcdg.entities.DemographicWrapper;
 import com.maxminmajcdg.entities.District;
@@ -32,9 +36,12 @@ public class PrecinctGraph {
 	private float maxDemographicBlocPercentage;
 	private float minDemographicBlocPercentage;
 	
+	private static SplittableRandom rand = new SplittableRandom();
+	
 	public PrecinctGraph(Map<Integer, NeighborDistrictWrapper> districts, Map<Integer, Double> liveDistricts, States state, ElectionCategory election, Map<DemographicCategory, Boolean> demographics, int totalPopulation, int maxNumDistricts, float maxDemographicBlocPercentage, float minDemographicBlocPercentage) {
 		this.districts = districts;
 		this.liveDistricts = liveDistricts;
+		liveDistricts.keySet().retainAll(districts.keySet());
 		this.phase1IgnoreIndex = new ArrayList<Integer>();
 		this.isPhase1Done = false;
 		this.isPhase2Done = false;
@@ -49,8 +56,7 @@ public class PrecinctGraph {
 		this.minDemographicBlocPercentage = minDemographicBlocPercentage;
 	}
 	
-	public NeighborDistrictWrapper getRandomPrecinct() {
-		Random rand = new Random();
+	public NeighborDistrictWrapper getRandomPrecinct() {		
 		int index = -1;
 		
 		if (phase1IgnoreIndex.size() == districts.size() || phase1Iter >= Properties.MAX_ITERATIONS) {
@@ -58,13 +64,18 @@ public class PrecinctGraph {
 			return null;
 		}
 		
-		while(phase1IgnoreIndex.contains(index =  (int) districts.keySet().toArray()[rand.nextInt(districts.keySet().size())]));
+		ArrayList<Integer> liveKeys = new ArrayList<Integer>(liveDistricts.keySet());
+		index = liveKeys.get(rand.nextInt(liveKeys.size()));
+		if (phase1IgnoreIndex.contains(index)) {
+			return null;
+		}
+		//while(phase1IgnoreIndex.contains(index =  liveKeys.get(rand.nextInt(liveKeys.size()))));
 		NeighborDistrictWrapper precinct = (NeighborDistrictWrapper) districts.get(index);
+		
 		phase1Iter += 1;
-				
 		if (!precinct.isThresholdMet(election, demographics, maxDemographicBlocPercentage, minDemographicBlocPercentage)) {
 			phase1IgnoreIndex.add(index);
-			return getRandomPrecinct();
+			return null;
 		}
 		return  precinct;
 	}
@@ -76,35 +87,29 @@ public class PrecinctGraph {
 		}
 		
 		List<Integer> neighbors = randomPrecinct.getNeighbors();
+		if (neighbors == null) {
+			return null;
+		}
 		
-		double maxScore = -1;
-		NeighborDistrictWrapper optimalNeighbor = null;
-		for (int n : neighbors) {
-			NeighborDistrictWrapper neighbor = (NeighborDistrictWrapper) districts.get(n);
-			if (neighbor == null) {
-				continue;
-			}
+		Map<Integer, Double> neighborVals = neighbors.stream()
+		.filter(e -> districts.get(e) != null && districts.get(e).isThresholdMet(election, demographics, maxDemographicBlocPercentage, minDemographicBlocPercentage))
+		.collect(Collectors.toMap(Function.identity(), e -> 
+				MeasuresUtil.calculateMeasure(Measure.COMPETITIVENESS, districts.get(e), districts, election, totalPopulation) 
+				+
+				MeasuresUtil.calculateMeasure(Measure.GERRYMANDER_DEMOCRAT, districts.get(e), districts, election, totalPopulation)
+				+
+				MeasuresUtil.calculateMeasure(Measure.GERRYMANDER_REPUBLICAN, districts.get(e), districts, election, totalPopulation)
+				+
+				MeasuresUtil.calculateMeasure(Measure.COMPACTNESS, districts.get(e), districts, election, totalPopulation)
+				));
+		
+		if (neighborVals.size() == 0) {
+			return null;
+		}
+		
+		int optimalNeighbor = Collections.max(neighborVals.entrySet(), Comparator.comparingDouble(Map.Entry::getValue)).getKey();
 
-			if (neighbor.isThresholdMet(election, demographics, maxDemographicBlocPercentage, minDemographicBlocPercentage)) {
-				double score = 0;
-				score += .2 * MeasuresUtil.calculateMeasure(Measure.COMPETITIVENESS, neighbor, districts, election, totalPopulation);
-				score += .2 * MeasuresUtil.calculateMeasure(Measure.GERRYMANDER_DEMOCRAT, neighbor, districts, election, totalPopulation);
-				score += .2 * MeasuresUtil.calculateMeasure(Measure.GERRYMANDER_REPUBLICAN, neighbor, districts, election, totalPopulation);
-				score += .2 * MeasuresUtil.calculateMeasure(Measure.POPULATION_EQUALITY, neighbor, districts, election, totalPopulation);
-				score += .2 * MeasuresUtil.calculateMeasure(Measure.COMPACTNESS, neighbor, districts, election, totalPopulation);
-				
-				if (optimalNeighbor == null || score > maxScore) {
-					optimalNeighbor = neighbor;
-					maxScore = score;
-				}
-			}
-		}
-		
-		if (optimalNeighbor == null) {
-			phase1IgnoreIndex.add(randomPrecinct.getNodeID());
-		}
-		
-		return optimalNeighbor;
+		return districts.get(optimalNeighbor);
 	}
 	
 	public NeighborDistrictWrapper join(NeighborDistrictWrapper a, NeighborDistrictWrapper b) {

@@ -130,18 +130,27 @@ public class PhaseController{
 		case ITERATE:
 			System.out.println(graph.getNumDistricts());
 			NeighborDistrictWrapper randomPrecinct;
+			long a = System.nanoTime();
 			do
 			{
-				long a = System.nanoTime();
-				randomPrecinct = graph.getRandomPrecinct();			
-				NeighborDistrictWrapper optimalPrecinct = graph.getOptimalPrecinct(randomPrecinct);			
+				//long r = System.nanoTime();
+				randomPrecinct = graph.getRandomPrecinct();		
+				//System.out.println("RAND TIME: " + (System.nanoTime() - r));
+				//r = System.nanoTime();
+				NeighborDistrictWrapper optimalPrecinct = graph.getOptimalPrecinct(randomPrecinct);	
+				//System.out.println("OPTIMAL TIME: " + (System.nanoTime() - r));
+				//r = System.nanoTime();
 				NeighborDistrictWrapper merged = graph.join(randomPrecinct, optimalPrecinct);
-				System.out.println(System.nanoTime() - a);
-			} while (randomPrecinct != null || graph.isFinished() || graph.getPhase1Iter() >= Properties.MAX_ITERATIONS);
-			
+				//System.out.println("MERGE TIME: " + (System.nanoTime() - r));
+			} while (!graph.isFinished() && graph.getPhase1Iter() < Properties.MAX_ITERATIONS);
+			System.out.println(System.nanoTime() - a);
+ 
+			a = System.nanoTime();
 			while(!graph.isFinished()) {
 				NeighborDistrictWrapper finalDistrict = graph.finalizeDistricts();
 			}
+			System.out.println(System.nanoTime() - a);
+
 			System.out.println(graph.getNumDistricts());
 			System.out.println(graph.getLiveDistricts());
 			return result;

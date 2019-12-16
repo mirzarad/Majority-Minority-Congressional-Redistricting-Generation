@@ -3,6 +3,7 @@ package com.maxminmajcdg.entities;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -58,12 +59,8 @@ public abstract class NeighborEntity implements NeighborDistrictWrapper{
 			float minDemographicBlocPercentage) {
 		Map<DemographicCategory, Double> demo = getDemographics().get(election).getTotalDemographics();
 		
-		double sum = 0, total = demo.get(DemographicCategory.TOTAL);
-		for (DemographicCategory d : demographics.keySet()) {
-			if (demographics.get(d)) {
-				sum += demo.get(d);
-			}
-		}
+		double total = demo.get(DemographicCategory.TOTAL);
+		double sum = demo.entrySet().stream().filter(d -> demographics.keySet().contains(d.getKey()) && demographics.get(d.getKey())).mapToDouble(e->(e==null)? 0 : e.getValue()).sum();
 		
 		double percent = sum/total * 100;
 		return percent >= minDemographicBlocPercentage && percent <= maxDemographicBlocPercentage;
