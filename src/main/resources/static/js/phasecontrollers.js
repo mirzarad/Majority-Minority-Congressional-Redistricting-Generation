@@ -1,3 +1,5 @@
+var stompClient = null;
+
 $(function () {
 	var stompClient = null;
 	var $phase0 = $("#phase0-content");
@@ -43,7 +45,7 @@ $(function (){
 			data["demographicBlocPercentage"] = $("#phase0-demographic-bloc-measure").val();
 			data["voteBlocPercentage"] = $("#phase0-vote-bloc-measure").val();
 			data["election"] = selectedElection;
-			data["state"] = "pennsylvania";
+			data["state"] = selectedState;
 
 			phasePost("phase0", data, "1", "Couldn't Start Demographic Bloc Analysis.", phase0);
 		}
@@ -68,7 +70,7 @@ $(function (){
 									 WHITE: $("#phase1-white").is(":checked")};
 			
 			data["election"] = selectedElection;
-			data["state"] = currentState;
+			data["state"] = selectedState;
 			data["numberOfDistricts"] = 20;
 			connect(stompClient);
 			sendName(data);
@@ -108,27 +110,40 @@ $(function (){
 });
 
 // Web Socket functions:
-function connect(stompClient) {
+function connect() {
 	var socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-        stompClient.subscribe('/phase1/results', function (response) {
+        stompClient.subscribe('/phase/results', function (response) {
             showGreeting(JSON.parse(response.body).content);
         });
     });
 }
 
 function sendName(data) {
-    stompClient.send("/phase/run_phase1", {}, JSON.stringify(data));
+	waitForSocketConnection(stompClient, function(){
+		stompClient.send("/app/run_phase1", {}, JSON.stringify(data));
+	});
 }
 
-function showGreeting() {
-	console.log("show greeting test:");
-	var nullTest = null;
-	if(nullTest == null){
-		console.log("null skipped");
-	}
-    // $("#greetings").append("<tr><td>" + message + "</td></tr>");
+function waitForSocketConnection(socket, callback){
+    setTimeout(
+        function () {
+            if (socket.readyState === 1) {
+                console.log("Connection is made")
+                if (callback != null){
+                    callback();
+                }
+            } else {
+                console.log("wait for connection...")
+                waitForSocketConnection(socket, callback);
+            }
+
+        }, 5); 
+}
+
+function showGreeting(message) {
+	console.log(message);
 }
 // END WEBSOCKET FUNCTIONS
 

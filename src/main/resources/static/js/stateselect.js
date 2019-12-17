@@ -1,3 +1,4 @@
+var selectedState = "usa";
 
 $(document).ready(function() {
 	$("#election-select-menu").attr("disabled", true);
@@ -14,6 +15,7 @@ $(document).ready(function() {
 		$("#phase0-run").attr("disabled", true);
 		$("#phase1-run").attr("disabled", true);
 		$("#phase2-run").attr("disabled", true);
+		selectedState = "usa";
 	});
 	
 	$("#pennsylvania").click(function () {
@@ -27,6 +29,7 @@ $(document).ready(function() {
 		$("#phase0-run").attr("disabled", true);
 		$("#phase1-run").attr("disabled", true);
 		$("#phase2-run").attr("disabled", true);
+		selectedState = "pennsylvania";
 	});
 	
 	$("#california").click(function () {
@@ -40,5 +43,6 @@ $(document).ready(function() {
 		$("#phase0-run").attr("disabled", true);
 		$("#phase1-run").attr("disabled", true);
 		$("#phase2-run").attr("disabled", true);
+		selectedState = "california";
 	});
 });

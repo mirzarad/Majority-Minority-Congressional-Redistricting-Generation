@@ -36,7 +36,7 @@ public class STOMPPhaseController {
 	}
 	
 	@MessageMapping("/run_phase1")
-	@SendTo("/phase1/results")
+	@SendTo("/phase/results")
 	public Response<?> phase1(@RequestBody GraphPartitioningForm phase1Form) {
 		System.err.println("Running Phase 1 state: " + phase1Form.getState());
 
