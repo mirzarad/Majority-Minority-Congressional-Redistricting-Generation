@@ -15,7 +15,11 @@
 		$("#district-asian").text();
 		$("#district-native-hawaiian").text();
 		$("#district-native-alaskan").text();
-		
+*/
+
+
+	/*
+	 	IGNORE THESE: NOT NEEDED:
 		$("#precinct-white").text();
 		$("#precinct-african-american").text();
 		$("#precinct-hispanic").text();

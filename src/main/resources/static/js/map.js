@@ -93,7 +93,8 @@ $( function() {
 		return {
 			weight: 2,
 			opacity: 1,
-			color: 'black',
+			color: '#00004d',
+			fillColor: '#0000b3',
 			dashArray: '1',
 			fillOpacity: 0.7,
 			//fillColor: getColor(feature.properties.score)
@@ -107,6 +108,7 @@ $( function() {
 		layer.setStyle({
 			weight: 4,
 			color: 'white',
+			fillColor:'#8080ff',
 			dashArray: '',
 			fillOpacity: 0.7
 		});
@@ -126,7 +128,7 @@ $( function() {
 	
 	// ZOOM HANDLER
 	function zoomToFeature(e) {
-		map.fitBounds(e.target.getBounds());
+		//map.fitBounds(e.target.getBounds());
 	}
 	
 	
@@ -142,19 +144,235 @@ $( function() {
 			$.ajax({
 				type: "GET",
 				contentType: "application/json",
-				url: "map/" + mode + "/" + currentState + "/" + feature.id + "/" + election,
+				url: "map/" + mode + "/" + currentState + "/" + feature.id + "/" + selectedElection,
 				dataType: 'json',
 				timeout: 600000,
 				success: function(results) {
-				},
+					// ============//
+					// VOTING DATA //
+					// ============//
+					
+					// DECLARATIONS --------------------------------------------------------------------------------------------------
+
+					// STATE //
+					var stateRepublicanVotes;
+					var stateDemocraticVotes;
+					var stateLibertarianVotes;
+					var stateGreenVotes;
+					var stateMajorityParty;
+					var stateTotalPopulation;
+					
+					// DISTRICT //
+					var districtRepublicanVotes;
+					var districtDemocraticVotes;
+					var districtLibertarianVotes;
+					var districtGreenVotes;
+					var districtMajorityParty;
+					var districtTotalPopulation;
+					
+					// PRECINCT //
+					var precinctRepublicanVotes;
+					var precinctDemocraticVotes;
+					var precinctLibertarianVotes;
+					var precinctGreenVotes;
+					var precinctMajorityParty;
+					var precinctTotalPopulation;
+					// -----------------------------------------------------------------------------------------------------------------
+					
+					/*
+
+					
+					if(mode == "stateHover" && (feature.id == "42" || feature.id == "06")){
+						// STATE VOTING DATA 
+						$("#state-republican-votes").text("Republican Votes: " + );
+						$("#state-democratic-votes").text("Democratic Votes: " + );
+						$("#state-libertarian-votes").text("Libertarian Votes: " + );
+						$("#state-green-votes").text("Green Votes: " + );
+						$("#state-majority-party").text("Majority Party: " + );
+						$("#state-total-population").text("Total Population: " + );
+						
+						// STATE DEMOGRAPHIC DATA 
+						$("#state-white").text("White: " +);
+						$("#state-african-american").text("African American: " +);
+						$("#state-hispanic").text("Hispanic: " +);
+						$("#state-native-american").text("Native American: " + );
+						$("#state-asian").text("Asian: " + );
+						$("#state-native-hawaiian").text("Native Hawaiian: " + );
+						$("#state-native-alaskan").text("Native Alaskan: " + );
+
+					}
+				
+					*/
+					
+					// ================ //
+					// PRESEDENTIAL2016 //
+					// ================ //
+
+					if(selectedElection == "PRESIDENTIAL2016" && mode == "districtHover"){
+						districtRepublicanVotes = results["response"]["votes"]["presVotes"]["PRESIDENTIAL2016"]["REPUBLICAN"];
+						districtDemocraticVotes = results["response"]["votes"]["presVotes"]["PRESIDENTIAL2016"]["DEMOCRATIC"];
+						districtLibertarianVotes = results["response"]["votes"]["presVotes"]["PRESIDENTIAL2016"]["INDEPENDENT"];
+						districtGreenVotes = results["response"]["votes"]["presVotes"]["PRESIDENTIAL2016"]["GREEN"];
+						districtTotalPopulation = response.votes.presVotes.PRESIDENTIAL2016.totalPopulation;
+
+						// District Voting Data Table Update
+						$("#district-republican-votes").text("Republican Votes: " + districtRepublicanVotes);
+						$("#district-democratic-votes").text("Democratic Votes: " + districtDemocraticVotes);
+						$("#district-libertarian-votes").text("Liberatarian Votes: " + districtLibertarianVotes);
+						$("#district-green-votes").text("Green Votes: " + districtGreenVotes);
+						$("#district-total-population").text("Total Population: " + districtTotalPopulation);
+						
+					}else if(selectedElection == "PRESIDENTIAL2016" && mode == "precinctHover"){
+						precinctRepublicanVotes = results["response"]["votes"]["presVotes"]["PRESIDENTIAL2016"]["REPUBLICAN"];
+						precinctDemocraticVotes = results["response"]["votes"]["presVotes"]["PRESIDENTIAL2016"]["DEMOCRATIC"];
+						precinctLibertarianVotes = results["response"]["votes"]["presVotes"]["PRESIDENTIAL2016"]["INDEPENDENT"];
+						precinctGreenVotes = results["response"]["votes"]["presVotes"]["PRESIDENTIAL2016"]["GREEN"];
+						
+						$("#precinct-republican-votes").text("Republican Votes: " + precinctRepublicanVotes);
+						$("#precinct-democratic-votes").text("Democratic Votes: " + precinctDemocraticVotes);
+						$("#precinct-libertarian-votes").text("Liberatarian Votes: " + precinctLibertarianVotes);
+						$("#precinct-green-votes").text("Green Votes: " + precinctGreenVotes);
+						$("#precinct-total-population").text("Total Population: " + precinctTotalPopulation);
+					}
+					// ================= //
+					// CONGRESSIONAL2016 //
+					// ================= //
+					if(selectedElection == "CONGRESSIONAL2016"  && mode == "districtHover"){
+						districtRepublicanVotes = results["response"]["votes"]["presVotes"]["CONGRESSIONAL2016"]["REPUBLICAN"];
+						districtDemocraticVotes = results["response"]["votes"]["presVotes"]["CONGRESSIONAL2016"]["DEMOCRATIC"];
+						districtLibertarianVotes = results["response"]["votes"]["presVotes"]["CONGRESSIONAL2016"]["INDEPENDENT"];
+						districtGreenVotes = results["response"]["votes"]["presVotes"]["CONGRESSIONAL2016"]["GREEN"];
+						
+						$("#district-republican-votes").text("Republican Votes: " + districtRepublicanVotes);
+						$("#district-democratic-votes").text("Democratic Votes: " + districtDemocraticVotes);
+						$("#district-libertarian-votes").text("Liberatarian Votes: " + districtLibertarianVotes);
+						$("#district-green-votes").text("Green Votes: " + districtGreenVotes);
+						$("#district-total-population").text("Total Population: " + districtTotalPopulation);
+
+					}else if(selectedElection == "CONGRESSIONAL2016"  && mode == "precinctHover"){
+						precinctRepublicanVotes = results["response"]["votes"]["presVotes"]["CONGRESSIONAL2016"]["REPUBLICAN"];
+						precinctDemocraticVotes = results["response"]["votes"]["presVotes"]["CONGRESSIONAL2016"]["DEMOCRATIC"];
+						precinctLibertarianVotes = results["response"]["votes"]["presVotes"]["CONGRESSIONAL2016"]["INDEPENDENT"];
+						precinctGreenVotes = results["response"]["votes"]["presVotes"]["CONGRESSIONAL2016"]["GREEN"];
+						
+						$("#precinct-republican-votes").text("Republican Votes: " + precinctRepublicanVotes);
+						$("#precinct-democratic-votes").text("Democratic Votes: " + precinctDemocraticVotes);
+						$("#precinct-libertarian-votes").text("Liberatarian Votes: " + precinctLibertarianVotes);
+						$("#precinct-green-votes").text("Green Votes: " + precinctGreenVotes);
+						$("#precinct-total-population").text("Total Population: " + precinctTotalPopulation);
+					}
+					// ================= //
+					// CONGRESSIONAL2018 //
+					// ================= //
+					if(selectedElection == "CONGRESSIONAL2018" && mode == "districtHover"){
+						/*
+						districtRepublicanVotes = results["response"]["votes"]["presVotes"]["CONGRESSIONAL2018"]["REPUBLICAN"];
+						districtDemocraticVotes = results["response"]["votes"]["presVotes"]["CONGRESSIONAL2018"]["DEMOCRATIC"];
+						districtLibertarianVotes = results["response"]["votes"]["presVotes"]["CONGRESSIONAL2018"]["INDEPENDENT"];
+						districtGreenVotes = results["response"]["votes"]["presVotes"]["CONGRESSIONAL2018"]["GREEN"];
+						$("#district-republican-votes").text("Republican Votes: " + districtRepublicanVotes);
+						$("#district-democratic-votes").text("Democratic Votes: " + districtDemocraticVotes);
+						$("#district-libertarian-votes").text("Liberatarian Votes: " + districtLibertarianVotes);
+						$("#district-green-votes").text("Green Votes: " + districtGreenVotes);
+						$("#district-total-population").text("Total Population: " + districtTotalPopulation);
+						*/
+					}else if(selectedElection == "CONGRESSIONAL2018" && mode == "precinctHover"){
+						/*
+						precinctRepublicanVotes = results["response"]["votes"]["presVotes"]["CONGRESSIONAL2018"]["REPUBLICAN"];
+						precinctDemocraticVotes = results["response"]["votes"]["presVotes"]["CONGRESSIONAL2018"]["DEMOCRATIC"];
+						precinctLibertarianVotes = results["response"]["votes"]["presVotes"]["CONGRESSIONAL2018"]["INDEPENDENT"];
+						precinctGreenVotes = results["response"]["votes"]["presVotes"]["CONGRESSIONAL2018"]["GREEN"];
+						$("#precinct-republican-votes").text("Republican Votes: " + precinctRepublicanVotes);
+						$("#precinct-democratic-votes").text("Democratic Votes: " + precinctDemocraticVotes);
+						$("#precinct-libertarian-votes").text("Liberatarian Votes: " + precinctLibertarianVotes);
+						$("#precinct-green-votes").text("Green Votes: " + precinctGreenVotes);
+						$("#precinct-total-population").text("Total Population: " + precinctTotalPopulation);
+						*/
+					}
+					
+					
+					// ======================= //
+					// DEMOGRAPHIC POPULATIONS //
+					// ======================= //
+					// STATE
+					var stateWhitePopulation;
+					var stateAfricanAmericanPopulation;
+					var stateHispanicPopulation;
+					var stateNativeAmericanPopulation;
+					var stateAsianPopulation;
+					var stateNativeHawaiianPopulation;
+					var stateNativeAlaskanPopulation = null;
+					var stateTotalPopulation;
+
+					// DISTRICT
+					var districtWhitePopulation;
+					var districtAfricanAmericanPopulation;
+					var districtHispanicPopulation;
+					var districtNativeAmericanPopulation;
+					var districtAsianPopulation;
+					var districtNativeHawaiianPopulation;
+					var districtNativeAlaskanPopulation = null;
+					var districtTotalPopulation;
+					
+					if(selectedElection == "PRESIDENTIAL2016" && mode == "districtHover"){
+						districtWhitePopulation = results["response"]["demographics"]["totalDemographics"]["WHITE"];
+						districtAfricanAmericanPopulation = results["response"]["demographics"]["totalDemographics"]["AFRICAN_AMERICAN"];
+						districtHispanicPopulation = results["response"]["demographics"]["totalDemographics"]["HISPANIC"];
+						districtNativeAmericanPopulation = results["response"]["demographics"]["totalDemographics"]["NATIVE_AMERICAN"];
+						districtAsianPopulation = results["response"]["demographics"]["totalDemographics"]["ASIAN"];
+						districtNativeHawaiianPopulation = results["response"]["demographics"]["totalDemographics"]["NATIVE_HAWAIIAN"];
+						districtNativeAlaskanPopulation = null;
+						districtTotalPopulation = results["response"]["demographics"]["totalDemographics"]["TOTAL"];
+					}
+					
+					if(selectedElection == "CONGRESSIONAL2016"  && mode == "districtHover"){
+						districtWhitePopulation = results["response"]["demographics"]["totalDemographics"]["WHITE"];
+						districtAfricanAmericanPopulation = results["response"]["demographics"]["totalDemographics"]["AFRICAN_AMERICAN"];
+						districtHispanicPopulation = results["response"]["demographics"]["totalDemographics"]["HISPANIC"];
+						districtNativeAmericanPopulation = results["response"]["demographics"]["totalDemographics"]["NATIVE_AMERICAN"];
+						districtAsianPopulation = results["response"]["demographics"]["totalDemographics"]["ASIAN"];
+						districtNativeHawaiianPopulation = results["response"]["demographics"]["totalDemographics"]["NATIVE_HAWAIIAN"];
+						districtNativeAlaskanPopulation = null;
+						districtTotalPopulation = results["response"]["demographics"]["totalDemographics"]["TOTAL"];
+					}
+					
+					if(selectedElection == "CONGRESSIONAL2018" && mode == "precinctHover"){
+						/*
+						districtWhitePopulation = results["response"]["demographics"]["totalDemographics"]["WHITE"];
+						districtAfricanAmericanPopulation = results["response"]["demographics"]["totalDemographics"]["AFRICAN_AMERICAN"];
+						districtHispanicPopulation = results["response"]["demographics"]["totalDemographics"]["HISPANIC"];
+						districtNativeAmericanPopulation = results["response"]["demographics"]["totalDemographics"]["NATIVE_AMERICAN"];
+						districtAsianPopulation = results["response"]["demographics"]["totalDemographics"]["ASIAN"];
+						districtNativeHawaiianPopulation = results["response"]["demographics"]["totalDemographics"]["NATIVE_HAWAIIAN"];
+						districtNativeAlaskanPopulation = null;
+						districtTotalPopulation = results["response"]["demographics"]["totalDemographics"]["TOTAL"];
+						*/
+					}
+
+				}, // end success
 				error: function(e) {
-					alert("Failed To Retrieve State Data." + feature.id);
+					//alert("Failed To Retrieve State Data." + feature.id);
 				}
 			});
 		});
 		
 		layer.on("click", function(e) {
 			if (feature.id == "42" || feature.id == "06") {
+				if(feature.id=="42"){
+					$("#state-select-menu").text("PENNSYLVANIA");
+					$("#current-map-view-text").text("Pennsylvania");
+					$("#district-view-toggle").attr("disabled", false);
+					$("#election-select-menu").css("background-color", "#3902cc");
+					$("#election-select-menu").attr("disabled", false);
+				}
+				if(feature.id=="06"){
+					$("#state-select-menu").text("CALIFORNIA");
+					$("#current-map-view-text").text("California");
+					$("#district-view-toggle").attr("disabled", false);
+					$("#election-select-menu").css("background-color", "#3902cc");
+					$("#election-select-menu").attr("disabled", false);
+
+				}
 				districtResponse = districtAjax(stateId[feature.id]);
 				precinctResponse = precinctAjax(stateId[feature.id]);
 			}
@@ -182,7 +400,6 @@ $( function() {
 	});
 	
 	$("#district-view-toggle").on("click", function(e){
-		e.preventDefault();
 		reloadMap(districtResponse["map"]);
 	});
 	
@@ -193,15 +410,19 @@ $( function() {
 		var zoomlevel = map.getZoom();
 		    if (zoomlevel < 7 && isPrecinctZoomed == true){
 		    	// display district mode
+				mode = "districtHover";
 		    	isPrecinctZoomed = false;
 		    	reloadMap(districtResponse["map"]);
 				$("#district-view-toggle").attr("disabled", false);
+				console.log(mode);
 		    }
 		    if (zoomlevel >= 7 && isPrecinctZoomed == false){
 		    	// display precinct mode
+				mode = "precinctHover";
 		    	isPrecinctZoomed = true;
 		    	reloadMap(precinctResponse["map"]);
 				$("#district-view-toggle").attr("disabled", true);
+				console.log(mode);
 		    }
 		console.log("Current Zoom Level =" + zoomlevel)
 	});
@@ -288,6 +509,24 @@ $( function() {
 		});
 	}
 	
+	function electionAjax(){
+		$.ajax({
+			type: "GET",
+			contentType: "application/json",
+			url: "selectState/precincts/" + selectedElection + "/" + state,
+			dataType: 'json',
+			timeout: 600000,
+			success: function(results) {
+				
+			var results = response["response"];
+				
+			},
+			error: function(e){
+				alert("Failed to retrieve the voting data");
+			}
+		});
+	}
+	
 	function reloadMap(statesData) {
 		if (isInit) {
 			map.removeLayer(geojson);
@@ -295,49 +534,10 @@ $( function() {
 		else {
 			isInit = false;
 		}
-		// For MouseOver
-		geojson = L.vectorGrid.slicer(statesData, {
-	          rendererFactory: L.svg.tile,
-	          vectorTileLayerStyles: {
-	            sliced: {
-	              Color: "blue",
-	              fill: true,
-	              fillColor: "blue",
-	              weight: .9
-	            }
-	          },
-	          maxZoom: 22,
-		      indexMaxZoom: 5,
-	          interactive: true,
-	          promoteId: true,
-	          onEachFeature: onEachFeature,
-	          getFeatureId: function(feature) { return feature.properties["id"]}
-	    }).addTo(map).on('mouseover', function(e){
-			var id = 0;
-			var properties = null;
-			console.log(e);
-	
-			if(e.layer.feature){
-				properties = e.layer.feature.properties;
-			}else{
-				properties = e.layer.properties;
-			}
-			if(id != 0){
-				geojson.setFeatureStyle(id, {color:"orange",});
-			}
-			id = properties["id"]; 
-			var stateName = properties["name"];
-			console.log(stateName);
-
-			setTimeout(function(){
-					geojson.setFeatureStyle(id,{color: "red"}, 100);
-			});
-			
-			//vectorGrid.resetFeatureStyle(id);
-
-		});
+		geojson = L.geoJson(statesData, {
+			style: style,
+			onEachFeature: onEachFeature
+		}).addTo(map);
 	}
-
-	//map.on('mouseover', onEachFeature);
 	
 });
