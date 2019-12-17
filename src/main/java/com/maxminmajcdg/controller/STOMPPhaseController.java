@@ -1,10 +1,7 @@
 package com.maxminmajcdg.controller;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +9,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.maxminmajcdg.PrecinctGraph;
@@ -42,8 +38,8 @@ public class STOMPPhaseController {
 	
 	@MessageMapping("/run_phase1")
 	@SendTo("/phase1/results")
-	public Response<?> phase1(@RequestBody GraphPartitioningForm phase1Form, @PathVariable(name="mode") String mode, HttpServletResponse response) throws IOException {
-		System.err.println("Running Phase 1: " + mode + " state: " + phase1Form.getState());
+	public Response<?> phase1(@RequestBody GraphPartitioningForm phase1Form) {
+		System.err.println("Running Phase 1 state: " + phase1Form.getState());
 
 		Response<NeighborEntity> result = new Response<NeighborEntity>();
 		result.setMessage("Success");
@@ -76,11 +72,13 @@ public class STOMPPhaseController {
 
 		System.out.println(graph.getNumDistricts());
 		while (!graph.isFinished() && graph.getPhase1Iter() < Properties.MAX_ITERATIONS && graph.getSuccessiveFails() < Properties.MAX_FAILS) {
-			//long r = System.nanoTime();
 			NeighborDistrictWrapper randomPrecinct = graph.getRandomPrecinct();		
 			NeighborDistrictWrapper optimalPrecinct = graph.getOptimalPrecinct(randomPrecinct);	
 			Pair<Integer, Set<Integer>> merged = graph.join(randomPrecinct, optimalPrecinct);
 			graph.updatePhase1Iter();
+			if (merged == null) {
+				continue;
+			}
 			STOMPPhaseController.messagingTemplate.convertAndSend(merged);
 		}
  
