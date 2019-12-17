@@ -1,8 +1,10 @@
 package com.maxminmajcdg.entities;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -20,6 +22,14 @@ public abstract class NeighborEntity implements NeighborDistrictWrapper{
 	@Column(name="src_ID")
 	private Integer nodeID;
 	
+	@JsonIgnore
+	@Transient
+	private boolean isPhase1Calculated;
+	
+	@JsonIgnore
+	@Transient
+	private boolean isPhase1ThresholdMet;
+	
 	public Integer getNodeID() {
 		return nodeID;
 	}
@@ -32,11 +42,11 @@ public abstract class NeighborEntity implements NeighborDistrictWrapper{
 	private List<Integer> precincts = new ArrayList<Integer>();
 	
 	@Transient
-	public List<Integer> getPrecincts() {
+	public Set<Integer> getPrecincts() {
 		List<Integer> allPrecincts = new ArrayList<Integer>();
 		allPrecincts.add(nodeID);
 		allPrecincts.addAll(precincts);
-		return allPrecincts;
+		return new HashSet<Integer>(allPrecincts);
 	}
 	
 	@JsonIgnore
@@ -45,7 +55,7 @@ public abstract class NeighborEntity implements NeighborDistrictWrapper{
 		precincts.add(precinct);
 	}
 	
-	public abstract List<Integer> getNeighbors();
+	public abstract Set<Integer> getNeighbors();
 	public abstract Map<ElectionCategory, VotesWrapper> getVotes();
 	public abstract Map<ElectionCategory, DemographicWrapper> getDemographics();
 	
@@ -58,14 +68,33 @@ public abstract class NeighborEntity implements NeighborDistrictWrapper{
 			float minDemographicBlocPercentage) {
 		Map<DemographicCategory, Double> demo = getDemographics().get(election).getTotalDemographics();
 		
-		double sum = 0, total = demo.get(DemographicCategory.TOTAL);
-		for (DemographicCategory d : demographics.keySet()) {
-			if (demographics.get(d)) {
-				sum += demo.get(d);
-			}
-		}
+		double total = demo.get(DemographicCategory.TOTAL);
+		double sum = demo.entrySet().stream().filter(d -> demographics.keySet().contains(d.getKey()) && demographics.get(d.getKey())).mapToDouble(e->(e==null)? 0 : e.getValue()).sum();
 		
 		double percent = sum/total * 100;
 		return percent >= minDemographicBlocPercentage && percent <= maxDemographicBlocPercentage;
+	}
+	
+	@JsonIgnore
+	@Override
+	public boolean isPhase1ThresholdMet(ElectionCategory election, Map<DemographicCategory, Boolean> demographics,
+			float maxDemographicBlocPercentage, float minDemographicBlocPercentage) {
+		if (isPhase1Calculated) {
+			return isPhase1ThresholdMet;
+		}
+		isPhase1ThresholdMet = isThresholdMet(election, demographics, maxDemographicBlocPercentage, minDemographicBlocPercentage);
+		isPhase1Calculated = true;
+		return isPhase1ThresholdMet;
+	}
+	
+	public String toString() {
+		return "[PrecinctID: " + getNodeID() +
+				", Precincts: " + getPrecincts().toString() + 
+				", Neighbors: " + getNeighbors().toString() + 
+				", Votes: " + getVotes().toString() + 
+				", Demographics: " + getDemographics().toString() +
+				", Internal Edges: " + getInternalEdges() +
+				", External Edges: " + getExternalEdges() +
+				"]";
 	}
 }

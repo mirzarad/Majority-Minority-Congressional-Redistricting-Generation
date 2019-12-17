@@ -1,8 +1,10 @@
 package com.maxminmajcdg.entities;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -63,16 +65,18 @@ public class PennNeighborEntity extends NeighborEntity{
 	}
 
 	@Override
-	public List<Integer> getNeighbors() {
-		return neighbors;
+	public Set<Integer> getNeighbors() {
+		return new HashSet<Integer>(neighbors);
 	}
-	
-	public String toString() {
-		return "[PrecinctID: " + getNodeID() +
-				", Neighbors: " + getNeighbors().toString() + 
-				", Votes: " + getVotes().toString() + 
-				", Demographics: " + getDemographics().toString() +
-				"]";
+
+	@Override
+	public double getInternalEdges() {
+		return 0;
+	}
+
+	@Override
+	public double getExternalEdges() {
+		return getNeighbors().size();
 	}
 
 }

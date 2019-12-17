@@ -2,10 +2,19 @@ package com.maxminmajcdg;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.Queue;
+import java.util.Set;
+import java.util.SplittableRandom;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import org.javatuples.Pair;
 
 import com.maxminmajcdg.entities.DemographicWrapper;
 import com.maxminmajcdg.entities.District;
@@ -18,28 +27,47 @@ import com.maxminmajcdg.measures.MeasuresUtil;
 public class PrecinctGraph {
 
 	private Map<Integer, NeighborDistrictWrapper> districts;
+	private Map<Integer, NeighborDistrictWrapper> precicnts;
+	private Queue<Integer> queue;
 	private List<Integer> phase1IgnoreIndex;
+	private Map<Integer, Double> liveDistricts;
 	private int totalPopulation;
 	private int phase1Iter;
 	private int maxNumDistricts;
 	private int numDistricts;
+	private int successiveFails;
 	private boolean isPhase1Done;
 	private boolean isPhase2Done;
+	private States state;
+	private ElectionCategory election;
+	private Map<DemographicCategory, Boolean> demographics;
+	private float maxDemographicBlocPercentage;
+	private float minDemographicBlocPercentage;
 	
-	public PrecinctGraph(Map<Integer, NeighborDistrictWrapper> districts, States state, ElectionCategory election, int totalPopulation, int maxNumDistricts) {
+	private static SplittableRandom rand = new SplittableRandom();
+	
+	public PrecinctGraph(Map<Integer, NeighborDistrictWrapper> districts, Map<Integer, Double> liveDistricts, States state, ElectionCategory election, Map<DemographicCategory, Boolean> demographics, int totalPopulation, int maxNumDistricts, float maxDemographicBlocPercentage, float minDemographicBlocPercentage) {
 		this.districts = districts;
+		this.precicnts = new HashMap<Integer, NeighborDistrictWrapper>(districts);
+		this.liveDistricts = liveDistricts;
+		liveDistricts.keySet().retainAll(districts.keySet());
+		this.queue = new LinkedList<Integer>(liveDistricts.keySet());
 		this.phase1IgnoreIndex = new ArrayList<Integer>();
 		this.isPhase1Done = false;
 		this.isPhase2Done = false;
 		this.phase1Iter = 0;
 		this.totalPopulation = totalPopulation;
-		this.setMaxNumDistricts(maxNumDistricts);
+		this.maxNumDistricts = maxNumDistricts;
 		this.numDistricts = this.districts.size();
+		this.election = election;
+		this.state = state;
+		this.demographics = demographics;
+		this.maxDemographicBlocPercentage = maxDemographicBlocPercentage;
+		this.minDemographicBlocPercentage = minDemographicBlocPercentage;
+		this.successiveFails = 0;
 	}
 	
-	public NeighborDistrictWrapper getRandomPrecinct(ElectionCategory election, Map<DemographicCategory, Boolean> demographics, float maxDemographicBlocPercentage,
-			float minDemographicBlocPercentage) {
-		Random rand = new Random();
+	public NeighborDistrictWrapper getRandomPrecinct() {		
 		int index = -1;
 		
 		if (phase1IgnoreIndex.size() == districts.size() || phase1Iter >= Properties.MAX_ITERATIONS) {
@@ -47,129 +75,126 @@ public class PrecinctGraph {
 			return null;
 		}
 		
-		while(phase1IgnoreIndex.contains(index =  (int) districts.keySet().toArray()[rand.nextInt(districts.keySet().size())]));
+		ArrayList<Integer> keys = new ArrayList<Integer>(liveDistricts.keySet());
+		index = keys.get(rand.nextInt(keys.size()));
 		NeighborDistrictWrapper precinct = (NeighborDistrictWrapper) districts.get(index);
-		phase1Iter += 1;
-				
-		if (!precinct.isThresholdMet(election, demographics, maxDemographicBlocPercentage, minDemographicBlocPercentage)) {
+		
+		if (!precinct.isPhase1ThresholdMet(election, demographics, maxDemographicBlocPercentage, minDemographicBlocPercentage)) {
 			phase1IgnoreIndex.add(index);
-			return getRandomPrecinct(election, demographics, maxDemographicBlocPercentage, minDemographicBlocPercentage);
+			successiveFails += 1;
+			return null;
 		}
+		successiveFails = 0;
 		return  precinct;
 	}
 	
 
-	public NeighborDistrictWrapper getOptimalPrecinct(NeighborDistrictWrapper randomPrecinct, ElectionCategory election,
-			Map<DemographicCategory, Boolean> demographics, float maxDemographicBlocPercentage, float minDemographicBlocPercentage) {
+	public NeighborDistrictWrapper getOptimalPrecinct(NeighborDistrictWrapper randomPrecinct) {
 		if (randomPrecinct == null) {
 			return null;
 		}
 		
-		List<Integer> neighbors = randomPrecinct.getNeighbors();
-		
-		double maxScore = -1;
-		NeighborDistrictWrapper optimalNeighbor = null;
-		for (int n : neighbors) {
-			NeighborDistrictWrapper neighbor = (NeighborDistrictWrapper) districts.get(n);
-			if (neighbor == null) {
-				continue;
-			}
-
-			if (neighbor.isThresholdMet(election, demographics, maxDemographicBlocPercentage, minDemographicBlocPercentage)) {
-				double score = 0;
-				score += .2 * MeasuresUtil.calculateMeasure(Measure.COMPETITIVENESS, neighbor, districts, election, totalPopulation);
-				score += .2 * MeasuresUtil.calculateMeasure(Measure.GERRYMANDER_DEMOCRAT, neighbor, districts, election, totalPopulation);
-				score += .2 * MeasuresUtil.calculateMeasure(Measure.GERRYMANDER_REPUBLICAN, neighbor, districts, election, totalPopulation);
-				score += .2 * MeasuresUtil.calculateMeasure(Measure.POPULATION_EQUALITY, neighbor, districts, election, totalPopulation);
-				score += .2 * MeasuresUtil.calculateMeasure(Measure.COMPACTNESS, neighbor, districts, election, totalPopulation);
-				
-				if (optimalNeighbor == null || score > maxScore) {
-					optimalNeighbor = neighbor;
-					maxScore = score;
-				}
-			}
-		}
-		
-		if (optimalNeighbor == null) {
-			phase1IgnoreIndex.add(randomPrecinct.getNodeID());
-		}
-		
-		return optimalNeighbor;
-	}
-	
-	public NeighborDistrictWrapper join(NeighborDistrictWrapper a, NeighborDistrictWrapper b, States state, ElectionCategory election) {
-		if(a == null) {
+		Set<Integer> neighbors = randomPrecinct.getNeighbors();
+		if (neighbors == null) {
 			return null;
 		}
-		if(b == null) {
-			phase1IgnoreIndex.add(a.getNodeID());
+		
+		Map<Integer, Double> neighborVals = neighbors.stream()
+		.filter(e -> districts.get(e).isPhase1ThresholdMet(election, demographics, maxDemographicBlocPercentage, minDemographicBlocPercentage))
+		.collect(Collectors.toMap(Function.identity(), e -> 
+				//MeasuresUtil.calculateMeasure(Measure.COMPETITIVENESS, districts.get(e), precicnts, election, totalPopulation) 
+				//+
+				MeasuresUtil.calculateMeasure(Measure.GERRYMANDER_DEMOCRAT, districts.get(e), precicnts, election, totalPopulation)
+				+
+				MeasuresUtil.calculateMeasure(Measure.GERRYMANDER_REPUBLICAN, districts.get(e), precicnts, election, totalPopulation)
+				+
+				MeasuresUtil.calculateMeasure(Measure.COMPACTNESS, districts.get(e), precicnts, election, totalPopulation)
+				));
+		if (neighborVals.size() == 0) {
+			successiveFails += 1;
+			return null;
+		}
+		
+		int optimalNeighbor = Collections.max(neighborVals.entrySet(), Comparator.comparingDouble(Map.Entry::getValue)).getKey();
+
+		return districts.get(optimalNeighbor);
+	}
+	
+	public Pair<Integer, Set<Integer>> join(NeighborDistrictWrapper a, NeighborDistrictWrapper b) {
+		if(a == null || b == null) {
 			return null;
 		}
 		
 		District newDistrict = new District();
-		int newKey = Collections.max(districts.keySet()) + 1;
-		newDistrict.setNodeID(newKey);
+		newDistrict.setNodeID(a.getNodeID());
 		newDistrict.addPrecincts(a.getNodeID());
 		newDistrict.addPrecincts(b.getNodeID());
+		newDistrict.addPrecincts(a.getPrecincts());
+		newDistrict.addPrecincts(b.getPrecincts());
+		Set<Integer> newPrecincts = newDistrict.getPrecincts();
+		int internalEdges = (int) newPrecincts.stream().filter(precinct -> districts.get(precinct).getNeighbors().contains(b.getNodeID())).count();
+		newDistrict.setInternalEdges(a.getInternalEdges() + internalEdges/2);
 		
-		List<Integer> aNeighbors = a.getNeighbors();
-		List<Integer> bNeighbors = b.getNeighbors();
-		List<Integer> totalNeighbors = new ArrayList<Integer>(aNeighbors);
-		List<Integer> bCopy = new ArrayList<Integer>(bNeighbors);		
+		Set<Integer> aNeighbors = a.getNeighbors();
+		Set<Integer> bNeighbors = b.getNeighbors();
+		Set<Integer> totalNeighbors = new HashSet<Integer>(aNeighbors);
+		Set<Integer> bCopy = new HashSet<Integer>(bNeighbors);		
 		bCopy.removeAll(aNeighbors);
 		totalNeighbors.addAll(bCopy);
+		totalNeighbors.removeAll(a.getPrecincts());
+		totalNeighbors.removeAll(b.getPrecincts());
+		totalNeighbors.remove(a.getNodeID());
+		totalNeighbors.remove(b.getNodeID());
+		totalNeighbors = totalNeighbors.stream().filter(k -> districts.get(k).getNodeID() != a.getNodeID() && districts.get(k).getNodeID() != b.getNodeID()).collect(Collectors.toSet());
 		newDistrict.setNeighbors(totalNeighbors);
+		newDistrict.setExternalEdges(totalNeighbors.size());
 		
 		Map<DemographicCategory, Double>  aDemographics = a.getDemographics().get(election).getTotalDemographics();
-		Map<DemographicCategory, Double>  bDemographics = b.getDemographics().get(election).getTotalDemographics();
-		Map<DemographicCategory, Double>  abDemographics = new HashMap<DemographicCategory, Double>();
+		Map<DemographicCategory, Double>  abDemographics = b.getDemographics().get(election).getTotalDemographics();
 		Map<ElectionCategory, DemographicWrapper>  totalDemographics = new HashMap<ElectionCategory, DemographicWrapper>();
+		aDemographics.forEach((k, v) -> abDemographics.merge(k, v, Double::sum));
 		
-		for (DemographicCategory d : DemographicCategory.values()) {
-			abDemographics.put(d, aDemographics.get(d) + bDemographics.get(d)); 
-		}
 		DemographicWrapper abDemographicWrap = new DemographicWrapper();
 		abDemographicWrap.setDemographics(abDemographics);
 		totalDemographics.put(election, abDemographicWrap);
 		newDistrict.setTotalDemographics(totalDemographics);
 		
 		Map<PartyCategory, Double> aVotes = a.getVotes().get(election).getVotes();
-		Map<PartyCategory, Double> bVotes = b.getVotes().get(election).getVotes();
-		Map<ElectionCategory, VotesWrapper>  totalVotes = new HashMap<ElectionCategory, VotesWrapper>();
-		Map<PartyCategory, Double>  votes = new HashMap<PartyCategory, Double>();
+		Map<PartyCategory, Double> votes = b.getVotes().get(election).getVotes();
+		Map<ElectionCategory, VotesWrapper> totalVotes = new HashMap<ElectionCategory, VotesWrapper>();
+		aVotes.forEach((k,v) -> votes.merge(k, v, Double::sum));
 		VotesWrapper newVotes = new VotesWrapper();
-		
-		for (PartyCategory p : PartyCategory.values()) {
-			Double aV = aVotes.get(p);
-			Double bV = bVotes.get(p);
-			if (aV == null) {
-				aV = new Double(0);
-			}
-			if (bV == null) {
-				aV = new Double(0);
-			}
-			if(p == PartyCategory.OTHER) {
-				votes.put(p, new Double(0));
-			}
-			else {
-				votes.put(p, aV + bV); 
-			}
-		}
 		newVotes.setVotes(votes);
 		totalVotes.put(election, newVotes);
 		
 		newDistrict.setTotalVotes(totalVotes);
 		
-		phase1IgnoreIndex.remove(a.getNodeID());
-		phase1IgnoreIndex.remove(b.getNodeID());
+		District bDistrict = new District(newDistrict);
+		bDistrict.setNodeID(b.getNodeID());
 		
 		districts.remove(a.getNodeID());
 		districts.remove(b.getNodeID());
-		districts.put(newKey, newDistrict);
 		districts.put(a.getNodeID(), newDistrict);
-		districts.put(b.getNodeID(), newDistrict);
+		districts.put(b.getNodeID(), bDistrict);
+		liveDistricts.remove(a.getNodeID());
+		liveDistricts.remove(b.getNodeID());
+		liveDistricts.put(a.getNodeID(), newDistrict.getPopulation(election));
+		liveDistricts.put(b.getNodeID(), bDistrict.getPopulation(election));
 		numDistricts -= 1;
-		return newDistrict;
+		
+		return Pair.with(a.getNodeID(), newDistrict.getPrecincts());
+	}
+	
+	public Pair<Integer, Set<Integer>> finalizeDistricts() {
+		int index = queue.remove();
+		NeighborDistrictWrapper precinct = districts.get(index);
+		queue.add(index);
+		
+		Set<Integer> neighbors = precinct.getNeighbors();
+		ArrayList<Integer> neighborKeys = new ArrayList<Integer>(neighbors);
+		int smallestNeighborKey = neighborKeys.get(rand.nextInt(neighbors.size()));
+		NeighborDistrictWrapper smallestNeighbor = districts.get(smallestNeighborKey);
+		return join(precinct, smallestNeighbor);
 	}
 	
 	public List<Integer> getPhase1IgnoreIndex() {
@@ -234,6 +259,42 @@ public class PrecinctGraph {
 
 	public boolean isFinished() {
 		return maxNumDistricts == numDistricts;
+	}
+
+	public States getState() {
+		return state;
+	}
+
+	public void setState(States state) {
+		this.state = state;
+	}
+
+	public Map<Integer, Double> getLiveDistricts() {
+		return liveDistricts;
+	}
+
+	public void setLiveDistricts(Map<Integer, Double> liveDistricts) {
+		this.liveDistricts = liveDistricts;
+	}
+
+	public Map<Integer, NeighborDistrictWrapper> getPrecicnts() {
+		return precicnts;
+	}
+
+	public void setPrecicnts(Map<Integer, NeighborDistrictWrapper> precicnts) {
+		this.precicnts = precicnts;
+	}
+
+	public int getSuccessiveFails() {
+		return successiveFails;
+	}
+
+	public void setSuccessiveFails(int successiveFails) {
+		this.successiveFails = successiveFails;
+	}
+
+	public void updatePhase1Iter() {
+		phase1Iter += 1;
 	}
 	
 }

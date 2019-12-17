@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -111,27 +112,36 @@ public class PhaseController{
 		}
 
 		Map<Integer, NeighborDistrictWrapper> precincts = service.getNeighbors(phase1Form.getElection());
+		Map<Integer, Double> precinctsPopulation = service.getNeighborPopulations(phase1Form.getElection());
 		int totalPopulation = service.getTotalPopulation(phase1Form.getElection()).intValue();
-		PrecinctGraph graph = new PrecinctGraph(precincts, phase1Form.getState(), phase1Form.getElection(), totalPopulation, phase1Form.getNumberOfDistricts());
-		
-		switch(modeEnum) {
-		case ITERATE:
-			System.out.println(graph.getNumDistricts());
-			NeighborDistrictWrapper randomPrecinct;
-			do
-			{
-				randomPrecinct = graph.getRandomPrecinct(phase1Form.getElection(), phase1Form.getDemographics(), phase1Form.getDemographicBlocPercentage(), 10f);			
-				NeighborDistrictWrapper optimalPrecinct = graph.getOptimalPrecinct(randomPrecinct, phase1Form.getElection(), phase1Form.getDemographics(), phase1Form.getDemographicBlocPercentage(), 10f);			
-				NeighborDistrictWrapper merged = graph.join(randomPrecinct, optimalPrecinct, phase1Form.getState(), phase1Form.getElection());
-			} while (randomPrecinct != null || graph.isFinished() || graph.getPhase1Iter() >= Properties.MAX_ITERATIONS);
-			System.out.println(graph.getNumDistricts());
-			return result;
-		case FULL:
-			return null;
-			default:
-				return null;
+
+		PrecinctGraph graph = new PrecinctGraph(precincts, 
+				precinctsPopulation,
+				phase1Form.getState(), 
+				phase1Form.getElection(), 
+				phase1Form.getDemographics(), 
+				totalPopulation, 
+				phase1Form.getNumberOfDistricts(),
+				phase1Form.getMaxDemographicBlocPercentage(),
+				phase1Form.getMinDemographicBlocPercentage());
+
+		System.out.println(graph.getNumDistricts());
+		while (!graph.isFinished() && graph.getPhase1Iter() < Properties.MAX_ITERATIONS && graph.getSuccessiveFails() < Properties.MAX_FAILS) {
+			//long r = System.nanoTime();
+			NeighborDistrictWrapper randomPrecinct = graph.getRandomPrecinct();		
+			NeighborDistrictWrapper optimalPrecinct = graph.getOptimalPrecinct(randomPrecinct);	
+			Pair<Integer, Set<Integer>> merged = graph.join(randomPrecinct, optimalPrecinct);
+			graph.updatePhase1Iter();
+		}
+ 
+		int i = 0;
+		while(!graph.isFinished()) {
+			Pair<Integer, Set<Integer>> finalDistrict = graph.finalizeDistricts();
+			System.out.println(finalDistrict);
+			++i;
 		}
 		
+		return result;
 	}
 	
 	@PostMapping(value = "/phase2/iterate")
