@@ -1,5 +1,6 @@
 
 $(function () {
+	var stompClient = null;
 	var $phase0 = $("#phase0-content");
 	var $phase1 = $("#phase1-content");
 	var $phase2 = $("#phase2-content");
@@ -71,7 +72,6 @@ $(function (){
 			data["election"] = selectedElection;
 			data["state"] = currentState;
 			data["numberOfDistricts"] = 20;
-			var stompClient = null;
 			connect(stompClient);
 			sendName(data);
 			showGreeting();
@@ -111,7 +111,8 @@ $(function (){
 
 // Web Socket functions:
 function connect(stompClient) {
-    stompClient = Stomp.client('ws://localhost:8080/ws');
+	var socket = new SockJS('/ws');
+    stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         stompClient.subscribe('/phase1/results', function (response) {
             showGreeting(JSON.parse(response.body).content);
