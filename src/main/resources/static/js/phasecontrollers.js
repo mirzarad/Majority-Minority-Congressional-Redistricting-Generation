@@ -35,6 +35,8 @@ $(function (){
 		e.preventDefault();
 		var is_running = phase0.val();
 		
+		$("#phase1-run").attr("disabled", false); // enable phase 1 button
+		
 		if (is_running == "0") {
 			var data = {};
 			data["demographicBlocPercentage"] = $("#phase0-demographic-bloc-measure").val();
@@ -63,11 +65,18 @@ $(function (){
 									 NATIVE_HAWAIIAN: $("#phase1-hawaiin").is(":checked"),
 									 HISPANIC: $("#phase1-hispanic").is(":checked"),
 									 WHITE: $("#phase1-white").is(":checked")};
+			
+			var stompClient = null;
+			connect(stompClient);
+			sendName(data);
+			showGreeting();
+		
 
-			phasePost("phase1", data, "1", "Couldn't Start Graph Partitioning.", phase1);
+			//phasePost("phase1", data, "1", "Couldn't Start Graph Partitioning.", phase1);
 		}
 		else if (is_running == "1") {
 			//STOP THE CLICKING UNTILL SUCCESS
+			
 		}
 	});
 	
@@ -95,6 +104,31 @@ $(function (){
 	});
 });
 
+// Web Socket functions:
+function connect(stompClient) {
+    stompClient = Stomp.client('ws://localhost:8080/ws');
+    stompClient.connect({}, function (frame) {
+        stompClient.subscribe('/phase1/results', function (response) {
+            showGreeting(JSON.parse(response.body).content);
+        });
+    });
+}
+
+function sendName(data) {
+    stompClient.send("/phase/run_phase1", {}, JSON.stringify(data));
+}
+
+function showGreeting() {
+	console.log("show greeting test:");
+	var nullTest = null;
+	if(nullTest == null){
+		console.log("null skipped");
+	}
+    // $("#greetings").append("<tr><td>" + message + "</td></tr>");
+}
+// END WEBSOCKET FUNCTIONS
+
+
 function phasePost(path, data, setVal, err, phase) {
 	phase.val(setVal);
 	$.ajax({
@@ -107,6 +141,7 @@ function phasePost(path, data, setVal, err, phase) {
 		success: function(results) {
 			//Set BTN To PAUSE
 			phase.val(0);
+			
 			/*
 			var response = results["response"];
 			var votes = response["votes"];
