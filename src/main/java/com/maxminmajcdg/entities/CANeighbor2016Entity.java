@@ -1,8 +1,10 @@
 package com.maxminmajcdg.entities;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -57,8 +59,8 @@ public class CANeighbor2016Entity extends NeighborEntity{
 	}
 
 	@Override
-	public List<Integer> getNeighbors() {
-		return neighbors;
+	public Set<Integer> getNeighbors() {
+		return new HashSet<Integer>(neighbors);
 	}
 	
 	@Override

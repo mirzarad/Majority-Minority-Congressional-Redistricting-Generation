@@ -1,19 +1,19 @@
 package com.maxminmajcdg.entities;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import com.maxminmajcdg.DemographicCategory;
+import com.maxminmajcdg.DemographicCategory; 
 
 public interface NeighborDistrictWrapper {
 
-	public List<Integer> getNeighbors();
+	public Set<Integer> getNeighbors();
 
 	public Integer getNodeID();
 
 	public Map<ElectionCategory, VotesWrapper> getVotes();
 
-	public List<Integer> getPrecincts();
+	public Set<Integer> getPrecincts();
 
 	public Double getPopulation(ElectionCategory election);
 
@@ -25,5 +25,9 @@ public interface NeighborDistrictWrapper {
 	
 	public boolean isThresholdMet(ElectionCategory election, Map<DemographicCategory, Boolean> demographics, float maxDemographicBlocPercentage,
 			float minDemographicBlocPercentage);
+	
+	public boolean isPhase1ThresholdMet(ElectionCategory election, Map<DemographicCategory, Boolean> demographics, float maxDemographicBlocPercentage,
+			float minDemographicBlocPercentage);
+
 
 }

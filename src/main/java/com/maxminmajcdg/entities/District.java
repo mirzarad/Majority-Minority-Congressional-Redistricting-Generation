@@ -1,8 +1,8 @@
 package com.maxminmajcdg.entities;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.maxminmajcdg.DemographicCategory;
 
@@ -10,11 +10,23 @@ public class District extends NeighborEntity{
 	private Integer nodeID;
 	private Map<ElectionCategory, DemographicWrapper> demographics;
 	private Map<ElectionCategory, VotesWrapper>  votes;
-	private List<Integer> neighbors;
-	private List<Integer> precincts = new ArrayList<Integer>();
+	private Set<Integer> neighbors;
+	private Set<Integer> precincts = new HashSet<Integer>();
 	private double internalEdges;
 	private double externalEdges;
 	
+	public District(District district) {
+		this.nodeID = district.getNodeID();
+		this.demographics = district.getDemographics();
+		this.votes = district.getVotes();
+		this.neighbors = district.getNeighbors();
+		this.precincts = district.getPrecincts();
+		this.internalEdges = district.getInternalEdges();
+		this.externalEdges = district.getExternalEdges();
+	}
+
+	public District() {}
+
 	public Map<ElectionCategory, DemographicWrapper> getDemographics() {
 		return demographics;
 	}
@@ -31,11 +43,11 @@ public class District extends NeighborEntity{
 		this.votes = votes;
 	}
 
-	public List<Integer> getNeighbors() {
+	public Set<Integer> getNeighbors() {
 		return neighbors;
 	}
 
-	public void setNeighbors(List<Integer> neighbors) {
+	public void setNeighbors(Set<Integer> neighbors) {
 		this.neighbors = neighbors;
 	}
 
@@ -49,7 +61,7 @@ public class District extends NeighborEntity{
 	}
 
 	@Override
-	public List<Integer> getPrecincts() {
+	public Set<Integer> getPrecincts() {
 		return precincts;
 	}
 
@@ -62,7 +74,7 @@ public class District extends NeighborEntity{
 		precincts.add(nodeID);
 	}
 
-	public void addPrecincts(List<Integer> nodeIDs) {
+	public void addPrecincts(Set<Integer> nodeIDs) {
 		precincts.addAll(nodeIDs);
 	}
 

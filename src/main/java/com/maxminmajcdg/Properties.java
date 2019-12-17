@@ -11,4 +11,5 @@ public class Properties {
 	public final static int PENN_LEVEL = 5;
 	
 	public final static int MAX_ITERATIONS = 10000;
+	public final static int MAX_FAILS = 100;
 }
