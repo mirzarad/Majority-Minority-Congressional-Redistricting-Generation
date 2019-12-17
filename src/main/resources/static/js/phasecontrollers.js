@@ -57,8 +57,8 @@ $(function (){
 		
 		if (is_running == "0") {
 			var data = {};
-			data["demographicBlocPercentage"] = $("#phase1-demographic-bloc-measure").val();
-			data["voteBlocPercentage"] = $("#phase1-vote-bloc-measure").val();
+			data["maxDemographicBlocPercentage"] = $("#phase1-demographic-bloc-measure").val();
+			data["minDemographicBlocPercentage"] = $("#phase1-vote-bloc-measure").val();
 			data["demographics"] = {AFRICAN_AMERICAN: $("#phase1-african").is(":checked"), 
 									 NATIVE_AMERICAN: $("#phase1-native").is(":checked"), 
 									 ASIAN: $("#phase1-asian").is(":checked"), 
@@ -66,6 +66,9 @@ $(function (){
 									 HISPANIC: $("#phase1-hispanic").is(":checked"),
 									 WHITE: $("#phase1-white").is(":checked")};
 			
+			data["election"] = selectedElection;
+			data["state"] = currentState;
+			data["numberOfDistricts"] = 20;
 			var stompClient = null;
 			connect(stompClient);
 			sendName(data);
