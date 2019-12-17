@@ -42,8 +42,8 @@ $(function (){
 			var data = {};
 			data["demographicBlocPercentage"] = $("#phase0-demographic-bloc-measure").val();
 			data["voteBlocPercentage"] = $("#phase0-vote-bloc-measure").val();
-			data["election"] = "CONGRESSIONAL2016";
-			data["state"] = "california";
+			data["election"] = selectedElection;
+			data["state"] = "pennsylvania";
 
 			phasePost("phase0", data, "1", "Couldn't Start Demographic Bloc Analysis.", phase0);
 		}

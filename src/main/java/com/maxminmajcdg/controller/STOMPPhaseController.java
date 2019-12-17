@@ -1,9 +1,7 @@
 package com.maxminmajcdg.controller;
 
 import java.util.Map;
-import java.util.Set;
 
-import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.maxminmajcdg.PrecinctGraph;
 import com.maxminmajcdg.Properties;
+import com.maxminmajcdg.dto.DistrictResponse;
 import com.maxminmajcdg.dto.GraphPartitioningForm;
 import com.maxminmajcdg.dto.Response;
 import com.maxminmajcdg.entities.NeighborDistrictWrapper;
@@ -69,12 +68,12 @@ public class STOMPPhaseController {
 				phase1Form.getNumberOfDistricts(),
 				phase1Form.getMaxDemographicBlocPercentage(),
 				phase1Form.getMinDemographicBlocPercentage());
-
+		
 		System.out.println(graph.getNumDistricts());
 		while (!graph.isFinished() && graph.getPhase1Iter() < Properties.MAX_ITERATIONS && graph.getSuccessiveFails() < Properties.MAX_FAILS) {
 			NeighborDistrictWrapper randomPrecinct = graph.getRandomPrecinct();		
 			NeighborDistrictWrapper optimalPrecinct = graph.getOptimalPrecinct(randomPrecinct);	
-			Pair<Integer, Set<Integer>> merged = graph.join(randomPrecinct, optimalPrecinct);
+			DistrictResponse merged = graph.join(randomPrecinct, optimalPrecinct);
 			graph.updatePhase1Iter();
 			if (merged == null) {
 				continue;
@@ -83,8 +82,7 @@ public class STOMPPhaseController {
 		}
  
 		while(!graph.isFinished()) {
-			Pair<Integer, Set<Integer>> finalDistrict = graph.finalizeDistricts();
-			System.out.println(finalDistrict);
+			DistrictResponse finalDistrict = graph.finalizeDistricts();
 			STOMPPhaseController.messagingTemplate.convertAndSend(finalDistrict);
 		}
 		
