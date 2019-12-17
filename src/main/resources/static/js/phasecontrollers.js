@@ -1,3 +1,4 @@
+
 $(function () {
 	var $phase0 = $("#phase0-content");
 	var $phase1 = $("#phase1-content");
@@ -57,8 +58,8 @@ $(function (){
 		
 		if (is_running == "0") {
 			var data = {};
-			data["demographicBlocPercentage"] = $("#phase1-demographic-bloc-measure").val();
-			data["voteBlocPercentage"] = $("#phase1-vote-bloc-measure").val();
+			data["maxDemographicBlocPercentage"] = $("#phase1-demographic-bloc-measure").val();
+			data["minVoteBlocPercentage"] = $("#phase1-vote-bloc-measure").val();
 			data["demographics"] = {AFRICAN_AMERICAN: $("#phase1-african").is(":checked"), 
 									 NATIVE_AMERICAN: $("#phase1-native").is(":checked"), 
 									 ASIAN: $("#phase1-asian").is(":checked"), 
