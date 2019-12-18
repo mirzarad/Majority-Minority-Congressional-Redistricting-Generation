@@ -161,18 +161,8 @@ function phasePost(path, data, setVal, err, phase) {
 			//Set BTN To PAUSE
 			phase.val(0);
 			
-			/*
-			var response = results["response"];
-			var votes = response["votes"];
-			var presVotes = votes["presVotes"];
-			var congressional2016 = presVotes["CONGRESSIONAL2016"];
-			var green = congressional2016["GREEN"]; // green votes
-			var democratic = congressional2016["DEMOCRATIC"];
-			console.log("green value:");
-			console.log(green);
-			console.log("dem value");
-			console.log(democratic);
-			*/
+            draw(results);
+
 		},
 		error: function(e) {
 			phase.val(1);
