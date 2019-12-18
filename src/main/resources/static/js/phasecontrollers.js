@@ -1,6 +1,6 @@
-
+var stompClient = null;
 $(function () {
-	var stompClient = null;
+
 	var $phase0 = $("#phase0-content");
 	var $phase1 = $("#phase1-content");
 	var $phase2 = $("#phase2-content");
@@ -44,7 +44,7 @@ $(function (){
 			data["demographicBlocPercentage"] = $("#phase0-demographic-bloc-measure").val();
 			data["voteBlocPercentage"] = $("#phase0-vote-bloc-measure").val();
 			data["election"] = "CONGRESSIONAL2016";
-			data["state"] = "california";
+			data["state"] = "pennsylvania";
 
 			phasePost("phase0", data, "1", "Couldn't Start Demographic Bloc Analysis.", phase0);
 		}
@@ -56,6 +56,8 @@ $(function (){
 	$('#phase1-run').on("click",function(e) {
 		e.preventDefault();
 		var is_running = phase1.val();
+		
+		$("#phase2-run").attr("disabled", false); // enable phase 2 button
 		
 		if (is_running == "0") {
 			var data = {};
@@ -70,11 +72,39 @@ $(function (){
 									 WHITE: $("#phase1-white").is(":checked")};
 			
 			data["election"] = selectedElection;
-			data["state"] = currentState;
+			data["state"] = "pennsylvania";
 			data["numberOfDistricts"] = 20;
 			connect(stompClient);
-			sendName(data);
+			sendData(data);
 			showGreeting();
+			
+			
+			
+			// Web Socket functions:
+			function connect(stompClient) {
+				var socket = new SockJS('/ws');
+			    stompClient = Stomp.over(socket);
+			    stompClient.connect({}, function (frame) {
+			        stompClient.subscribe('/phase1/results', function (response) {
+			        	console.log(response);
+			            showResponse(JSON.parse(response.body).content);
+			        });
+			    });
+			}
+
+			function sendData(data) {
+			    stompClient.send("app/run_phase1", {}, JSON.stringify(data));
+			}
+
+			function showResponse() {
+				console.log("show greeting test:");
+				var nullTest = null;
+				if(nullTest == null){
+					console.log("null skipped");
+				}
+
+			}
+			// END WEBSOCKET FUNCTIONS
 		
 
 			//phasePost("phase1", data, "1", "Couldn't Start Graph Partitioning.", phase1);
@@ -109,30 +139,7 @@ $(function (){
 	});
 });
 
-// Web Socket functions:
-function connect(stompClient) {
-	var socket = new SockJS('/ws');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
-        stompClient.subscribe('/phase1/results', function (response) {
-            showGreeting(JSON.parse(response.body).content);
-        });
-    });
-}
 
-function sendName(data) {
-    stompClient.send("/phase/run_phase1", {}, JSON.stringify(data));
-}
-
-function showGreeting() {
-	console.log("show greeting test:");
-	var nullTest = null;
-	if(nullTest == null){
-		console.log("null skipped");
-	}
-    // $("#greetings").append("<tr><td>" + message + "</td></tr>");
-}
-// END WEBSOCKET FUNCTIONS
 
 
 function phasePost(path, data, setVal, err, phase) {

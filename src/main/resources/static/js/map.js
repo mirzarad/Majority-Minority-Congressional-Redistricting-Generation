@@ -179,29 +179,15 @@ $( function() {
 					var precinctTotalPopulation;
 					// -----------------------------------------------------------------------------------------------------------------
 					
-					/*
-					
-					if(mode == "stateHover" && (feature.id == "42" || feature.id == "06")){
-						// STATE VOTING DATA 
-						$("#state-republican-votes").text("Republican Votes: " + );
-						$("#state-democratic-votes").text("Democratic Votes: " + );
-						$("#state-libertarian-votes").text("Libertarian Votes: " + );
-						$("#state-green-votes").text("Green Votes: " + );
-						$("#state-majority-party").text("Majority Party: " + );
-						$("#state-total-population").text("Total Population: " + );
+					if(currentState == "pennsylvania"){
+						// STATE VOTING DATA
+						/*
+
+						*/
 						
-						// STATE DEMOGRAPHIC DATA 
-						$("#state-white").text("White: " +);
-						$("#state-african-american").text("African American: " +);
-						$("#state-hispanic").text("Hispanic: " +);
-						$("#state-native-american").text("Native American: " + );
-						$("#state-asian").text("Asian: " + );
-						$("#state-native-hawaiian").text("Native Hawaiian: " + );
-						$("#state-native-alaskan").text("Native Alaskan: " + );
 
 					}
 				
-					*/
 					
 					// ================ //
 					// PRESEDENTIAL2016 //
@@ -363,6 +349,16 @@ $( function() {
 					$("#district-view-toggle").attr("disabled", false);
 					$("#election-select-menu").css("background-color", "#3902cc");
 					$("#election-select-menu").attr("disabled", false);
+					
+					// STATE DEMOGRAPHIC DATA 
+					$("#state-white").text("White: 81.8%");
+					$("#state-african-american").text("African American: 12.0%");
+					$("#state-hispanic").text("Hispanic: 7.6%");
+					$("#state-native-american").text("Native American: 0.4%");
+					$("#state-asian").text("Asian: 3.7%");
+					$("#state-native-hawaiian").text("Native Hawaiian: 0.1%");
+					$("#state-native-alaskan").text("Native Alaskan: 0.4%");
+					$("#state-total-population").text("Total Population: 12,807,060");
 				}
 				if(feature.id=="06"){
 					$("#state-select-menu").text("CALIFORNIA");
@@ -371,6 +367,14 @@ $( function() {
 					$("#election-select-menu").css("background-color", "#3902cc");
 					$("#election-select-menu").attr("disabled", false);
 
+					$("#state-white").text("White: 72.1%");
+					$("#state-african-american").text("African American: 6.5%");
+					$("#state-hispanic").text("Hispanic: 1.6%");
+					$("#state-native-american").text("Native American: 1.6%");
+					$("#state-asian").text("Asian: 15.3%");
+					$("#state-native-hawaiian").text("Native Hawaiian: 0.5%");
+					$("#state-native-alaskan").text("Native Alaskan: 1.6%");
+					$("#state-total-population").text("Total Population: 39,557,045");
 				}
 				districtResponse = districtAjax(stateId[feature.id]);
 				precinctResponse = precinctAjax(stateId[feature.id]);
@@ -383,6 +387,20 @@ $( function() {
 		districtAjax(this.id);
 		precinctAjax(this.id);
 
+		$("#state-white").text("White: 72.1%");
+		$("#state-african-american").text("African American: 6.5%");
+		$("#state-hispanic").text("Hispanic: 1.6%");
+		$("#state-native-american").text("Native American: 1.6%");
+		$("#state-asian").text("Asian: 15.3%");
+		$("#state-native-hawaiian").text("Native Hawaiian: 0.5%");
+		$("#state-native-alaskan").text("Native Alaskan: 1.6%");
+		$("#state-total-population").text("Total Population: 39,557,045");
+		
+		$("#state-republican-votes").text("Republican Votes: 4483810 (31.62%)");
+		$("#state-democratic-votes").text("Democratic Votes: 8753788 (61.73%)");
+		$("#state-libertarian-votes").text("Libertarian Votes: 478500 (3.37%)");
+		$("#state-green-votes").text("Green Votes: 278657 (1.96%)");
+		$("#state-majority-party").text("Majority Party: Democratic");
 	});
    
 	$("#pennsylvania").on("click",function(e) {
@@ -391,6 +409,21 @@ $( function() {
 		districtAjax(this.id);
 		precinctAjax(this.id);
 		
+		// STATE DEMOGRAPHIC DATA 
+		$("#state-white").text("White: 81.8%");
+		$("#state-african-american").text("African American: 12.0%");
+		$("#state-hispanic").text("Hispanic: 7.6%");
+		$("#state-native-american").text("Native American: 0.4%");
+		$("#state-asian").text("Asian: 3.7%");
+		$("#state-native-hawaiian").text("Native Hawaiian: 0.1%");
+		$("#state-native-alaskan").text("Native Alaskan: 0.4%");
+		$("#state-total-population").text("Total Population: 12,807,060");
+		
+		$("#state-republican-votes").text("Republican Votes: 2970733 (48.18%)");
+		$("#state-democratic-votes").text("Democratic Votes: 2926441 (47.46%)");
+		$("#state-libertarian-votes").text("Libertarian Votes: 146715 (2.38%)");
+		$("#state-green-votes").text("Green Votes: 49941 (0.81%)");
+		$("#state-majority-party").text("Majority Party: Republican");
 	});
    
 	$("#full").on("click",function(e) {

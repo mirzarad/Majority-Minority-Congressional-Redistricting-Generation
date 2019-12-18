@@ -39,6 +39,8 @@ public class STOMPPhaseController {
 	@MessageMapping("/run_phase1")
 	@SendTo("/phase1/results")
 	public Response<?> phase1(@RequestBody GraphPartitioningForm phase1Form) {
+		String hello = "hello";
+		STOMPPhaseController.messagingTemplate.convertAndSend(hello);
 		System.err.println("Running Phase 1 state: " + phase1Form.getState());
 
 		Response<NeighborEntity> result = new Response<NeighborEntity>();
