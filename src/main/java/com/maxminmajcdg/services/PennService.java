@@ -7,13 +7,16 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.maxminmajcdg.DemographicCategory;
 import com.maxminmajcdg.entities.ElectionCategory;
 import com.maxminmajcdg.entities.NeighborDistrictWrapper;
-import com.maxminmajcdg.entities.NeighborEntity;
 import com.maxminmajcdg.entities.PennEntity;
 import com.maxminmajcdg.repo.PADemographics2016Repository;
 import com.maxminmajcdg.repo.PADemographics2018Repository;
@@ -24,6 +27,7 @@ import com.maxminmajcdg.repo.PennNeighborRepository;
 import com.maxminmajcdg.repo.PennRepository;
 
 @Service
+@Transactional(readOnly=true)
 public class PennService extends StateService{
 	
 	@Autowired
@@ -59,11 +63,17 @@ public class PennService extends StateService{
 				return null;		
 		}
 	}
-
+	@PersistenceContext
+	private EntityManager entityManager;
+	
 	@Override
+	@Transactional
 	public Map<Integer, NeighborDistrictWrapper> getNeighbors(ElectionCategory election) {
-		Map<Integer, NeighborDistrictWrapper> result = pennNeighborRepository.findAllDistinct().stream()
-				.collect(Collectors.toMap(NeighborEntity::getNodeID, Function.identity()));
+		List<NeighborDistrictWrapper> r = entityManager.createQuery("SELECT DISTINCT p FROM pa_neighbors_graph p", NeighborDistrictWrapper.class).getResultList();
+		Map<Integer, NeighborDistrictWrapper> result = r.stream()
+				.collect(Collectors.toMap(NeighborDistrictWrapper::getNodeID, Function.identity()));
+		r.forEach(e -> entityManager.persist(e));
+		entityManager.close();
 		return result;
 	}
 	

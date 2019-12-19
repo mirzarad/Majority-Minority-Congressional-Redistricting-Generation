@@ -1,6 +1,6 @@
 package com.maxminmajcdg;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -26,10 +26,11 @@ import com.maxminmajcdg.measures.MeasuresUtil;
 public class PrecinctGraph {
 
 	private Map<Integer, NeighborDistrictWrapper> districts;
-	private Map<Integer, NeighborDistrictWrapper> precicnts;
+	private Map<Integer, NeighborDistrictWrapper> precincts;
 	private Queue<Integer> queue;
 	private List<Integer> phase1IgnoreIndex;
 	private Map<Integer, Double> liveDistricts;
+	private States stateName;
 	private int totalPopulation;
 	private int phase1Iter;
 	private int maxNumDistricts;
@@ -47,7 +48,7 @@ public class PrecinctGraph {
 	
 	public PrecinctGraph(Map<Integer, NeighborDistrictWrapper> districts, Map<Integer, Double> liveDistricts, States state, ElectionCategory election, Map<DemographicCategory, Boolean> demographics, int totalPopulation, int maxNumDistricts, float maxDemographicBlocPercentage, float minDemographicBlocPercentage) {
 		this.districts = districts;
-		this.precicnts = new HashMap<Integer, NeighborDistrictWrapper>(districts);
+		this.precincts = new HashMap<Integer, NeighborDistrictWrapper>(districts);
 		this.liveDistricts = liveDistricts;
 		liveDistricts.keySet().retainAll(districts.keySet());
 		this.queue = new LinkedList<Integer>(liveDistricts.keySet());
@@ -64,6 +65,21 @@ public class PrecinctGraph {
 		this.maxDemographicBlocPercentage = maxDemographicBlocPercentage;
 		this.minDemographicBlocPercentage = minDemographicBlocPercentage;
 		this.successiveFails = 0;
+	}
+	
+	public PrecinctGraph(Map<Integer, NeighborDistrictWrapper> districts) {
+		this.districts = districts;
+		this.precincts = new HashMap<Integer, NeighborDistrictWrapper>(districts);
+	}
+
+	public void reset() {
+		districts = new HashMap<Integer, NeighborDistrictWrapper>(precincts);;
+		phase1IgnoreIndex = new ArrayList<Integer>();
+		isPhase1Done = false;
+		isPhase2Done = false;
+		phase1Iter = 0;
+		numDistricts = this.districts.size();
+		successiveFails = 0;
 	}
 	
 	public NeighborDistrictWrapper getRandomPrecinct() {		
@@ -103,11 +119,11 @@ public class PrecinctGraph {
 		.collect(Collectors.toMap(Function.identity(), e -> 
 				//MeasuresUtil.calculateMeasure(Measure.COMPETITIVENESS, districts.get(e), precicnts, election, totalPopulation) 
 				//+
-				MeasuresUtil.calculateMeasure(Measure.GERRYMANDER_DEMOCRAT, districts.get(e), precicnts, election, totalPopulation)
+				MeasuresUtil.calculateMeasure(Measure.GERRYMANDER_DEMOCRAT, districts.get(e), precincts, election, totalPopulation)
 				+
-				MeasuresUtil.calculateMeasure(Measure.GERRYMANDER_REPUBLICAN, districts.get(e), precicnts, election, totalPopulation)
+				MeasuresUtil.calculateMeasure(Measure.GERRYMANDER_REPUBLICAN, districts.get(e), precincts, election, totalPopulation)
 				+
-				MeasuresUtil.calculateMeasure(Measure.COMPACTNESS, districts.get(e), precicnts, election, totalPopulation)
+				MeasuresUtil.calculateMeasure(Measure.COMPACTNESS, districts.get(e), precincts, election, totalPopulation)
 				));
 		if (neighborVals.size() == 0) {
 			successiveFails += 1;
@@ -280,11 +296,11 @@ public class PrecinctGraph {
 	}
 
 	public Map<Integer, NeighborDistrictWrapper> getPrecicnts() {
-		return precicnts;
+		return precincts;
 	}
 
 	public void setPrecicnts(Map<Integer, NeighborDistrictWrapper> precicnts) {
-		this.precicnts = precicnts;
+		this.precincts = precicnts;
 	}
 
 	public int getSuccessiveFails() {
@@ -297,6 +313,40 @@ public class PrecinctGraph {
 
 	public void updatePhase1Iter() {
 		phase1Iter += 1;
+	}
+
+	public void setElection(ElectionCategory election) {
+		this.election = election;
+	}
+
+	public void setDeomographics(Map<DemographicCategory, Boolean> demographics) {
+		this.demographics = demographics;
+	}
+
+	public void setMaxDemographicBlocPercentage(float maxDemographicBlocPercentage) {
+		this.maxDemographicBlocPercentage = maxDemographicBlocPercentage;
+	}
+
+	public void setMinDemographicBlocPercentage(float minDemographicBlocPercentage) {
+		this.minDemographicBlocPercentage = minDemographicBlocPercentage;
+	}
+
+	public void setPrecinctsPopulation(Map<Integer, Double> precinctsPopulation) {
+		this.liveDistricts = precinctsPopulation;
+		liveDistricts.keySet().retainAll(districts.keySet());
+		this.queue = new LinkedList<Integer>(liveDistricts.keySet());
+	}
+
+	public ElectionCategory getElection() {
+		return election;
+	}
+
+	public States getStateName() {
+		return stateName;
+	}
+
+	public void setStateName(States stateName) {
+		this.stateName = stateName;
 	}
 	
 }

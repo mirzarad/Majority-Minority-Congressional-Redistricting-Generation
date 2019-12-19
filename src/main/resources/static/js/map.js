@@ -683,6 +683,7 @@ $( function() {
 					$("#district-view-toggle").attr("disabled", false);
 					$("#election-select-menu").css("background-color", "#3902cc");
 					$("#election-select-menu").attr("disabled", false);
+					selectedState = "pennsylvania";
 				}
 				if(feature.id=="06"){
 					$("#state-select-menu").text("CALIFORNIA");
@@ -690,7 +691,7 @@ $( function() {
 					$("#district-view-toggle").attr("disabled", false);
 					$("#election-select-menu").css("background-color", "#3902cc");
 					$("#election-select-menu").attr("disabled", false);
-
+					selectedState = "california";
 				}
 				districtResponse = districtAjax(stateId[feature.id]);
 				precinctResponse = precinctAjax(stateId[feature.id]);
