@@ -286,6 +286,12 @@
 								  <label class="checkbox-label" style="font-weight: bold;"><input type="checkbox" value="0" id="phase1-hawiian"> Native Hawaiian</label>
 								</div> 
 							</div>
+							<div class="col-md-4">
+								</br>
+								<p><span class="badge badge-primary">Desired Districts</span></p>
+									<input id="numDistrictsInput" type="text" class="form-control" placeholder="Enter Number of Desired Districts">
+								</br>
+							</div>
 						</div>
 	<!----------------------------------------------------------------------------------------------------------------------->
 	<!------------------------------------------------- Run Phase 1 --------------------------------------------------------->
@@ -489,7 +495,6 @@
 						<p id="precinct-democratic-votes">Democratic Votes: </p>
 						<p id="precinct-libertarian-votes">Libertarian Votes: </p>
 						<p id="precinct-green-votes">Green Votes: </p>
-						<p id="precinct-majority-party">Majority Party: </p>
 					</div>
 				</div>
 			</div>
@@ -517,7 +522,6 @@
 							<div class="col-12">
 								<h5 style="text-decoration:underline;" id="district-demographic-data-text">District Demographic Data</h5>
 								
-								<p id="district-population">Population: </p>
 								<p id="district-white">White: </p>
 								<p id="district-african-american">African American: </p>
 								<p id="district-hispanic">Hispanic: </p>
@@ -525,7 +529,6 @@
 								<p id="district-asian">Asian: </p>
 								<p id="district-native-hawaiian">Native Hawaiian: </p>
 								<p id="district-native-alaskan">Native Alaskan: </p>
-								<p id="district-total-population">Total Population: </p>
 							</div>
 							
 							<!-- <div class="col-12"> -->
@@ -548,6 +551,11 @@
 	<!----------------------------------------------------------------------------------------------------------------------->	
 				
 	<div class="tab-pane" id="data-analysis-content">
+	<div class ="row" id = "data-analysis-vote">
+	</div>
+	
+	<div class ="row" id = "data-analysis-dem">
+	</div>
 		
 	</div>
 
@@ -580,5 +588,6 @@
     <script src="js/graph.js"></script>
     <script src="js/demographicdataupdate.js"></script>
     <script src="js/votingdataupdate.js"></script>
+    <script src="js/table.js"></script>
   </body>
 </html>

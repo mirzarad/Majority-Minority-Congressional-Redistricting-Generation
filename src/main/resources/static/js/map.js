@@ -8,6 +8,7 @@ $( function() {
 	var isPrecinctZoomed = false;
 	var districtResponse = null;
 	var precinctResponse = null;
+    var numberOfDesiredDistricts = document.getElementById("numDistrictsInput").value;
 	
 	
 	var map = L.map('map', {
@@ -97,8 +98,45 @@ $( function() {
 			fillColor: '#0000b3',
 			dashArray: '1',
 			fillOpacity: 0.7,
-			//fillColor: getColor(feature.properties.score)
 		};
+	}
+	
+	function districtStyle(feature){
+		return {
+			weight:2,
+			opacity: 1,
+			color: '#0000b3',
+			fillColor: precinctColor(feature.id),
+			dashArray: '1',
+			fillOpacity: 0.7
+		}
+	}
+	
+	function precinctStyle(newDistrictID){
+		return {
+			weight:2,
+			opacity: 1,
+			color: '#0000b3',
+			fillColor: precinctColor(newDistrictID),
+			dashArray: '1',
+			fillOpacity: 0.7
+		}
+	}
+	
+	function precinctColor(newDistrictId){
+		newDistrictId = parseInt(newDistrictID);
+		numDistricts = 18;
+		return uniqueNewDistrictColoring2(newDistrictId, numDistricts); //colorNum == newDistrictID | colors = numberOfDesiredDistricts
+	}
+	
+	function uniqueNewDistrictColoring(colorNum, colors){
+			if(colors < 1) colors = 1; // default to a single color and avoids divide by zero
+				return "hsl(" + (colorNum * (360/colors) % 360) + ",100%,50%)";
+	}
+	
+	function uniqueNewDistrictColoring2(districtId, numDistricts){
+		if(numDistricts < 1) numDistricts = 1; // default to a single color and avoids divide by zero
+			return "hsl(" + (districtId * (360/numDistricts) % 360) + ",100%,50%)";
 	}
 	
 	// HIGHLIGHT FEATURE HANDLER --> on mouseover
@@ -153,6 +191,7 @@ $( function() {
 					// ============//
 					
 					// DECLARATIONS --------------------------------------------------------------------------------------------------
+					console.log(e);
 
 					// STATE //
 					var stateRepublicanVotes;
@@ -179,15 +218,310 @@ $( function() {
 					var precinctTotalPopulation;
 					// -----------------------------------------------------------------------------------------------------------------
 					
+					
 					if(currentState == "pennsylvania"){
-						// STATE VOTING DATA
-						/*
-
-						*/
+						// STATE VOTING DATA 
+						$("#state-republican-votes").text("Republican Votes: 2970733 (48.18%)");
+						$("#state-democratic-votes").text("Democratic Votes: 2926441 (47.56%)");
+						$("#state-libertarian-votes").text("Libertarian Votes: 146715 (2.38%)");
+						$("#state-green-votes").text("Green Votes: 49941 (0.81%)");
+						$("#state-majority-party").text("Majority Party: Republican");
 						
-
+					
+						// STATE DEMOGRAPHIC DATA 
+						$("#state-white").text("White: 81.8%");
+						$("#state-african-american").text("African American: 12.0%");
+						$("#state-hispanic").text("Hispanic: 7.6%");
+						$("#state-native-american").text("Native American: 0.4%");
+						$("#state-asian").text("Asian: 3.7%");
+						$("#state-native-hawaiian").text("Native Hawaiian: 0.1%");
+						$("#state-native-alaskan").text("Native Alaskan: 0.1%");
+						$("#state-total-population").text("Total Population: 12807060");
 					}
-				
+					
+					
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+					
+					// DEMOGRAPHICS AND VOTING DATA FOR EACH DISTRICT:
+					if(feature.id == "328"){
+						// District VOTING DATA 
+						$("#district-republican-votes").text("Republican Votes: 183576 (36.2%)");
+						$("#district-democratic-votes").text("Democratic Votes: 194980 (38.3%)");
+						$("#district-libertarian-votes").text("Libertarian Votes: 46715 (12.38%)");
+						$("#district-green-votes").text("Green Votes: 49941 (0.81%)");
+						$("#district-majority-party").text("Majority Party: Republican");
+						
+					
+						// District DEMOGRAPHIC DATA 
+						$("#district-white").text("White: 71.8%");
+						$("#district-african-american").text("African American: 11.0%");
+						$("#district-hispanic").text("Hispanic: 2.3%");
+						$("#district-native-american").text("Native American: 0.4%");
+						$("#district-asian").text("Asian: 3.7%");
+						$("#district-native-hawaiian").text("Native Hawaiian: 0.1%");
+						$("#district-native-alaskan").text("Native Alaskan: 0.1%");
+					}
+					
+					if(feature.id == "321"){
+						// District VOTING DATA 
+						$("#district-republican-votes").text("Republican Votes: 157031 (36.2%)");
+						$("#district-democratic-votes").text("Democratic Votes: 190788 (38.3%)");
+						$("#district-libertarian-votes").text("Libertarian Votes: 3315 (12.38%)");
+						$("#district-green-votes").text("Green Votes: 4941 (0.81%)");
+						$("#district-majority-party").text("Majority Party: Democratic");
+						
+					
+						// District DEMOGRAPHIC DATA 
+						$("#district-white").text("White: 71.8%");
+						$("#district-african-american").text("African American: 11.0%");
+						$("#district-hispanic").text("Hispanic: 2.3%");
+						$("#district-native-american").text("Native American: 0.4%");
+						$("#district-asian").text("Asian: 3.7%");
+						$("#district-native-hawaiian").text("Native Hawaiian: 0.1%");
+						$("#district-native-alaskan").text("Native Alaskan: 0.1%");
+					}
+					
+					if(feature.id == "318"){
+						// District VOTING DATA 
+						$("#district-republican-votes").text("Republican Votes: 183576 (36.2%)");
+						$("#district-democratic-votes").text("Democratic Votes: 194980 (38.3%)");
+						$("#district-libertarian-votes").text("Libertarian Votes: 54715 (12.38%)");
+						$("#district-green-votes").text("Green Votes: 49941 (0.81%)");
+						$("#district-majority-party").text("Majority Party: Republican");
+						
+					
+						// District DEMOGRAPHIC DATA 
+						$("#district-white").text("White: 71.8%");
+						$("#district-african-american").text("African American: 11.0%");
+						$("#district-hispanic").text("Hispanic: 2.3%");
+						$("#district-native-american").text("Native American: 0.4%");
+						$("#district-asian").text("Asian: 3.7%");
+						$("#district-native-hawaiian").text("Native Hawaiian: 0.1%");
+						$("#district-native-alaskan").text("Native Alaskan: 0.1%");
+					}
+					
+					if(feature.id == "322"){
+						// District VOTING DATA 
+						$("#district-republican-votes").text("Republican Votes: 78445 (36.2%)");
+						$("#district-democratic-votes").text("Democratic Votes: 111503 (38.3%)");
+						$("#district-libertarian-votes").text("Libertarian Votes: 46715 (12.38%)");
+						$("#district-green-votes").text("Green Votes: 49941 (0.81%)");
+						$("#district-majority-party").text("Majority Party: Democratic");
+						
+					
+						// District DEMOGRAPHIC DATA 
+						$("#district-white").text("White: 71.8%");
+						$("#district-african-american").text("African American: 11.0%");
+						$("#district-hispanic").text("Hispanic: 2.3%");
+						$("#district-native-american").text("Native American: 0.01%");
+						$("#district-asian").text("Asian: 3.7%");
+						$("#district-native-hawaiian").text("Native Hawaiian: 0.1%");
+						$("#district-native-alaskan").text("Native Alaskan: 0.1%");
+					}
+					
+					if(feature.id == "332"){
+						// District VOTING DATA 
+						$("#district-republican-votes").text("Republican Votes: 42016 (36.2%)");
+						$("#district-democratic-votes").text("Democratic Votes: 83898 (38.3%)");
+						$("#district-libertarian-votes").text("Libertarian Votes: 46715 (12.38%)");
+						$("#district-green-votes").text("Green Votes: 49941 (0.81%)");
+						$("#district-majority-party").text("Majority Party: Republican");
+						
+					
+						// District DEMOGRAPHIC DATA 
+						$("#district-white").text("White: 71.8%");
+						$("#district-african-american").text("African American: 11.0%");
+						$("#district-hispanic").text("Hispanic: 2.3%");
+						$("#district-native-american").text("Native American: 0.4%");
+						$("#district-asian").text("Asian: 3.7%");
+						$("#district-native-hawaiian").text("Native Hawaiian: 0.1%");
+						$("#district-native-alaskan").text("Native Alaskan: 0.1%");
+					}
+					
+					if(feature.id == "329"){
+						// District VOTING DATA 
+						$("#district-republican-votes").text("Republican Votes: 166920 (36.2%)");
+						$("#district-democratic-votes").text("Democratic Votes: 106243 (38.3%)");
+						$("#district-libertarian-votes").text("Libertarian Votes: 3323 (12.38%)");
+						$("#district-green-votes").text("Green Votes: 49941 (0.81%)");
+						$("#district-majority-party").text("Majority Party: Republican");
+						
+					
+						// District DEMOGRAPHIC DATA 
+						$("#district-white").text("White: 77.8%");
+						$("#district-african-american").text("African American: 8.0%");
+						$("#district-hispanic").text("Hispanic: 4.3%");
+						$("#district-native-american").text("Native American: 0.4%");
+						$("#district-asian").text("Asian: 3.7%");
+						$("#district-native-hawaiian").text("Native Hawaiian: 0.1%");
+						$("#district-native-alaskan").text("Native Alaskan: 0.1%");
+					}
+					
+					if(feature.id == "333"){
+						// District VOTING DATA 
+						$("#district-republican-votes").text("Republican Votes: 128201 (36.2%)");
+						$("#district-democratic-votes").text("Democratic Votes: 230864 (38.3%)");
+						$("#district-libertarian-votes").text("Libertarian Votes: 7684 (12.38%)");
+						$("#district-green-votes").text("Green Votes: 49941 (0.81%)");
+						$("#district-majority-party").text("Majority Party: Republican");
+						
+					
+						// District DEMOGRAPHIC DATA 
+						$("#district-white").text("White: 87.8%");
+						$("#district-african-american").text("African American: 4.0%");
+						$("#district-hispanic").text("Hispanic: 2.3%");
+						$("#district-native-american").text("Native American: 0.4%");
+						$("#district-asian").text("Asian: 3.7%");
+						$("#district-native-hawaiian").text("Native Hawaiian: 0.1%");
+						$("#district-native-alaskan").text("Native Alaskan: 0.1%");
+					}
+					
+					if(feature.id == "325"){
+						// District VOTING DATA 
+						$("#district-republican-votes").text("Republican Votes: 183576 (36.2%)");
+						$("#district-democratic-votes").text("Democratic Votes: 194980 (38.3%)");
+						$("#district-libertarian-votes").text("Libertarian Votes: 8863 (12.38%)");
+						$("#district-green-votes").text("Green Votes: 49941 (0.81%)");
+						$("#district-majority-party").text("Majority Party: Republican");
+						
+					
+						// District DEMOGRAPHIC DATA 
+						$("#district-white").text("White: 80.8%");
+						$("#district-african-american").text("African American: 18.0%");
+						$("#district-hispanic").text("Hispanic: 2.3%");
+						$("#district-native-american").text("Native American: 0.0%");
+						$("#district-asian").text("Asian: 0.2%");
+						$("#district-native-hawaiian").text("Native Hawaiian: 0.0%");
+						$("#district-native-alaskan").text("Native Alaskan: 0.0%");
+					}
+					
+					if(feature.id == "330"){
+						// District VOTING DATA 
+						$("#district-republican-votes").text("Republican Votes: 22769 (34%)");
+						$("#district-democratic-votes").text("Democratic Votes: 13987 (22%)");
+						$("#district-libertarian-votes").text("Libertarian Votes: 1997 (8.21%)");
+						$("#district-green-votes").text("Green Votes: 49941 (0.02%)");
+						$("#district-majority-party").text("Majority Party: Republican");
+						
+					
+						// District DEMOGRAPHIC DATA 
+						$("#district-white").text("White: 71.8%");
+						$("#district-african-american").text("African American: 14.0%");
+						$("#district-hispanic").text("Hispanic: 2.3%");
+						$("#district-native-american").text("Native American: 0.01%");
+						$("#district-asian").text("Asian: 4.8%");
+						$("#district-native-hawaiian").text("Native Hawaiian: 0.0%");
+						$("#district-native-alaskan").text("Native Alaskan: 0.0%");
+					}
+					
+					if(feature.id == "331"){
+						// District VOTING DATA 
+						$("#district-republican-votes").text("Republican Votes: 218388 (36.2%)");
+						$("#district-democratic-votes").text("Democratic Votes: 146891 (38.3%)");
+						$("#district-libertarian-votes").text("Libertarian Votes: 46715 (1.01%)");
+						$("#district-green-votes").text("Green Votes: 49941 (0.003%)");
+						$("#district-majority-party").text("Majority Party: Republican");
+						
+					
+						// District DEMOGRAPHIC DATA 
+						$("#district-white").text("White: 59.8%");
+						$("#district-african-american").text("African American: 15.0%");
+						$("#district-hispanic").text("Hispanic: 13.3%");
+						$("#district-native-american").text("Native American: 0.4%");
+						$("#district-asian").text("Asian: 3.7%");
+						$("#district-native-hawaiian").text("Native Hawaiian: 0.1%");
+						$("#district-native-alaskan").text("Native Alaskan: 0.1%");
+					}
+					
+					if(feature.id == "334"){
+						// District VOTING DATA 
+						$("#district-republican-votes").text("Republican Votes: 183576 (46.2%)");
+						$("#district-democratic-votes").text("Democratic Votes: 194980 (38.3%)");
+						$("#district-libertarian-votes").text("Libertarian Votes: 11715 (14.38%)");
+						$("#district-green-votes").text("Green Votes: 49941 (0.81%)");
+						$("#district-majority-party").text("Majority Party: Republican");
+						
+					
+						// District DEMOGRAPHIC DATA 
+						$("#district-white").text("White: 71.8%");
+						$("#district-african-american").text("African American: 11.0%");
+						$("#district-hispanic").text("Hispanic: 2.3%");
+						$("#district-native-american").text("Native American: 0.4%");
+						$("#district-asian").text("Asian: 3.7%");
+						$("#district-native-hawaiian").text("Native Hawaiian: 0.1%");
+						$("#district-native-alaskan").text("Native Alaskan: 0.1%");
+					}
+
+					if(feature.id == "319"){
+						// District VOTING DATA 
+						$("#district-republican-votes").text("Republican Votes: 183576 (36.2%)");
+						$("#district-democratic-votes").text("Democratic Votes: 194980 (38.3%)");
+						$("#district-libertarian-votes").text("Libertarian Votes: 46715 (12.38%)");
+						$("#district-green-votes").text("Green Votes: 49941 (0.81%)");
+						$("#district-majority-party").text("Majority Party: Republican");
+						
+					
+						// District DEMOGRAPHIC DATA 
+						$("#district-white").text("White: 34.8%");
+						$("#district-african-american").text("African American: 8.6%");
+						$("#district-hispanic").text("Hispanic: 3.5%");
+						$("#district-native-american").text("Native American: 0.4%");
+						$("#district-asian").text("Asian: 8.7%");
+						$("#district-native-hawaiian").text("Native Hawaiian: 0.1%");
+						$("#district-native-alaskan").text("Native Alaskan: 0.1%");
+					}
+					
+					if(feature.id == "323"){
+						// STATE VOTING DATA 
+						// District VOTING DATA 
+						$("#district-republican-votes").text("Republican Votes: 183576 (36.2%)");
+						$("#district-democratic-votes").text("Democratic Votes: 194980 (38.3%)");
+						$("#district-libertarian-votes").text("Libertarian Votes: 46715 (12.38%)");
+						$("#district-green-votes").text("Green Votes: 49941 (0.81%)");
+						$("#district-majority-party").text("Majority Party: Republican");
+						
+					
+						// District DEMOGRAPHIC DATA 
+						$("#district-white").text("White: 68.8%");
+						$("#district-african-american").text("African American: 21.0%");
+						$("#district-hispanic").text("Hispanic: 1.3%");
+						$("#district-native-american").text("Native American: 0.2%");
+						$("#district-asian").text("Asian: 3.7%");
+						$("#district-native-hawaiian").text("Native Hawaiian: 0.0%");
+						$("#district-native-alaskan").text("Native Alaskan: 0.1%");
+					}
+					
+					if(feature.id == "326"){
+						// District VOTING DATA 
+						$("#district-republican-votes").text("Republican Votes: 183576 (36.2%)");
+						$("#district-democratic-votes").text("Democratic Votes: 194980 (38.3%)");
+						$("#district-libertarian-votes").text("Libertarian Votes: 46715 (12.38%)");
+						$("#district-green-votes").text("Green Votes: 49941 (0.81%)");
+						$("#district-majority-party").text("Majority Party: Republican");
+						
+					
+						// District DEMOGRAPHIC DATA 
+						$("#district-white").text("White: 71.8%");
+						$("#district-african-american").text("African American: 11.0%");
+						$("#district-hispanic").text("Hispanic: 2.3%");
+						$("#district-native-american").text("Native American: 0.4%");
+						$("#district-asian").text("Asian: 3.7%");
+						$("#district-native-hawaiian").text("Native Hawaiian: 0.1%");
+						$("#district-native-alaskan").text("Native Alaskan: 0.1%");
+					}
+					
+					
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+					
+					
+					
 					
 					// ================ //
 					// PRESEDENTIAL2016 //
@@ -349,16 +683,6 @@ $( function() {
 					$("#district-view-toggle").attr("disabled", false);
 					$("#election-select-menu").css("background-color", "#3902cc");
 					$("#election-select-menu").attr("disabled", false);
-					
-					// STATE DEMOGRAPHIC DATA 
-					$("#state-white").text("White: 81.8%");
-					$("#state-african-american").text("African American: 12.0%");
-					$("#state-hispanic").text("Hispanic: 7.6%");
-					$("#state-native-american").text("Native American: 0.4%");
-					$("#state-asian").text("Asian: 3.7%");
-					$("#state-native-hawaiian").text("Native Hawaiian: 0.1%");
-					$("#state-native-alaskan").text("Native Alaskan: 0.4%");
-					$("#state-total-population").text("Total Population: 12,807,060");
 				}
 				if(feature.id=="06"){
 					$("#state-select-menu").text("CALIFORNIA");
@@ -367,14 +691,6 @@ $( function() {
 					$("#election-select-menu").css("background-color", "#3902cc");
 					$("#election-select-menu").attr("disabled", false);
 
-					$("#state-white").text("White: 72.1%");
-					$("#state-african-american").text("African American: 6.5%");
-					$("#state-hispanic").text("Hispanic: 1.6%");
-					$("#state-native-american").text("Native American: 1.6%");
-					$("#state-asian").text("Asian: 15.3%");
-					$("#state-native-hawaiian").text("Native Hawaiian: 0.5%");
-					$("#state-native-alaskan").text("Native Alaskan: 1.6%");
-					$("#state-total-population").text("Total Population: 39,557,045");
 				}
 				districtResponse = districtAjax(stateId[feature.id]);
 				precinctResponse = precinctAjax(stateId[feature.id]);
@@ -387,20 +703,6 @@ $( function() {
 		districtAjax(this.id);
 		precinctAjax(this.id);
 
-		$("#state-white").text("White: 72.1%");
-		$("#state-african-american").text("African American: 6.5%");
-		$("#state-hispanic").text("Hispanic: 1.6%");
-		$("#state-native-american").text("Native American: 1.6%");
-		$("#state-asian").text("Asian: 15.3%");
-		$("#state-native-hawaiian").text("Native Hawaiian: 0.5%");
-		$("#state-native-alaskan").text("Native Alaskan: 1.6%");
-		$("#state-total-population").text("Total Population: 39,557,045");
-		
-		$("#state-republican-votes").text("Republican Votes: 4483810 (31.62%)");
-		$("#state-democratic-votes").text("Democratic Votes: 8753788 (61.73%)");
-		$("#state-libertarian-votes").text("Libertarian Votes: 478500 (3.37%)");
-		$("#state-green-votes").text("Green Votes: 278657 (1.96%)");
-		$("#state-majority-party").text("Majority Party: Democratic");
 	});
    
 	$("#pennsylvania").on("click",function(e) {
@@ -409,21 +711,6 @@ $( function() {
 		districtAjax(this.id);
 		precinctAjax(this.id);
 		
-		// STATE DEMOGRAPHIC DATA 
-		$("#state-white").text("White: 81.8%");
-		$("#state-african-american").text("African American: 12.0%");
-		$("#state-hispanic").text("Hispanic: 7.6%");
-		$("#state-native-american").text("Native American: 0.4%");
-		$("#state-asian").text("Asian: 3.7%");
-		$("#state-native-hawaiian").text("Native Hawaiian: 0.1%");
-		$("#state-native-alaskan").text("Native Alaskan: 0.4%");
-		$("#state-total-population").text("Total Population: 12,807,060");
-		
-		$("#state-republican-votes").text("Republican Votes: 2970733 (48.18%)");
-		$("#state-democratic-votes").text("Democratic Votes: 2926441 (47.46%)");
-		$("#state-libertarian-votes").text("Libertarian Votes: 146715 (2.38%)");
-		$("#state-green-votes").text("Green Votes: 49941 (0.81%)");
-		$("#state-majority-party").text("Majority Party: Republican");
 	});
    
 	$("#full").on("click",function(e) {
@@ -566,10 +853,53 @@ $( function() {
 		else {
 			isInit = false;
 		}
-		geojson = L.geoJson(statesData, {
-			style: style,
-			onEachFeature: onEachFeature
-		}).addTo(map);
-	}
+
+		if(currentState == "pennsylvania" && mode == "districtHover"){
+			geojson = L.geoJson(statesData, {
+				style: 	function(feature){
+										if(feature.id == '318'){
+											return {color: "#070eec", fillColor: "#070eec"};
+										}else if(feature.id == '319'){
+											return {color: "#d14553", fillColor: "#d14553"};
+										}else if(feature.id == '320'){
+											return {color: "#5e60a8", fillColor: "#5e60a8"};
+										}else if(feature.id == '321'){
+											return {color: "#7e7034", fillColor: "#7e7034"};
+										}else if(feature.id == '322'){
+											return {color: "#edf59d", fillColor: "#edf59d"};
+										}else if(feature.id == '323'){
+											return {color: "#dbc96a", fillColor: "#dbc96a"};
+										}else if(feature.id == '324'){
+											return {color: "#59f490", fillColor: "#59f490"};
+										}else if(feature.id == '325'){
+											return {color: "#117fa8", fillColor: "#117fa8"};
+										}else if(feature.id == '326'){
+											return {color: "#e36789", fillColor: "#e36789"};
+										}else if(feature.id == '327'){
+											return {color: "#68255a", fillColor: "#68255a"};
+										}else if(feature.id == '328'){
+											return {color: "#522134", fillColor: "#522134"};
+										}else if(feature.id == '329'){
+											return {color: "#27be5c", fillColor: "#27be5c"};
+										}else if(feature.id == '330'){
+											return {color: "#606bed", fillColor: "#606bed"};
+										}else if(feature.id == '331'){
+											return {color: "#65bb54", fillColor: "#65bb54"};
+										}else if(feature.id == '332'){
+											return {color: "#0f4462", fillColor: "#0f4462"};
+										}else if(feature.id == '333'){
+											return {color: "#087c14", fillColor: "#087c14"};
+										}else{
+											return {color: "#ac525d", fillColor: "#ac525d"};
+										}
+						}, onEachFeature: onEachFeature}).addTo(map);
+			
+				}else{	
+					geojson = L.geoJson(statesData, {
+						style: style,
+						onEachFeature: onEachFeature
+					}).addTo(map);
+				}
+			}
 	
 });

@@ -28,6 +28,4 @@ public interface NeighborDistrictWrapper {
 	
 	public boolean isPhase1ThresholdMet(ElectionCategory election, Map<DemographicCategory, Boolean> demographics, float maxDemographicBlocPercentage,
 			float minDemographicBlocPercentage);
-
-
 }

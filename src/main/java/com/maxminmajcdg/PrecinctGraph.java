@@ -1,6 +1,6 @@
 package com.maxminmajcdg;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -14,8 +14,7 @@ import java.util.SplittableRandom;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.javatuples.Pair;
-
+import com.maxminmajcdg.dto.DistrictResponse;
 import com.maxminmajcdg.entities.DemographicWrapper;
 import com.maxminmajcdg.entities.District;
 import com.maxminmajcdg.entities.ElectionCategory;
@@ -120,13 +119,15 @@ public class PrecinctGraph {
 		return districts.get(optimalNeighbor);
 	}
 	
-	public Pair<Integer, Set<Integer>> join(NeighborDistrictWrapper a, NeighborDistrictWrapper b) {
+	public DistrictResponse join(NeighborDistrictWrapper a, NeighborDistrictWrapper b) {
 		if(a == null || b == null) {
 			return null;
 		}
+		int max = (a.getNodeID() > b.getNodeID())? a.getNodeID() : b.getNodeID();
+		int min = (a.getNodeID() < b.getNodeID())? a.getNodeID() : b.getNodeID();
 		
 		District newDistrict = new District();
-		newDistrict.setNodeID(a.getNodeID());
+		newDistrict.setNodeID(min);
 		newDistrict.addPrecincts(a.getNodeID());
 		newDistrict.addPrecincts(b.getNodeID());
 		newDistrict.addPrecincts(a.getPrecincts());
@@ -170,22 +171,23 @@ public class PrecinctGraph {
 		newDistrict.setTotalVotes(totalVotes);
 		
 		District bDistrict = new District(newDistrict);
-		bDistrict.setNodeID(b.getNodeID());
+		bDistrict.setNodeID(max);
 		
 		districts.remove(a.getNodeID());
 		districts.remove(b.getNodeID());
-		districts.put(a.getNodeID(), newDistrict);
-		districts.put(b.getNodeID(), bDistrict);
+		districts.put(min, newDistrict);
+		districts.put(max, bDistrict);
 		liveDistricts.remove(a.getNodeID());
 		liveDistricts.remove(b.getNodeID());
-		liveDistricts.put(a.getNodeID(), newDistrict.getPopulation(election));
-		liveDistricts.put(b.getNodeID(), bDistrict.getPopulation(election));
+		liveDistricts.put(min, newDistrict.getPopulation(election));
+		liveDistricts.put(max, bDistrict.getPopulation(election));
 		numDistricts -= 1;
 		
-		return Pair.with(a.getNodeID(), newDistrict.getPrecincts());
+		
+		return new DistrictResponse(newDistrict, election);
 	}
 	
-	public Pair<Integer, Set<Integer>> finalizeDistricts() {
+	public DistrictResponse finalizeDistricts() {
 		int index = queue.remove();
 		NeighborDistrictWrapper precinct = districts.get(index);
 		queue.add(index);

@@ -7,7 +7,6 @@ public class DemVotePair {
 
 	private VoteEntity votes;
 	private DemographicsEntity demographics;
-	//private Optional<MeausrmentsEntity> measurements;
 	
 	public VoteEntity getVotes() {
 		return votes;

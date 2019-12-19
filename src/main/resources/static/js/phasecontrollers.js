@@ -1,6 +1,7 @@
 var stompClient = null;
-$(function () {
 
+$(function () {
+	var stompClient = null;
 	var $phase0 = $("#phase0-content");
 	var $phase1 = $("#phase1-content");
 	var $phase2 = $("#phase2-content");
@@ -43,8 +44,8 @@ $(function (){
 			var data = {};
 			data["demographicBlocPercentage"] = $("#phase0-demographic-bloc-measure").val();
 			data["voteBlocPercentage"] = $("#phase0-vote-bloc-measure").val();
-			data["election"] = "CONGRESSIONAL2016";
-			data["state"] = "pennsylvania";
+			data["election"] = selectedElection;
+			data["state"] = selectedState;
 
 			phasePost("phase0", data, "1", "Couldn't Start Demographic Bloc Analysis.", phase0);
 		}
@@ -57,12 +58,14 @@ $(function (){
 		e.preventDefault();
 		var is_running = phase1.val();
 		
-		$("#phase2-run").attr("disabled", false); // enable phase 2 button
-		
 		if (is_running == "0") {
+			
+
+	        var numberOfDesiredDistricts = document.getElementById("numDistrictsInput").value;
+	        alert(numberOfDesiredDistricts);
+			
 			var data = {};
 			data["maxDemographicBlocPercentage"] = $("#phase1-demographic-bloc-measure").val();
-			data["minVoteBlocPercentage"] = $("#phase1-vote-bloc-measure").val();
 			data["minDemographicBlocPercentage"] = $("#phase1-vote-bloc-measure").val();
 			data["demographics"] = {AFRICAN_AMERICAN: $("#phase1-african").is(":checked"), 
 									 NATIVE_AMERICAN: $("#phase1-native").is(":checked"), 
@@ -72,39 +75,11 @@ $(function (){
 									 WHITE: $("#phase1-white").is(":checked")};
 			
 			data["election"] = selectedElection;
-			data["state"] = "pennsylvania";
-			data["numberOfDistricts"] = 20;
+			data["state"] = selectedState;
+			data["numberOfDistricts"] = numberOfDesiredDistricts;
 			connect(stompClient);
-			sendData(data);
+			sendName(data);
 			showGreeting();
-			
-			
-			
-			// Web Socket functions:
-			function connect(stompClient) {
-				var socket = new SockJS('/ws');
-			    stompClient = Stomp.over(socket);
-			    stompClient.connect({}, function (frame) {
-			        stompClient.subscribe('/phase1/results', function (response) {
-			        	console.log(response);
-			            showResponse(JSON.parse(response.body).content);
-			        });
-			    });
-			}
-
-			function sendData(data) {
-			    stompClient.send("app/run_phase1", {}, JSON.stringify(data));
-			}
-
-			function showResponse() {
-				console.log("show greeting test:");
-				var nullTest = null;
-				if(nullTest == null){
-					console.log("null skipped");
-				}
-
-			}
-			// END WEBSOCKET FUNCTIONS
 		
 
 			//phasePost("phase1", data, "1", "Couldn't Start Graph Partitioning.", phase1);
@@ -139,7 +114,43 @@ $(function (){
 	});
 });
 
+// Web Socket functions:
+function connect() {
+	var socket = new SockJS('/ws');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+        stompClient.subscribe('/phase/results', function (response) {
+            showGreeting(JSON.parse(response.body).content);
+        });
+    });
+}
 
+function sendName(data) {
+	waitForSocketConnection(stompClient, function(){
+		stompClient.send("/app/run_phase1", {}, JSON.stringify(data));
+	});
+}
+
+function waitForSocketConnection(socket, callback){
+    setTimeout(
+        function () {
+            if (socket.readyState === 1) {
+                console.log("Connection is made")
+                if (callback != null){
+                    callback();
+                }
+            } else {
+                console.log("wait for connection...")
+                waitForSocketConnection(socket, callback);
+            }
+
+        }, 5); 
+}
+
+function showGreeting(message) {
+	console.log(message);
+}
+// END WEBSOCKET FUNCTIONS
 
 
 function phasePost(path, data, setVal, err, phase) {
@@ -155,18 +166,8 @@ function phasePost(path, data, setVal, err, phase) {
 			//Set BTN To PAUSE
 			phase.val(0);
 			
-			/*
-			var response = results["response"];
-			var votes = response["votes"];
-			var presVotes = votes["presVotes"];
-			var congressional2016 = presVotes["CONGRESSIONAL2016"];
-			var green = congressional2016["GREEN"]; // green votes
-			var democratic = congressional2016["DEMOCRATIC"];
-			console.log("green value:");
-			console.log(green);
-			console.log("dem value");
-			console.log(democratic);
-			*/
+            drawTable(results);
+            draw(results);
 		},
 		error: function(e) {
 			phase.val(1);
