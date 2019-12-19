@@ -63,7 +63,6 @@ $(function (){
 			
 
 	        var numberOfDesiredDistricts = document.getElementById("numDistrictsInput").value;
-	        alert(numberOfDesiredDistricts);
 			
 			var data = {};
 			data["maxDemographicBlocPercentage"] = $("#phase1-demographic-bloc-measure").val();
@@ -78,7 +77,6 @@ $(function (){
 			data["election"] = selectedElection;
 			data["state"] = selectedState;
 			data["numberOfDistricts"] = numberOfDesiredDistricts;
-			connect(stompClient);
 			sendName(data);
 			showGreeting();
 		
