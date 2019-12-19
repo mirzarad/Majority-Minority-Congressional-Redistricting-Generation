@@ -1,70 +1,52 @@
 function drawTable(data) { 
     
     var responses = data["response"];
-	var precincts=[];
-	var recordDem= [];
-	var recordVot = [];
-	
+	var table = {};
 	
 	responses.forEach((element,index,array)=>{
-	var votes = element.votes;
-	
-	var demographics = element.demographics;
-	var dem = demographics.votingDemographics;
-	precincts.push(votes.geomID);
-	
-	let max = Math.max(dem.ASIAN,dem.AFRICAN_AMERICAN,dem.HISPANIC,dem.WHITE);
-	var key = Object.keys(dem).find(key => dem[key] == max);
-	var precentage = Math.ceil(max/dem.TOTAL *100);
-	var record = precentage + "% " + key;
-	recordDem.push(record);
-	
-	var vote = votes.presVotes;
-	var voteResults = vote.PRESIDENTIAL2016;
-	
-	
-	 arrSum = voteResults.INDEPENDENT+ voteResults.DEMOCRATIC+ voteResults.REPUBLICAN + voteResults.GREEN;
-	
-	if(voteResults.DEMOCRATIC>voteResults.REPUBLICAN){
-		var avg = Math.ceil(voteResults.DEMOCRATIC/arrSum *100);
-		recordVot.push(avg + "% Democratic");
+		var maxVote = element.maxVote;
+		var maxDemographic = element.maxDemographic;
 		
-	}
-	else{
-		var avg = Math.ceil(voteResults.REPUBLICAN/arrSum *100);
-		recordVot.push(avg + "% Republican");
-	}
-	
-	}
-	);
-    console.log(recordVot);
-	console.log(recordDem);
-
-var values = [
-      precincts,
-      recordDem,
-      recordVot]
-
+		if (!(maxDemographic in table)) {
+			table[maxDemographic] = {}
+		}
+		if (!(maxVote in table[maxDemographic])) {
+			table[maxDemographic][maxVote] = 0
+		}
+		table[maxDemographic][maxVote] += 1 
+		
+	});
+    console.log(table);
+    
+    var demographics = [];
+    var republican = [];
+    var democratic = [];
+    
+    for (var key in table) {
+    	demographics.push(key);
+    	republican.push(isNaN(table[key]["REPUBLICAN"])? 0 : table[key]["REPUBLICAN"]);
+    	democratic.push(isNaN(table[key]["DEMOCRATIC"])? 0 : table[key]["DEMOCRATIC"]);
+    }
 var data = [{
-  type: 'table',
-  columnorder: [1,2,3],
-  columnwidth: [400,400,400],
-  header: {
-    values: [["<b>PrecinctID</b>"],["<b>Demographic</b>"],
-				                      ["<b>VotingParty</b>"]],
-    align: ["justify"],
-    line: {width: 3, color: '#506784'},
-    fill: {color: '#119DFF'},
-    font: {family: "Arial", size: 14, color: "white"}
-  },
-  cells: {
-    values: values,
-    align: ["left", "center"],
-    line: {color: "#506784", width: 1},
-	 fill: {color: ['#25FEFD', 'white']},
-    font: {family: "Arial", size: 14, color: "black"}
-  }
-}]
+	  type: 'table',
+	  columnorder: [1,2,3],
+	  columnwidth: [400,400,400],
+	  header: {
+	    values: [["<b>Race</b>"],["<b>Democratic</b>"],
+					                      ["<b>Republican</b>"]],
+	    align: ["justify"],
+	    line: {width: 3, color: '#506784'},
+	    fill: {color: '#119DFF'},
+	    font: {family: "Arial", size: 14, color: "white"}
+	  },
+	  cells: {
+	    values: [demographics, democratic, republican],
+	    align: ["left", "center"],
+	    line: {color: "#0073e6", width: 1},
+		 fill: {color: ['#ffffff', 'white']},
+	    font: {family: "Arial", size: 14, color: "black"}
+	  }
+	}]
 
 Plotly.plot('data-analysis-content', data);
 
