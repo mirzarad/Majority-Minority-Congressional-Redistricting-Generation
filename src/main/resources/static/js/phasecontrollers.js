@@ -1,4 +1,5 @@
 var stompClient = null;
+var layers = {};
 connect(stompClient);
 
 $(function () {
@@ -146,8 +147,41 @@ function waitForSocketConnection(socket, callback){
         }, 5); 
 }
 
+function precinctStyle(newDistrictID){
+	return {
+		weight:2,
+		opacity: 1,
+		color: '#0000b3',
+		fillColor: precinctColor(newDistrictID),
+		dashArray: '1',
+		fillOpacity: 0.7
+	}
+}
+
+function precinctColor(newDistrictID){
+	var id = parseInt(newDistrictID);
+	desiredDistricts = 10000;
+	return uniqueNewDistrictColoring(id, desiredDistricts); //colorNum == newDistrictID | colors = numberOfDesiredDistricts
+}
+
+function uniqueNewDistrictColoring(newDistrictID, desiredDistricts){
+		if(desiredDistricts < 1) desiredDistricts = 1; // default to a single color and avoids divide by zero
+			return "hsl(" + (newDistrictID * (360/desiredDistricts) % 360) + ",100%,50%)";
+}
+
+function eachFeature(feature, layer){
+	layers[feature.id] = layer;
+}
+
 function showGreeting(message) {
 	console.log(message);
+	var id = message["uniqueID"];
+	var precincts = message["precincts"];
+
+	for (var p in precincts){
+		var match = layers[p];
+		match.setStyle({fillColor: precinctStyle(id)});
+	}
 }
 // END WEBSOCKET FUNCTIONS
 

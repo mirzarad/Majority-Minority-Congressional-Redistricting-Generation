@@ -112,27 +112,7 @@ $( function() {
 		}
 	}
 	
-	function precinctStyle(newDistrictID){
-		return {
-			weight:2,
-			opacity: 1,
-			color: '#0000b3',
-			fillColor: precinctColor(newDistrictID),
-			dashArray: '1',
-			fillOpacity: 0.7
-		}
-	}
 	
-	function precinctColor(newDistrictId){
-		newDistrictId = parseInt(newDistrictID);
-		numDistricts = 18;
-		return uniqueNewDistrictColoring2(newDistrictId, numDistricts); //colorNum == newDistrictID | colors = numberOfDesiredDistricts
-	}
-	
-	function uniqueNewDistrictColoring(colorNum, colors){
-			if(colors < 1) colors = 1; // default to a single color and avoids divide by zero
-				return "hsl(" + (colorNum * (360/colors) % 360) + ",100%,50%)";
-	}
 	
 	function uniqueNewDistrictColoring2(districtId, numDistricts){
 		if(numDistricts < 1) numDistricts = 1; // default to a single color and avoids divide by zero
@@ -172,6 +152,7 @@ $( function() {
 	
 	// ON EACH FEATURE HANDLER FUNCTION
 	function onEachFeature(feature, layer) {
+		eachFeature(feature, layer);
 		layer.on({
 			mouseover: highlightFeature,
 			mouseout: resetHighlight,
@@ -700,6 +681,7 @@ $( function() {
 	}
 	
 	$("#california").on("click",function(e) {
+		layers = {};
 		e.preventDefault();
 		districtAjax(this.id);
 		precinctAjax(this.id);
@@ -707,7 +689,7 @@ $( function() {
 	});
    
 	$("#pennsylvania").on("click",function(e) {
-
+		layers = {};
 		e.preventDefault();
 		districtAjax(this.id);
 		precinctAjax(this.id);
@@ -715,6 +697,7 @@ $( function() {
 	});
    
 	$("#full").on("click",function(e) {
+		layers = {};
 		e.preventDefault();
 		usaAjax();
 	});
@@ -730,6 +713,7 @@ $( function() {
 		var zoomlevel = map.getZoom();
 		    if (zoomlevel < 7 && isPrecinctZoomed == true){
 		    	// display district mode
+		    	layers = {};
 				mode = "districtHover";
 		    	isPrecinctZoomed = false;
 		    	reloadMap(districtResponse["map"]);
@@ -738,6 +722,7 @@ $( function() {
 		    }
 		    if (zoomlevel >= 7 && isPrecinctZoomed == false){
 		    	// display precinct mode
+		    	layers = {};
 				mode = "precinctHover";
 		    	isPrecinctZoomed = true;
 		    	reloadMap(precinctResponse["map"]);
