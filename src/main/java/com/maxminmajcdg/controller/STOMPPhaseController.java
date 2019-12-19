@@ -80,5 +80,6 @@ public class STOMPPhaseController {
 			DistrictResponse finalDistrict = graph.finalizeDistricts();
 			messagingTemplate.convertAndSend("/phase/results", finalDistrict);
 		}
+		messagingTemplate.convertAndSend("/phase/results", "DONE");
 	}
 }

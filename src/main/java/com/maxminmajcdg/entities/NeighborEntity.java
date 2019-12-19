@@ -30,6 +30,10 @@ public abstract class NeighborEntity implements NeighborDistrictWrapper{
 	@Transient
 	private boolean isPhase1ThresholdMet;
 	
+	@JsonIgnore
+	@Transient
+	private int uniqueID;
+	
 	public Integer getNodeID() {
 		return nodeID;
 	}
@@ -85,6 +89,16 @@ public abstract class NeighborEntity implements NeighborDistrictWrapper{
 		isPhase1ThresholdMet = isThresholdMet(election, demographics, maxDemographicBlocPercentage, minDemographicBlocPercentage);
 		isPhase1Calculated = true;
 		return isPhase1ThresholdMet;
+	}
+	
+	@JsonIgnore
+	@Override
+	public Integer getUniqueID() {
+		return -1;
+	}
+	
+	public void setUniqueID(Integer uniqueID) {
+		this.uniqueID = uniqueID;
 	}
 	
 	public String toString() {

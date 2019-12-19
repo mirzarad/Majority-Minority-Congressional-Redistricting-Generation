@@ -43,6 +43,7 @@ public class PrecinctGraph {
 	private Map<DemographicCategory, Boolean> demographics;
 	private float maxDemographicBlocPercentage;
 	private float minDemographicBlocPercentage;
+	private int newUniqueIDBase;
 	
 	private static SplittableRandom rand = new SplittableRandom();
 	
@@ -50,6 +51,7 @@ public class PrecinctGraph {
 		this.districts = districts;
 		this.precincts = new HashMap<Integer, NeighborDistrictWrapper>(districts);
 		this.liveDistricts = liveDistricts;
+		this.setNewUniqueIDBase(0);
 		liveDistricts.keySet().retainAll(districts.keySet());
 		this.queue = new LinkedList<Integer>(liveDistricts.keySet());
 		this.phase1IgnoreIndex = new ArrayList<Integer>();
@@ -142,8 +144,20 @@ public class PrecinctGraph {
 		int max = (a.getNodeID() > b.getNodeID())? a.getNodeID() : b.getNodeID();
 		int min = (a.getNodeID() < b.getNodeID())? a.getNodeID() : b.getNodeID();
 		
+		int uniqueID = a.getUniqueID();
+		if (uniqueID == -1) {
+			uniqueID = b.getUniqueID();
+			if (uniqueID == -1) {
+				uniqueID = newUniqueIDBase;
+				++newUniqueIDBase;
+			}
+		}
+		
 		District newDistrict = new District();
 		newDistrict.setNodeID(min);
+		newDistrict.setUniqueID(uniqueID);
+		a.setUniqueID(uniqueID);
+		b.setUniqueID(uniqueID);
 		newDistrict.addPrecincts(a.getNodeID());
 		newDistrict.addPrecincts(b.getNodeID());
 		newDistrict.addPrecincts(a.getPrecincts());
@@ -347,6 +361,14 @@ public class PrecinctGraph {
 
 	public void setStateName(States stateName) {
 		this.stateName = stateName;
+	}
+
+	public int getNewUniqueIDBase() {
+		return newUniqueIDBase;
+	}
+
+	public void setNewUniqueIDBase(int newUniqueIDBase) {
+		this.newUniqueIDBase = newUniqueIDBase;
 	}
 	
 }
