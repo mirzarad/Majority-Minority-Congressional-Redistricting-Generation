@@ -4,45 +4,40 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.maxminmajcdg.PrecinctGraph;
 import com.maxminmajcdg.Properties;
 import com.maxminmajcdg.dto.DistrictResponse;
 import com.maxminmajcdg.dto.GraphPartitioningForm;
-import com.maxminmajcdg.dto.Response;
 import com.maxminmajcdg.entities.NeighborDistrictWrapper;
-import com.maxminmajcdg.entities.NeighborEntity;
 import com.maxminmajcdg.services.CaliService;
 import com.maxminmajcdg.services.PennService;
 import com.maxminmajcdg.services.StateService;
 
 @Controller
+@Component
 public class STOMPPhaseController {
+
 	@Autowired
 	PennService pennService;
 	
 	@Autowired
 	CaliService caliService;
 	
-	private static SimpMessageSendingOperations messagingTemplate;
-
 	@Autowired
-	public STOMPPhaseController(SimpMessageSendingOperations messagingTemplate) {
-	    STOMPPhaseController.messagingTemplate = messagingTemplate;
-	}
+	private SimpMessageSendingOperations messagingTemplate;
+	  
 	
-	@MessageMapping("/run_phase1")
-	@SendTo("/phase/results")
-	public Response<?> phase1(@RequestBody GraphPartitioningForm phase1Form) {
+	@MessageMapping("/run.phase1")
+	@SendToUser("/phase/results")
+	public void phase1(@Payload GraphPartitioningForm phase1Form) {
 		System.err.println("Running Phase 1 state: " + phase1Form.getState());
 
-		Response<NeighborEntity> result = new Response<NeighborEntity>();
-		result.setMessage("Success");
-		
 		StateService service;
 		switch(phase1Form.getState()) {
 		case PENN:
@@ -52,7 +47,7 @@ public class STOMPPhaseController {
 			service = caliService;
 			break;
 			default:
-				return null;
+				return;
 		}
 
 		Map<Integer, NeighborDistrictWrapper> precincts = service.getNeighbors(phase1Form.getElection());
@@ -78,14 +73,12 @@ public class STOMPPhaseController {
 			if (merged == null) {
 				continue;
 			}
-			STOMPPhaseController.messagingTemplate.convertAndSend(merged);
+			messagingTemplate.convertAndSend("/phase/results", merged);
 		}
  
 		while(!graph.isFinished()) {
 			DistrictResponse finalDistrict = graph.finalizeDistricts();
-			STOMPPhaseController.messagingTemplate.convertAndSend(finalDistrict);
+			messagingTemplate.convertAndSend("/phase/results", finalDistrict);
 		}
-		
-		return result;
 	}
 }

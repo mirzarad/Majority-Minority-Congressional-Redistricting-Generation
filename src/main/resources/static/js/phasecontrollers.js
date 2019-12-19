@@ -1,4 +1,5 @@
 var stompClient = null;
+connect(stompClient);
 
 $(function () {
 	var stompClient = null;
@@ -72,7 +73,6 @@ $(function (){
 			data["election"] = selectedElection;
 			data["state"] = selectedState;
 			data["numberOfDistricts"] = 20;
-			connect(stompClient);
 			sendName(data);
 			showGreeting();
 		
@@ -115,21 +115,21 @@ function connect() {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         stompClient.subscribe('/phase/results', function (response) {
-            showGreeting(JSON.parse(response.body).content);
+            showGreeting(JSON.parse(response.body));
         });
     });
 }
 
 function sendName(data) {
-	waitForSocketConnection(stompClient, function(){
-		stompClient.send("/app/run_phase1", {}, JSON.stringify(data));
-	});
+	//waitForSocketConnection(stompClient, function(){
+	stompClient.send("/home/run.phase1", {}, JSON.stringify(data));
+	//});
 }
 
 function waitForSocketConnection(socket, callback){
     setTimeout(
         function () {
-            if (socket.readyState === 1) {
+            if (socket.status === "CONNECTED") {
                 console.log("Connection is made")
                 if (callback != null){
                     callback();

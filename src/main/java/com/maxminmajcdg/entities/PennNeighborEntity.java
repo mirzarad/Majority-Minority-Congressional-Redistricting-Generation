@@ -17,7 +17,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity
+@Entity(name="pa_neighbors_graph")
 @Table(name="pa_neighbors_graph")
 public class PennNeighborEntity extends NeighborEntity{
 	
