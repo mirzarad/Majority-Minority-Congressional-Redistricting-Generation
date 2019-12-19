@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import org.javatuples.Pair;
+
 import com.maxminmajcdg.DemographicCategory;
 import com.maxminmajcdg.PartyCategory;
 import com.maxminmajcdg.entities.DemographicsEntity;
@@ -25,31 +27,31 @@ public abstract class StateService {
 	public abstract List<?> getAllPrecincts(ElectionCategory election);
 	public abstract Double getTotalPopulation(ElectionCategory election);
 	
-	public Map<Long, DemographicsEntity> getDemographicBloc(ElectionCategory election, float threshold) {
+	public Map<Long, Pair<DemographicsEntity, DemographicCategory>> getDemographicBloc(ElectionCategory election, float threshold) {
 		List<?> demographics = getDemographics(election);
-		Map<Long, DemographicsEntity> demographicBloc = new HashMap<Long, DemographicsEntity>();
+		Map<Long, Pair<DemographicsEntity, DemographicCategory>> demographicBloc = new HashMap<Long, Pair<DemographicsEntity, DemographicCategory>>();
 		
 		for (Object demographicObject : demographics) {
 			DemographicsEntity demographic = (DemographicsEntity) demographicObject;
 			
 			DemographicCategory maxDemographic = demographic.getMaxVotingDemographic();
 			if (demographic.doesVotingDemographicExceedThreshold(maxDemographic, threshold)) {
-				demographicBloc.put(demographic.getGeomID(), demographic);
+				demographicBloc.put(demographic.getGeomID(), Pair.with(demographic, maxDemographic));
 			}
 		}
 		return demographicBloc;
 	}
 	
-	public Map<Long, VoteEntity> votesAsBloc(ElectionCategory election, Set<Long> geomID, float threshold) {
+	public Map<Long, Pair<VoteEntity, PartyCategory>> votesAsBloc(ElectionCategory election, Set<Long> geomID, float threshold) {
 		List<?> votes = getVotesIn(election, geomID);
-		Map<Long, VoteEntity> voteBlocs = new HashMap<Long, VoteEntity>();
+		Map<Long, Pair<VoteEntity, PartyCategory>> voteBlocs = new HashMap<Long, Pair<VoteEntity, PartyCategory>>();
 
 		for (Object voteObject : votes) {
 			VoteEntity vote = (VoteEntity) voteObject;
 			
 			PartyCategory maxVote = vote.getMaxVotingDemographics();
 			if (vote.doesVotingDemographicExceedThreshold(maxVote, threshold)) {
-				voteBlocs.put(vote.getGeomID(), vote);
+				voteBlocs.put(vote.getGeomID(), Pair.with(vote, maxVote));
 			}
 		}
 		

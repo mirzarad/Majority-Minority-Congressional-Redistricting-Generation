@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.maxminmajcdg.DemographicCategory;
+import com.maxminmajcdg.PartyCategory;
 import com.maxminmajcdg.dto.DemVotePair;
 import com.maxminmajcdg.dto.DemographicBlocForm;
 import com.maxminmajcdg.dto.Response;
@@ -58,10 +61,10 @@ public class PhaseController{
 				return null;
 		}
 		
-		Map<Long, DemographicsEntity> demographics = service.getDemographicBloc(election, demographicThreshold);
+		Map<Long, Pair<DemographicsEntity, DemographicCategory>> demographics = service.getDemographicBloc(election, demographicThreshold);
 		
 		Set<Long> geomID = demographics.keySet();
-		Map<Long, VoteEntity> votes = service.votesAsBloc(election, geomID, voteThreshold);
+		Map<Long, Pair<VoteEntity, PartyCategory>> votes = service.votesAsBloc(election, geomID, voteThreshold);
 
 		Set<Long> voteGeomID = votes.keySet();
 		geomID.retainAll(voteGeomID);
@@ -69,8 +72,10 @@ public class PhaseController{
 
 		for(Long blocGeomID : geomID) {
 			DemVotePair pair = new DemVotePair();
-			pair.setDemographics(demographics.get(blocGeomID));
-			pair.setVotes(votes.get(blocGeomID));
+			pair.setDemographics(demographics.get(blocGeomID).getValue0());
+			pair.setMaxDemographic(demographics.get(blocGeomID).getValue1());
+			pair.setVotes(votes.get(blocGeomID).getValue0());
+			pair.setMaxVote(votes.get(blocGeomID).getValue1());
 			precincts.add(pair);
 		}
 		result.setMessage("Success");

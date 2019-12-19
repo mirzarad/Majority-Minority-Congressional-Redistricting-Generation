@@ -160,12 +160,11 @@ function phasePost(path, data, setVal, err, phase) {
 		success: function(results) {
 			//Set BTN To PAUSE
 			phase.val(0);
-			
             draw(results);
 
 		},
 		error: function(e) {
-			phase.val(1);
+			phase.val(0);
 			alert(err);
 		}
 	});
