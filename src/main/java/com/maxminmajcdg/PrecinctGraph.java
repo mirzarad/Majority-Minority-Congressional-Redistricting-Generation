@@ -146,8 +146,11 @@ public class PrecinctGraph {
 		
 		int uniqueID = a.getUniqueID();
 		if (uniqueID == -1) {
-			uniqueID = newUniqueIDBase;
-			++newUniqueIDBase;
+			uniqueID = b.getUniqueID();
+			if (uniqueID == -1) {
+				uniqueID = newUniqueIDBase;
+				++newUniqueIDBase;
+			}
 		}
 		
 		District newDistrict = new District();
