@@ -8,6 +8,7 @@ import com.maxminmajcdg.DemographicCategory;
 
 public class District extends NeighborEntity{
 	private Integer nodeID;
+	private Integer uniqueID;
 	private Map<ElectionCategory, DemographicWrapper> demographics;
 	private Map<ElectionCategory, VotesWrapper>  votes;
 	private Set<Integer> neighbors;
@@ -23,6 +24,7 @@ public class District extends NeighborEntity{
 		this.precincts = district.getPrecincts();
 		this.internalEdges = district.getInternalEdges();
 		this.externalEdges = district.getExternalEdges();
+		this.uniqueID = district.uniqueID;
 	}
 
 	public District() {}
@@ -94,6 +96,15 @@ public class District extends NeighborEntity{
 	@Override
 	public double getExternalEdges() {
 		return externalEdges;
+	}
+	
+	public Integer getUniqueID() {
+		return uniqueID;
+	}
+	
+	@Override
+	public void setUniqueID(Integer uniqueID) {
+		this.uniqueID = uniqueID;
 	}
 
 }
