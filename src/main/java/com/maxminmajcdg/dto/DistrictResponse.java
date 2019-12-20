@@ -11,16 +11,19 @@ import com.maxminmajcdg.entities.NeighborDistrictWrapper;
 public class DistrictResponse {
 	private int id;
 	private int uniqueID;
+	private int newPrecinct;
 	private Set<Integer> precincts;
 	private Map<PartyCategory, Double> votes;
 	private Map<DemographicCategory, Double> demographics;
 	
 	public DistrictResponse(NeighborDistrictWrapper district, ElectionCategory election) {
 		this.id = district.getNodeID();
+		this.newPrecinct = district.getNewID();
 		this.precincts = district.getPrecincts();
 		this.votes = district.getVotes().get(election).getVotes();
 		this.demographics = district.getDemographics().get(election).getTotalDemographics();
 		this.uniqueID = district.getUniqueID();
+		this.setNewPrecinct(district.getNewID());
 	}
 	
 	public DistrictResponse() {}
@@ -56,6 +59,14 @@ public class DistrictResponse {
 
 	public void setUniqueID(int uniqueID) {
 		this.uniqueID = uniqueID;
+	}
+
+	public int getNewPrecinct() {
+		return newPrecinct;
+	}
+
+	public void setNewPrecinct(int newPrecinct) {
+		this.newPrecinct = newPrecinct;
 	}
 	
 	

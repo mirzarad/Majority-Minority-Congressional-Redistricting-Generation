@@ -34,6 +34,10 @@ public abstract class NeighborEntity implements NeighborDistrictWrapper{
 	@Transient
 	private int uniqueID;
 	
+	@JsonIgnore
+	@Transient
+	private int newID;
+	
 	public Integer getNodeID() {
 		return nodeID;
 	}
@@ -57,6 +61,18 @@ public abstract class NeighborEntity implements NeighborDistrictWrapper{
 	@Transient
 	public void addPrecincts(Integer precinct) {
 		precincts.add(precinct);
+	}
+	
+	@Override
+	public void setNewID(int newID) {
+		this.newID = newID;
+	}
+	
+	@JsonIgnore
+	@Transient
+	@Override
+	public int getNewID() {
+		return nodeID.intValue();
 	}
 	
 	public abstract Set<Integer> getNeighbors();

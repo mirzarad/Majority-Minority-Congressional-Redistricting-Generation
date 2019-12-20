@@ -32,4 +32,8 @@ public interface NeighborDistrictWrapper {
 	public Integer getUniqueID();
 	
 	public void setUniqueID(Integer uniqueID);
+
+	public int getNewID();
+	
+	public void setNewID(int newID);
 }

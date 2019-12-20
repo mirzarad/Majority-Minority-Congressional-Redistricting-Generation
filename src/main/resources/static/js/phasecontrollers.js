@@ -176,12 +176,10 @@ function eachFeature(feature, layer){
 function showGreeting(message) {
 	console.log(message);
 	var id = message["uniqueID"];
-	var precincts = message["precincts"];
+	var p = message["newPrecinct"];
 
-	for (var p in precincts){
-		var match = layers[p];
-		match.setStyle({fillColor: precinctStyle(id)});
-	}
+	var match = layers[p];
+	match.setStyle({fillColor: precinctStyle(id)});
 }
 // END WEBSOCKET FUNCTIONS
 

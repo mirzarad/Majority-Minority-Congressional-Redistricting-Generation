@@ -14,6 +14,8 @@ import java.util.SplittableRandom;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.javatuples.Pair;
+
 import com.maxminmajcdg.dto.DistrictResponse;
 import com.maxminmajcdg.entities.DemographicWrapper;
 import com.maxminmajcdg.entities.District;
@@ -101,6 +103,7 @@ public class PrecinctGraph {
 			successiveFails += 1;
 			return null;
 		}
+		
 		successiveFails = 0;
 		return  precinct;
 	}
@@ -137,7 +140,7 @@ public class PrecinctGraph {
 		return districts.get(optimalNeighbor);
 	}
 	
-	public DistrictResponse join(NeighborDistrictWrapper a, NeighborDistrictWrapper b) {
+	public Pair<NeighborDistrictWrapper, DistrictResponse> join(NeighborDistrictWrapper a, NeighborDistrictWrapper b) {
 		if(a == null || b == null) {
 			return null;
 		}
@@ -162,6 +165,7 @@ public class PrecinctGraph {
 		newDistrict.addPrecincts(b.getNodeID());
 		newDistrict.addPrecincts(a.getPrecincts());
 		newDistrict.addPrecincts(b.getPrecincts());
+		newDistrict.setNewID(b.getNodeID());
 		Set<Integer> newPrecincts = newDistrict.getPrecincts();
 		int internalEdges = (int) newPrecincts.stream().filter(precinct -> districts.get(precinct).getNeighbors().contains(b.getNodeID())).count();
 		newDistrict.setInternalEdges(a.getInternalEdges() + internalEdges/2);
@@ -214,10 +218,10 @@ public class PrecinctGraph {
 		numDistricts -= 1;
 		
 		
-		return new DistrictResponse(newDistrict, election);
+		return Pair.with(newDistrict, new DistrictResponse(newDistrict, election));
 	}
 	
-	public DistrictResponse finalizeDistricts() {
+	public Pair<NeighborDistrictWrapper, DistrictResponse> finalizeDistricts() {
 		int index = queue.remove();
 		NeighborDistrictWrapper precinct = districts.get(index);
 		queue.add(index);

@@ -2,6 +2,7 @@ package com.maxminmajcdg.controller;
 
 import java.util.Map;
 
+import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -65,20 +66,30 @@ public class STOMPPhaseController {
 				phase1Form.getMinDemographicBlocPercentage());
 		
 		System.out.println(graph.getNumDistricts());
+		NeighborDistrictWrapper randomPrecinct = null;
 		while (!graph.isFinished() && graph.getPhase1Iter() < Properties.MAX_ITERATIONS && graph.getSuccessiveFails() < Properties.MAX_FAILS) {
-			NeighborDistrictWrapper randomPrecinct = graph.getRandomPrecinct();		
+			if (randomPrecinct == null || !randomPrecinct.isPhase1ThresholdMet(phase1Form.getElection(), phase1Form.getDemographics(), phase1Form.getMaxDemographicBlocPercentage(), phase1Form.getMinDemographicBlocPercentage())) {
+				randomPrecinct = graph.getRandomPrecinct();	
+				if (randomPrecinct == null) {
+					graph.updatePhase1Iter();
+					continue;
+				}
+				messagingTemplate.convertAndSend("/phase/results", new DistrictResponse(randomPrecinct, phase1Form.getElection()));
+			}
 			NeighborDistrictWrapper optimalPrecinct = graph.getOptimalPrecinct(randomPrecinct);	
-			DistrictResponse merged = graph.join(randomPrecinct, optimalPrecinct);
+			Pair<NeighborDistrictWrapper, DistrictResponse> merged = graph.join(randomPrecinct, optimalPrecinct);
+			
 			graph.updatePhase1Iter();
 			if (merged == null) {
 				continue;
 			}
-			messagingTemplate.convertAndSend("/phase/results", merged);
+			randomPrecinct = merged.getValue0();
+			messagingTemplate.convertAndSend("/phase/results", merged.getValue1());
 		}
  
 		while(!graph.isFinished()) {
-			DistrictResponse finalDistrict = graph.finalizeDistricts();
-			messagingTemplate.convertAndSend("/phase/results", finalDistrict);
+			Pair<NeighborDistrictWrapper, DistrictResponse> finalDistrict = graph.finalizeDistricts();
+			messagingTemplate.convertAndSend("/phase/results", finalDistrict.getValue1());
 		}
 		messagingTemplate.convertAndSend("/phase/results", "DONE");
 	}

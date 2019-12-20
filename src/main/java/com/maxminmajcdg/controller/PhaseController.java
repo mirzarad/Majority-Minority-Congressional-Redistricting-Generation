@@ -8,7 +8,6 @@ import java.util.Set;
 import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,17 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maxminmajcdg.DemographicCategory;
 import com.maxminmajcdg.PartyCategory;
-import com.maxminmajcdg.PrecinctGraph;
-import com.maxminmajcdg.Properties;
 import com.maxminmajcdg.dto.DemVotePair;
 import com.maxminmajcdg.dto.DemographicBlocForm;
-import com.maxminmajcdg.dto.DistrictResponse;
-import com.maxminmajcdg.dto.GraphPartitioningForm;
 import com.maxminmajcdg.dto.Response;
 import com.maxminmajcdg.dto.SimmulatedAnnealingForm;
 import com.maxminmajcdg.entities.DemographicsEntity;
 import com.maxminmajcdg.entities.ElectionCategory;
-import com.maxminmajcdg.entities.NeighborDistrictWrapper;
 import com.maxminmajcdg.entities.VoteEntity;
 import com.maxminmajcdg.services.CaliService;
 import com.maxminmajcdg.services.PennService;
@@ -43,8 +37,6 @@ public class PhaseController{
 	@Autowired
 	CaliService caliService;
 				
-	private PrecinctGraph graph;
-
 	@PostMapping(value="/phase0")
 	@ResponseBody
 	public Response<?> phase0(@RequestBody DemographicBlocForm phase0Form) {
@@ -90,63 +82,6 @@ public class PhaseController{
 		result.setResponse(precincts);	
 
 		return result;
-	}
-	
-	@PostMapping(value = "/phase1/{mode}")
-	@ResponseBody
-	public DistrictResponse phase1(@RequestBody GraphPartitioningForm phase1Form, @PathVariable(name="mode") String mode) {
-		System.err.println("Running Phase 1 state: " + phase1Form.getState());
-
-		StateService service;
-		switch(phase1Form.getState()) {
-		case PENN:
-			service = pennService;
-			break;
-		case CALI:
-			service = caliService;
-			break;
-			default:
-				return null;
-		}
-		
-		if (mode.equals("INIT")) {
-			Map<Integer, NeighborDistrictWrapper> precincts = service.getNeighbors(phase1Form.getElection());
-			Map<Integer, Double> precinctsPopulation = service.getNeighborPopulations(phase1Form.getElection());
-			int totalPopulation = service.getTotalPopulation(phase1Form.getElection()).intValue();
-			if (graph == null || !(graph.getStateName().equals(phase1Form.getState()) && graph.getElection().equals(phase1Form.getElection()))) {
-				graph = new PrecinctGraph(precincts);
-			}
-			graph.reset();
-			graph.setStateName(phase1Form.getState());
-			graph.setPrecinctsPopulation(precinctsPopulation);
-			graph.setState(phase1Form.getState());
-			graph.setElection(phase1Form.getElection());
-			graph.setDeomographics(phase1Form.getDemographics());
-			graph.setTotalPopulation(totalPopulation);
-			graph.setNumDistricts(phase1Form.getNumberOfDistricts());
-			graph.setMaxDemographicBlocPercentage(phase1Form.getMaxDemographicBlocPercentage());
-			graph.setMinDemographicBlocPercentage(phase1Form.getMinDemographicBlocPercentage());
-		}
-		
-		
-		System.out.println(graph.getNumDistricts());
-		while (!graph.isFinished() && graph.getPhase1Iter() < Properties.MAX_ITERATIONS && graph.getSuccessiveFails() < Properties.MAX_FAILS) {
-			NeighborDistrictWrapper randomPrecinct = graph.getRandomPrecinct();		
-			NeighborDistrictWrapper optimalPrecinct = graph.getOptimalPrecinct(randomPrecinct);	
-			DistrictResponse merged = graph.join(randomPrecinct, optimalPrecinct);
-			graph.updatePhase1Iter();
-			if (merged == null) {
-				continue;
-			}
-			return merged;
-		}
- 
-		while(!graph.isFinished()) {
-			DistrictResponse finalDistrict = graph.finalizeDistricts();
-			return finalDistrict;
-		}
-		
-		return null;
 	}
 	
 	@PostMapping(value = "/phase2/iterate")
