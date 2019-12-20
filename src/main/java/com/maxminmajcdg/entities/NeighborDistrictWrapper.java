@@ -33,7 +33,7 @@ public interface NeighborDistrictWrapper {
 	
 	public void setUniqueID(Integer uniqueID);
 
-	public int getNewID();
+	public Set<Integer> getNewID();
 	
-	public void setNewID(int newID);
+	public void setNewID(Set<Integer> newID);
 }

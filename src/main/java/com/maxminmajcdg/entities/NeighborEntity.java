@@ -36,7 +36,7 @@ public abstract class NeighborEntity implements NeighborDistrictWrapper{
 	
 	@JsonIgnore
 	@Transient
-	private int newID;
+	private Set<Integer> newID;
 	
 	public Integer getNodeID() {
 		return nodeID;
@@ -64,15 +64,15 @@ public abstract class NeighborEntity implements NeighborDistrictWrapper{
 	}
 	
 	@Override
-	public void setNewID(int newID) {
+	public void setNewID(Set<Integer> newID) {
 		this.newID = newID;
 	}
 	
 	@JsonIgnore
 	@Transient
 	@Override
-	public int getNewID() {
-		return nodeID.intValue();
+	public Set<Integer> getNewID() {
+		return new HashSet<Integer>(nodeID);
 	}
 	
 	public abstract Set<Integer> getNeighbors();

@@ -165,7 +165,7 @@ public class PrecinctGraph {
 		newDistrict.addPrecincts(b.getNodeID());
 		newDistrict.addPrecincts(a.getPrecincts());
 		newDistrict.addPrecincts(b.getPrecincts());
-		newDistrict.setNewID(b.getNodeID());
+		newDistrict.setNewID(b.getPrecincts());
 		Set<Integer> newPrecincts = newDistrict.getPrecincts();
 		int internalEdges = (int) newPrecincts.stream().filter(precinct -> districts.get(precinct).getNeighbors().contains(b.getNodeID())).count();
 		newDistrict.setInternalEdges(a.getInternalEdges() + internalEdges/2);

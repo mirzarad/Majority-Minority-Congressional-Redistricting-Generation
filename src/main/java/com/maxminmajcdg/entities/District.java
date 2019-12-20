@@ -9,7 +9,7 @@ import com.maxminmajcdg.DemographicCategory;
 public class District extends NeighborEntity{
 	private Integer nodeID;
 	private Integer uniqueID;
-	private Integer newID;
+	private Set<Integer> newID;
 	private Map<ElectionCategory, DemographicWrapper> demographics;
 	private Map<ElectionCategory, VotesWrapper>  votes;
 	private Set<Integer> neighbors;
@@ -110,12 +110,12 @@ public class District extends NeighborEntity{
 	}
 
 	@Override
-	public int getNewID() { 
+	public Set<Integer> getNewID() { 
 		return newID;
 	}
 
 	@Override
-	public void setNewID(int newID) {
+	public void setNewID(Set<Integer> newID) {
 		this.newID = newID;
 	}
 
